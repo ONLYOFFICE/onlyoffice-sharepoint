@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction Id="2e2cc692-7235-4f2a-8094-a0b41bc33b4b.RibbonAction"
+                RegistrationType="List"
+                RegistrationId="101"
+                Location="CommandUI.Ribbon"
+                Sequence="10001"
+                >
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.Documents.EditCheckout.Controls._children">
+          <Button Id="Ribbon.Documents.Manage.RibbonActionOnlyoffice"
+                  Alt="RibbonAction"
+                  Sequence="100"
+                  ToolTipTitle="$Resources:Resource,EditIn"
+                  ToolTipDescription="$Resources:Resource,RibbonTooltipText"
+                  Command="Invoke_RibbonAction"
+                  LabelText="$Resources:Resource,EditIn"
+                  TemplateAlias="o1"
+                  Image32by32="_layouts/15/images/ONLYOFFICE-32.png"
+                  Image16by16="_layouts/15/images/ONLYOFFICE-16.png" />
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_RibbonAction"
+                          CommandAction="javascript:window.open(_spPageContextInfo.webServerRelativeUrl + '_layouts/Onlyoffice/editorPage.aspx?SPListItemId={SelectedItemId}&amp;SPListId={SelectedListId}&amp;SPSource={Source}&amp;SPListURLDir={ListUrlDir}&amp;action=download')"
+                          EnabledScript="javascript:
+                              function enableONLYOFFICEButton() {
+                                  var items = SP.ListOperation.Selection.getSelectedItems();
+                                  //var ci = CountDictionary(items);
+                                  var ci = items.length;
+                                  if (ci == 1) {
+                                      if(items[0].fsObjType == 0){ //0 - file; 1 - folder
+                                          return true;
+                                      }
+                                  }
+                              }
+                              var clientContext;
+                              SP.SOD.executeFunc('sp.js', 'SP.ClientContext', sharePointReady);
+
+                              // Create an instance of the current context.
+                              function sharePointReady() {
+                                  clientContext = SP.ClientContext.get_current();
+                                  clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
+                              }
+                              function onRequestSucceeded() {
+                                  var serverVersion = clientContext.get_serverVersion();
+                                  if(serverVersion){
+                                      var ribbonButton = document.getElementById('Ribbon.Documents.Manage.RibbonActionOnlyoffice-Large');
+                                      serverVersion = serverVersion.split('.')[0];
+                                    
+                                      if(serverVersion == '14') {                                    
+                                          ribbonButton.getElementsByTagName('img')[0].src = ribbonButton.getElementsByTagName('img')[0].src.replace('/15','');
+                                      }
+                                  }
+                              }
+                              function onRequestFailed(sender, args) {
+                                  console.log('Error: ' + args.get_message());
+                              }
+                              enableONLYOFFICEButton();
+                          "/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+  
+</Elements>

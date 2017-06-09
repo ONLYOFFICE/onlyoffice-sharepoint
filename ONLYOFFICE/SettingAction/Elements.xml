@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction Id="SiteActionsToolbar"
+                GroupId="SiteActions" 
+                Location="Microsoft.SharePoint.StandardMenu" 
+                Sequence="1000" 
+                Title="$Resources:Resource,Settings"
+                Rights="ManageWeb">
+    <UrlAction Url="/_layouts/Onlyoffice/Settings.aspx"/>
+    </CustomAction>
+</Elements>

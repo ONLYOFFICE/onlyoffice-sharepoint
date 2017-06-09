@@ -1,0 +1,25 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootDir Condition=" '$(RootDir)' == '' ">..\</RootDir>
+    <WspFile>ONLYOFFICE.wsp</WspFile>
+    <WspPath>$(RootDir)ONLYOFFICE\bin\$(Configuration)\$(WspFile)</WspPath>
+  </PropertyGroup>
+
+  <Target Name="Build">
+
+    <MSBuild
+      Projects="$(RootDir)ONLYOFFICE\ONLYOFFICE.csproj"
+      Properties="Configuration=$(Configuration);IsPackaging=True;" />
+
+    <Copy
+      Condition=" Exists('$(WspPath)') "
+      SourceFiles="$(WspPath)"
+      DestinationFiles="$(WspFile)')" />
+
+    <Message Text="$(WspFile) was successfully built" Condition=" Exists('$(WspFile)') "/>
+
+  </Target>
+
+</Project>

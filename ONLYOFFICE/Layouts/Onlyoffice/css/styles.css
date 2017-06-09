@@ -1,0 +1,26 @@
+﻿.settings_container{
+    margin-left: 10px;
+}
+.document_server_title {
+    color: black;
+    display: inline-block;
+    font-size: 18px;
+}
+.document_server_message {
+    margin-left: 10px;
+    display: block;
+    font-size: 14px;
+}
+.document_server_host {
+    display: inline-block;
+    width: 160px;
+    height: 25px;
+    font-size: 15px;
+    color: #000000;
+}
+.save_settings {
+    height: 25px;
+    width: 70px;
+    margin: 0;
+    line-height: 0;
+}

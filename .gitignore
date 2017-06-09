@@ -1,0 +1,6 @@
+*.user
+*.sln
+*.suo
+*.log
+**/obj/
+**/bin/
