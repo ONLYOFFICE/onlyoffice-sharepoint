@@ -4,6 +4,11 @@ This solution enables users to edit office documents from SharePoint using ONLYO
 
 The solution will create a new Edit in ONLYOFFICE menu option within the context menu of the file and the ribbon for Office documents. This allows multiple users to collaborate in real time and to save back those changes to SharePoint.
 
+## Installing ONLYOFFICE Document Server
+
+You will need an instance of ONLYOFFICE Document Server that is resolvable and connectable both from SharePoint and any end clients. If that is not the case, use the official ONLYOFFICE Document Server documentation page: [Document Server for Linux](http://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx). ONLYOFFICE Document Server must also be able to POST to SharePoint directly.
+
+The easiest way to start an instance of ONLYOFFICE Document Server is to use [Docker](https://github.com/ONLYOFFICE/Docker-DocumentServer).
 
 ## Deploying SharePoint ONLYOFFICE integration solution
 
