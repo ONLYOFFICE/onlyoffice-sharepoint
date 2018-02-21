@@ -50,8 +50,8 @@ namespace Onlyoffice
                     SPListItemId = "",
                     SPListURLDir = "",
                     Folder = "",
-                    url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority;
-
+                    url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
+                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
             //get secret key
             SPSecurity.RunWithElevatedPrivileges(delegate()
             {
