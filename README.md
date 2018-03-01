@@ -84,6 +84,8 @@ https://<documentserver>/
 ```
 Where the documentserver is the name of the server with the ONLYOFFICE Document Server installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Document Server for correct work.
 
+*Please note, that if you have subsites set up with SharePoint, you will need to additionally configure ONLYOFFICE Document Server connection with each of them, in order for it to work properly. Go to each subsite settings and enter the Document Server address to the proper field.*
+
 
 ## How it works
 
