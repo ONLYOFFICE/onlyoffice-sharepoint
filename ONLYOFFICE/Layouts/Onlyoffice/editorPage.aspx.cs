@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System Limited 2010-2017
+ * (c) Copyright Ascensio System Limited 2010-2018
  *
  * The MIT License (MIT)
  *
@@ -61,9 +61,9 @@ namespace Onlyoffice.Layouts
                          CurrentUserLogin = "",
                          SPListItemId, SPListURLDir, SPSource, SPListId, Folder, Secret,
                          DocumentSeverHost = "@http://localhost",
-                         host = HttpContext.Current.Request.Url.Host,
-                         SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority,
-
+                         host = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority,
+                         SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
+                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "": "15/";
 
         protected int CurrentUserId = 0;
@@ -167,7 +167,7 @@ namespace Onlyoffice.Layouts
 
                                 Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
                                 Folder = Folder.Replace("\\", "/");
-                                GoToBack = SPUrl + Folder;
+                                GoToBack = host + Folder;
 
                                 FileAuthor = file.Author.Name;
 

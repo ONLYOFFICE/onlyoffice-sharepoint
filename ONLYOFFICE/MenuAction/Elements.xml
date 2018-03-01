@@ -12,7 +12,14 @@
     Start the URL with the token ~remoteAppUrl if the page is in the
     associated web project, use ~appWebUrl if page is in the app project.
     -->
-    <UrlAction Url="javascript:window.open(_spPageContextInfo.webServerRelativeUrl + '_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}&amp;action=track')" />
+    <UrlAction Url="javascript:
+               var url = '';
+               if(_spPageContextInfo.webServerRelativeUrl.substr(_spPageContextInfo.webServerRelativeUrl.length - 1) != '/')
+                   url = _spPageContextInfo.webServerRelativeUrl + '/';
+               else
+                   url = _spPageContextInfo.webServerRelativeUrl;
+               window.open(url + '_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}&amp;action=track');
+               " />
     
   </CustomAction>                                                     
 </Elements>

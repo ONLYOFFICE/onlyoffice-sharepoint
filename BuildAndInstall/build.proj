@@ -16,7 +16,7 @@
     <Copy
       Condition=" Exists('$(WspPath)') "
       SourceFiles="$(WspPath)"
-      DestinationFiles="$(WspFile)')" />
+      DestinationFiles="$(WspFile)" />
 
     <Message Text="$(WspFile) was successfully built" Condition=" Exists('$(WspFile)') "/>
 

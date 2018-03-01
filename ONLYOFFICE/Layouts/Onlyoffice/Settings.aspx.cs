@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System Limited 2010-2017
+ * (c) Copyright Ascensio System Limited 2010-2018
  *
  * The MIT License (MIT)
  *
@@ -36,8 +36,8 @@ namespace Onlyoffice.Layouts
     public partial class Settings : LayoutsPageBase
     {
         protected string path = AppDomain.CurrentDomain.BaseDirectory;
-        protected string url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority;
-
+        protected string url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
+                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
         protected void Page_Load(object sender, EventArgs e)
         {
             DocumentServerTitle.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);

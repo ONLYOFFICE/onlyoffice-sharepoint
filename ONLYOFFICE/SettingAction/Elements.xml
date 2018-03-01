@@ -6,6 +6,6 @@
                 Sequence="1000" 
                 Title="$Resources:Resource,Settings"
                 Rights="ManageWeb">
-    <UrlAction Url="/_layouts/Onlyoffice/Settings.aspx"/>
+    <UrlAction Url="~site/_layouts/Onlyoffice/Settings.aspx"/>
     </CustomAction>
 </Elements>
