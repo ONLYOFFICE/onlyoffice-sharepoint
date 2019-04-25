@@ -94,9 +94,13 @@ namespace Onlyoffice
                     {
                         userToken = web.AllUsers[0].UserToken;
                         SPSite s = new SPSite(url, userToken);
+                        //hack for SP2019. try to access by user, else access by admin
+                        var type = web.GetList(SPListURLDir).Title.ToString();
+                        var logList = s.RootWeb.Lists.TryGetList(type);
 
-                        SPWeb w = s.OpenWeb();
-                        SPList list = w.GetList(SPListURLDir);
+                        SPList list = logList != null ? logList : web.GetList(SPListURLDir);
+                        SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+
 
                         SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                         //get and send file
@@ -166,12 +170,16 @@ namespace Onlyoffice
                             userToken = web.AllUsers[0].UserToken; 
                         }
 
+                        SPSite s = new SPSite(url, userToken);
+                        //hack for SP2019. try to access by user, else access by admin
+                        var type = web.GetList(SPListURLDir).Title.ToString();
+                        var logList = s.OpenWeb().Lists.TryGetList(type);
+
+                        SPList list = logList ?? web.GetList(SPListURLDir);
+                        SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+
                         try
                         {
-                            SPSite s = new SPSite(url, userToken);
-                            SPWeb w = s.OpenWeb();
-
-                            SPList list = w.GetList(SPListURLDir);
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             
                             //save file to SharePoint

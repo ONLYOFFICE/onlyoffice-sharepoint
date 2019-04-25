@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <CustomAction Id="45f5cf2d-a328-4dad-ae7a-191243aace27.MenuAction"
-                RegistrationType="List"
-                RegistrationId="101"
+                RegistrationType="ContentType"
+                RegistrationId="0x01"
                 Location="EditControlBlock"
                 Sequence="106"
                 Title="$Resources:Resource,EditIn"

@@ -157,9 +157,16 @@ namespace Onlyoffice.Layouts
 //==================================================================================               
                         try
                         {
-                            SPWeb w = s.OpenWeb();
+
                             //SPRoleAssignmentCollection ss = w.RoleAssignments;
-                            SPList list = w.GetList(SPListURLDir);
+
+                            //hack for SP2019. try to access by user, else access by admin
+                            var type = web.GetList(SPListURLDir).Title.ToString();
+                            var logList = s.RootWeb.Lists.TryGetList(type);
+
+                            SPList list = logList != null ? logList : web.GetList(SPListURLDir);
+                            SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
 
                             SPFile file = item.File;
@@ -264,10 +271,20 @@ namespace Onlyoffice.Layouts
                             SPRoleAssignment userRoles = docLibrary.RoleAssignments.GetAssignmentByPrincipal(currentUser);
                             canEdit = CheckRolesForEditing(userRoles);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            Log.LogError(ex.Message);
                             SPGroupCollection groupColl = web.Groups;
+                            if (groupColl.Count == 0)
+                            {
+                                try
+                                {
+                                    SPRoleAssignment currentUserRole = web.RoleAssignments.GetAssignmentByPrincipal(currentUser);
+                                    canEdit = CheckRolesForEditing(currentUserRole);
+                                }
+                                catch (Exception e) { Log.LogError(e.Message); }
 
+                            }
                             foreach (SPGroup group in groupColl)
                             {
                                 try
@@ -276,7 +293,7 @@ namespace Onlyoffice.Layouts
                                     canEdit = CheckRolesForEditing(groupsRoles);
                                     if (canEdit) break;
                                 }
-                                catch (Exception) { }
+                                catch (Exception exception) { Log.LogError(exception.Message); }
                             }
                         }
                     }
