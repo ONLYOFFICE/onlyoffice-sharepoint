@@ -1,11 +1,11 @@
 * [SharePoint ONLYOFFICE integration solution](#sharepoint-onlyoffice-integration-solution)
 * [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
-* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
 * [Deploying SharePoint-ONLYOFFICE integration solution](#deploying-sharepoint-onlyoffice-integration-solution)
 	+ [Compiling ONLYOFFICE-SharePoint integration solution](#compiling-onlyoffice-sharepoint-integration-solution)
-    + [Installing ONLYOFFICE SharePoint integration solution](#installing-onlyoffice-sharepoint-integration-solution)
+	+ [Installing ONLYOFFICE SharePoint integration solution](#installing-onlyoffice-sharepoint-integration-solution)
 * [Configuring SharePoint ONLYOFFICE integration solution](#configuring-sharepoint-onlyoffice-integration-solution)
 * [How it works](#how-it-works)
+* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
 
 # SharePoint ONLYOFFICE integration solution
 
