@@ -1,3 +1,12 @@
+* [SharePoint ONLYOFFICE integration solution](#sharepoint-onlyoffice-integration-solution)
+* [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
+* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
+* [Deploying SharePoint-ONLYOFFICE integration solution](#deploying-sharepoint-onlyoffice-integration-solution)
+	+ [Compiling ONLYOFFICE-SharePoint integration solution](#compiling-onlyoffice-sharepoint-integration-solution)
+    + [Installing ONLYOFFICE SharePoint integration solution](#installing-onlyoffice-sharepoint-integration-solution)
+* [Configuring SharePoint ONLYOFFICE integration solution](#configuring-sharepoint-onlyoffice-integration-solution)
+* [How it works](#how-it-works)
+
 # SharePoint ONLYOFFICE integration solution
 
 This solution enables users to edit office documents from SharePoint using ONLYOFFICE Document Server. Currently the following document formats can be edited: DOCX, XLSX, PPTX, PPSX. The above mentioned formats are also available for viewing together with PDF, DJVU, TXT, CSV, ODT, ODS, ODP, DOC, XLS, PPT, PPS, EPUB, RTF, HTML, HTM, MHT, XPS.
@@ -106,3 +115,66 @@ Where the documentserver is the name of the server with the ONLYOFFICE Document 
 * When all users and client browsers are done with editing, they close the editing window.
 * After 10 seconds of inactivity, ONLYOFFICE Document Server sends a POST to the callback URL letting SharePoint ONLYOFFICE solution know that the clients have finished editing the document and closed it.
 * SharePoint ONLYOFFICE solution downloads the new version of the document, replacing the old one.
+
+## ONLYOFFICE Document Server editions 
+
+ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
+
+**ONLYOFFICE Document Server:**
+
+* Community Edition (`onlyoffice-documentserver` package)
+* Integration Edition (`onlyoffice-documentserver-ie` package)
+
+The table below will help you to make the right choice.
+
+| Pricing and licensing | Community Edition | Integration Edition |
+| ------------- | ------------- | ------------- |
+| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubConfluence)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharepoint)  |
+| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/integration-edition-prices.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharepoint)  |
+| Simultaneous connections | up to 20 maximum  | As in chosen pricing plan |
+| Number of users | up to 20 recommended | As in chosen pricing plan |
+| License | GNU AGPL v.3 | Proprietary |
+| **Support** | **Community Edition** | **Integration Edition** | 
+| Documentation | [Help Center](https://helpcenter.onlyoffice.com/server/docker/opensource/index.aspx) | [Help Center](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx) |
+| Standard support | [GitHub](https://github.com/ONLYOFFICE/DocumentServer/issues) or paid | One year support included |
+| Premium support | [Buy Now](https://www.onlyoffice.com/support.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharepoint) | [Buy Now](https://www.onlyoffice.com/support.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharepoint) |
+| **Services** | **Community Edition** | **Integration Edition** | 
+| Conversion Service                | + | + | 
+| Document Builder Service          | - | + | 
+| **Interface** | **Community Edition** | **Integration Edition** |
+| Tabbed interface                       | - | + |
+| White Label                            | - | - |
+| Integrated test example (node.js)     | - | + |
+| **Plugins & Macros** | **Community Edition** | **Integration Edition** |
+| Plugins                           | + | + |
+| Macros                            | + | + |
+| **Collaborative capabilities** | **Community Edition** | **Integration Edition** |
+| Two co-editing modes              | + | + |
+| Comments                          | + | + |
+| Built-in chat                     | + | + |
+| Review and tracking changes       | + | + |
+| Display modes of tracking changes | - | + |
+| Version history                   | + | + |
+| **Document Editor features** | **Community Edition** | **Integration Edition** |
+| Font and paragraph formatting   | + | + |
+| Object insertion                | + | + |
+| Content control                 | - | + |
+| Layout tools                    | + | + |
+| Table of contents               | + | + |
+| Navigation panel                | - | + |
+| Mail Merge                      | + | + |
+| **Spreadsheet Editor features** | **Community Edition** | **Integration Edition** |
+| Font and paragraph formatting   | + | + |
+| Object insertion                | + | + |
+| Functions, formulas, equations  | + | + |
+| Table templates                 | + | + |
+| Pivot tables                    | - | +* |
+| **Presentation Editor features** | **Community Edition** | **Integration Edition** |
+| Font and paragraph formatting   | + | + |
+| Object insertion                | + | + |
+| Animations                      | + | + |
+| Presenter mode                  | - | + |
+| Notes                           | + | + |
+| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharepoint)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharepoint)  |
+
+*Changing style and deleting (Full support coming soon)
