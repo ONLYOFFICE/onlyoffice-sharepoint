@@ -3,19 +3,19 @@
 * [Overview](#overview)
 * [Features](#features)
 * [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
-* [Installing SharePoint-ONLYOFFICE integration app](#installing-sharepoint-onlyoffice-integration-app)
-* [Configuring SharePoint-ONLYOFFICE integration app](#configuring-sharepoint-onlyoffice-integration-app)
-* [Compiling SharePoint-ONLYOFFICE integration app](#compiling-sharepoint-onlyoffice-integration-app)
+* [Installing SharePoint ONLYOFFICE integration app](#installing-sharepoint-onlyoffice-integration-app)
+* [Configuring SharePoint ONLYOFFICE integration app](#configuring-sharepoint-onlyoffice-integration-app)
+* [Compiling SharePoint ONLYOFFICE integration app](#compiling-sharepoint-onlyoffice-integration-app)
 * [How it works](#how-it-works)
 * [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
 
 ## Overview
 
-This solution enables users to edit office documents from SharePoint using ONLYOFFICE Document Server - [Community or Integration Edition](#onlyoffice-document-server-editions).
+This app enables users to edit office documents from SharePoint using ONLYOFFICE Document Server - [Community or Integration Edition](#onlyoffice-document-server-editions).
 
 ## Features
 
-The plugin allows to:
+The app allows to:
 
 * Create and edit text documents, spreadsheets, and presentations.
 * Share documents with other users.
