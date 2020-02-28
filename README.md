@@ -9,7 +9,7 @@
 * [How it works](#how-it-works)
 * [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
 
-# Overview
+## Overview
 
 This solution enables users to edit office documents from SharePoint using ONLYOFFICE Document Server - [Community or Integration Edition](#onlyoffice-document-server-editions).
 
