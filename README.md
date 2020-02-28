@@ -1,4 +1,15 @@
-# SharePoint ONLYOFFICE integration plugin
+# SharePoint ONLYOFFICE integration app
+
+* [Overview](#overview)
+* [Features](#features)
+* [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
+* [Installing SharePoint-ONLYOFFICE integration app](#installing-sharepoint-onlyoffice-integration-app)
+* [Configuring SharePoint-ONLYOFFICE integration app](#configuring-sharepoint-onlyoffice-integration-app)
+* [Compiling SharePoint-ONLYOFFICE integration app](#compiling-sharepoint-onlyoffice-integration-app)
+* [How it works](#how-it-works)
+* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
+
+# Overview
 
 This solution enables users to edit office documents from SharePoint using ONLYOFFICE Document Server - [Community or Integration Edition](#onlyoffice-document-server-editions).
 
@@ -27,7 +38,7 @@ To install Integration Edition, follow instructions [here](https://helpcenter.on
 
 Community Edition vs Integration Edition comparison can be found [here](#onlyoffice-document-server-editions).
 
-## Installing SharePoint ONLYOFFICE integration plugin
+## Installing SharePoint ONLYOFFICE integration app
 
 1. Click Start, point to All Programs, point to Administrative Tools, and then click Services, and make sure that SharePoint Administration service is started.
 2. Click Start, click SharePoint Management Shell, go to the directory with the .wsp file.
@@ -53,7 +64,7 @@ Add-SPSolution -LiteralPath <SolutionPath>/onlyoffice.wsp
 14. Under Anonymous Access Restrictions select your Zone and set the Permissions to None – No policy and click Save.
 
 
-## Configuring SharePoint ONLYOFFICE integration plugin
+## Configuring SharePoint ONLYOFFICE integration app
 
 In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings. Enter the following address to connect ONLYOFFICE Document Server:
 ```
@@ -61,7 +72,7 @@ https://<documentserver>/
 ```
 Where the documentserver is the name of the server with the ONLYOFFICE Document Server installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Document Server for correct work.
 
-## Compiling SharePoint ONLYOFFICE integration plugin
+## Compiling SharePoint ONLYOFFICE integration app
 
 If you have SharePoint with version later than 2010, you will not need to change anything, you can compile the project. In case you have SharePoint 2010 and want to build the project for this version, you will need to open the ONLYOFFICE.csproj file and find the lines:
 
