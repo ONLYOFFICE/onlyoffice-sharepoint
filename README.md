@@ -180,5 +180,6 @@ The table below will help you make the right choice.
 | | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
 
 \* It's possible to add documents for comparison from your local drive and from URL. Adding files for comparison from storage is not available yet.
+
 \** Changing style and deleting (Full support coming soon)
 
