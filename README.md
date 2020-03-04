@@ -60,7 +60,7 @@ https://<documentserver>/
 ```
 Where the documentserver is the name of the server with the ONLYOFFICE Document Server installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Document Server for correct work.
 
-## Compiling SharePoint ONLYOFFICE integration app
+## Compiling SharePoint ONLYOFFICE integration solution
 
 If you have SharePoint with version later than 2010, you will not need to change anything, you can compile the project. In case you have SharePoint 2010 and want to build the project for this version, you will need to open the ONLYOFFICE.csproj file and find the lines:
 
