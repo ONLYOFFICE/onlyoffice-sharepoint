@@ -1,15 +1,4 @@
-# SharePoint ONLYOFFICE integration app
-
-* [Overview](#overview)
-* [Features](#features)
-* [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
-* [Installing SharePoint ONLYOFFICE integration app](#installing-sharepoint-onlyoffice-integration-app)
-* [Configuring SharePoint ONLYOFFICE integration app](#configuring-sharepoint-onlyoffice-integration-app)
-* [Compiling SharePoint ONLYOFFICE integration app](#compiling-sharepoint-onlyoffice-integration-app)
-* [How it works](#how-it-works)
-* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
-
-## Overview
+# SharePoint ONLYOFFICE integration solution
 
 This app enables users to edit office documents from SharePoint using ONLYOFFICE Document Server - [Community or Integration Edition](#onlyoffice-document-server-editions).
 
@@ -38,7 +27,7 @@ To install Integration Edition, follow instructions [here](https://helpcenter.on
 
 Community Edition vs Integration Edition comparison can be found [here](#onlyoffice-document-server-editions).
 
-## Installing SharePoint ONLYOFFICE integration app
+## Installing SharePoint ONLYOFFICE integration solution
 
 1. Click Start, point to All Programs, point to Administrative Tools, and then click Services, and make sure that SharePoint Administration service is started.
 2. Click Start, click SharePoint Management Shell, go to the directory with the .wsp file.
@@ -63,8 +52,7 @@ Add-SPSolution -LiteralPath <SolutionPath>/onlyoffice.wsp
 13. Going back to Web Application Management click on the Anonymous Policy icon.
 14. Under Anonymous Access Restrictions select your Zone and set the Permissions to None – No policy and click Save.
 
-
-## Configuring SharePoint ONLYOFFICE integration app
+## Configuring SharePoint ONLYOFFICE integration solution
 
 In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings. Enter the following address to connect ONLYOFFICE Document Server:
 ```
@@ -157,6 +145,7 @@ The table below will help you make the right choice.
 | Tabbed interface                       | + | + |
 | White Label                            | - | - |
 | Integrated test example (node.js)     | - | + |
+| Mobile web editors                    | - | + |
 | **Plugins & Macros** | **Community Edition** | **Integration Edition** |
 | Plugins                           | + | + |
 | Macros                            | + | + |
@@ -170,11 +159,13 @@ The table below will help you make the right choice.
 | **Document Editor features** | **Community Edition** | **Integration Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
-| Content control                 | + | + |
+| Adding Content control          | - | + | 
+| Editing Content control         | + | + | 
 | Layout tools                    | + | + |
 | Table of contents               | + | + |
 | Navigation panel                | + | + |
 | Mail Merge                      | + | + |
+| Comparing Documents             | - | + |
 | **Spreadsheet Editor features** | **Community Edition** | **Integration Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
