@@ -145,7 +145,6 @@ The table below will help you make the right choice.
 | Tabbed interface                       | + | + |
 | White Label                            | - | - |
 | Integrated test example (node.js)     | - | + |
-| Mobile web editors                    | - | + |
 | **Plugins & Macros** | **Community Edition** | **Integration Edition** |
 | Plugins                           | + | + |
 | Macros                            | + | + |
@@ -165,13 +164,13 @@ The table below will help you make the right choice.
 | Table of contents               | + | + |
 | Navigation panel                | + | + |
 | Mail Merge                      | + | + |
-| Comparing Documents             | - | + |
+| Comparing Documents             | - | +* |
 | **Spreadsheet Editor features** | **Community Edition** | **Integration Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
 | Functions, formulas, equations  | + | + |
 | Table templates                 | + | + |
-| Pivot tables                    | +* | +* |
+| Pivot tables                    | +** | +** |
 | **Presentation Editor features** | **Community Edition** | **Integration Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
@@ -180,5 +179,6 @@ The table below will help you make the right choice.
 | Notes                           | + | + |
 | | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
 
-*Changing style and deleting (Full support coming soon)
+\* It's possible to add documents for comparison from your local drive and from URL. Adding files for comparison from storage is not available yet.
+\** Changing style and deleting (Full support coming soon)
 
