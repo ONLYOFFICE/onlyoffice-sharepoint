@@ -132,7 +132,7 @@ b. With the help of the build.bat file provided:
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
 * Community Edition (`onlyoffice-documentserver` package)
-* Enterprise Edition (`onlyoffice-documentserver-ie` package)
+* Enterprise Edition (`onlyoffice-documentserver-ee` package)
 
 The table below will help you make the right choice.
 
