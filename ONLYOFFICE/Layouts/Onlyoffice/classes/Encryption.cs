@@ -57,7 +57,7 @@ namespace Onlyoffice
                     payload = string.Empty,
                     currentHash = string.Empty;
 
-            data = HttpUtility.UrlDecode(data);
+            data = HttpUtility.UrlDecode(data).Replace(" ", "+");
             var plainTextBytes = Convert.FromBase64String(data);
             data = Encoding.UTF8.GetString(plainTextBytes);
 
