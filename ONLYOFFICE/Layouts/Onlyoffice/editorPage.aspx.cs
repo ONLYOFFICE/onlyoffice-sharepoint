@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2020
  *
  * The MIT License (MIT)
  *
@@ -82,6 +82,19 @@ namespace Onlyoffice.Layouts
             SPUserToken userToken;
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
+                using (SPSite site = new SPSite(host))
+                {
+                    using (SPWeb web = site.OpenWeb())
+                    {
+                        //read settings
+//==================================================================================
+                        if (web.Properties["DocumentServerHost"] != null)
+                        {
+                            DocumentSeverHost = web.Properties["DocumentServerHost"];
+                        }
+                        DocumentSeverHost += DocumentSeverHost.EndsWith("/") ? "" : "/";
+                    }
+                }
                 using (SPSite site = new SPSite(SPUrl))
                 {
                     using (SPWeb web = site.OpenWeb())
@@ -105,14 +118,7 @@ namespace Onlyoffice.Layouts
                         }
                         Secret = web.Properties["SharePointSecret"];
 
-                        //read settings
-//==================================================================================
-                        if (web.Properties["DocumentServerHost"] != null)
-                        {
-                            DocumentSeverHost = web.Properties["DocumentServerHost"];
-                        }
-                        DocumentSeverHost += DocumentSeverHost.EndsWith("/") ? "" : "/";
-
+                        
                         // get current user ID and Name
 //==================================================================================
                         userToken = web.AllUsers[0].UserToken;

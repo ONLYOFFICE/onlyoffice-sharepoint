@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2020
  *
  * The MIT License (MIT)
  *
@@ -43,7 +43,6 @@ namespace Onlyoffice
         public void ProcessRequest(HttpContext context)
         {
             string data = context.Request["data"];
-            data = data.Replace(" ", "+");
 
             bool isValidData = false;
             string  action = "",

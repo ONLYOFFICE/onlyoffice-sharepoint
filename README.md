@@ -1,6 +1,15 @@
+* [SharePoint ONLYOFFICE integration solution](#sharepoint-onlyoffice-integration-solution)
+* [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
+* [Deploying SharePoint-ONLYOFFICE integration solution](#deploying-sharepoint-onlyoffice-integration-solution)
+	+ [Compiling ONLYOFFICE-SharePoint integration solution](#compiling-onlyoffice-sharepoint-integration-solution)
+	+ [Installing ONLYOFFICE SharePoint integration solution](#installing-onlyoffice-sharepoint-integration-solution)
+* [Configuring SharePoint ONLYOFFICE integration solution](#configuring-sharepoint-onlyoffice-integration-solution)
+* [How it works](#how-it-works)
+* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
+
 # SharePoint ONLYOFFICE integration solution
 
-This app enables users to edit office documents from SharePoint using ONLYOFFICE Document Server - [Community or Integration Edition](#onlyoffice-document-server-editions).
+This app enables users to edit office documents from SharePoint using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
 ## Features
 
@@ -15,42 +24,42 @@ Supported formats:
 * For viewing and editing: DOCX, XLSX, PPTX.
 * For viewing only: PDF, DJVU, TXT, CSV, ODT, ODS, ODP, DOC, XLS, PPT, PPS, EPUB, RTF, HTML, HTM, MHT, XPS.
 
-## Installing ONLYOFFICE Document Server
+## Installing ONLYOFFICE Docs
 
-You will need an instance of ONLYOFFICE Document Server that is resolvable and connectable both from SharePoint and any end clients. ONLYOFFICE Document Server must also be able to POST to SharePoint directly.
+You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvable and connectable both from SharePoint and any end clients. ONLYOFFICE Document Server must also be able to POST to SharePoint directly.
 
-You can install free Community version of ONLYOFFICE Document Server or scalable enterprise-level Integration Edition.
+You can install free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
 
 To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/server/linux/document/linux-installation.aspx) for Debian, Ubuntu, or derivatives.  
 
-To install Integration Edition, follow instructions [here](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx).
+To install Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx).
 
-Community Edition vs Integration Edition comparison can be found [here](#onlyoffice-document-server-editions).
+Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
 ## Installing SharePoint ONLYOFFICE integration solution
 
 1. Click Start, point to All Programs, point to Administrative Tools, and then click Services, and make sure that SharePoint Administration service is started.
 2. Click Start, click SharePoint Management Shell, go to the directory with the .wsp file.
 3. Run the Install.ps1 script:
-```
-PS> .\Install.ps1
-```
+    ```
+    PS> .\Install.ps1
+    ```
 4. Enter your SharePoint site:
-```
-https://<yoursharepointsite>
-```
-> Alternatively to steps 3 and 4 you can type the following command:
-```
-Add-SPSolution -LiteralPath <SolutionPath>/onlyoffice.wsp
-```
-> On the SharePoint Central Administration Home page, click System Settings > Farm Management > Manage farm solutions.
-> On the Solution Management page, click the "onlyoffice.wsp", then click "Deploy Solution".
-9. On the SharePoint Central Administration home page, under Application Management, click Manage web applications.
-10. Make sure you select your site and click the Authentication Providers icon.
-11. In the Authentication Providers pop-up window click Default zone.
-12. Under Edit Authentication, check Enable anonymous access and click Save.
-13. Going back to Web Application Management click on the Anonymous Policy icon.
-14. Under Anonymous Access Restrictions select your Zone and set the Permissions to None – No policy and click Save.
+    ```
+    https://<yoursharepointsite>
+    ```
+    > Alternatively to steps 3 and 4 you can type the following command:
+    ```
+    Add-SPSolution -LiteralPath <SolutionPath>/onlyoffice.wsp
+    ```
+    > On the SharePoint Central Administration Home page, click System Settings > Farm Management > Manage farm solutions.
+    > On the Solution Management page, click the "onlyoffice.wsp", then click "Deploy Solution".
+5. On the SharePoint Central Administration home page, under Application Management, click Manage web applications.
+6. Make sure you select your site and click the Authentication Providers icon.
+7. In the Authentication Providers pop-up window click Default zone.
+8. Under Edit Authentication, check Enable anonymous access and click Save.
+9. Going back to Web Application Management click on the Anonymous Policy icon.
+10. Under Anonymous Access Restrictions select your Zone and set the Permissions to None – No policy and click Save.
 
 ## Configuring SharePoint ONLYOFFICE integration solution
 
@@ -59,6 +68,8 @@ In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with adminis
 https://<documentserver>/
 ```
 Where the documentserver is the name of the server with the ONLYOFFICE Document Server installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Document Server for correct work.
+
+*Please note, that if you have subsites set up with SharePoint, you will need to additionally configure ONLYOFFICE Document Server connection with each of them, in order for it to work properly. Go to each subsite settings and enter the Document Server address to the proper field.*
 
 ## Compiling SharePoint ONLYOFFICE integration solution
 
@@ -85,16 +96,16 @@ And go to the steps below after that.
 There are two ways to compile ONLYOFFICE SharePoint integration solution:
 
 a. Using MS Visual Studio:
-1. Enter the SharePoint server and open this project in Visual Studio.
-2. In Solution Explorer, open the shortcut menu for the project and then choose Publish.
-3. In the Publish dialog box, choose the Publish to File System option button.
-4. Click the Publish button. When the publishing process is finished, the solution .wsp file will be created.
-5. Copy the resulting file to the folder with the Install.ps1 file (BuildAndInstall folder by default).
+  1. Enter the SharePoint server and open this project in Visual Studio.
+  2. In Solution Explorer, open the shortcut menu for the project and then choose Publish.
+  3. In the Publish dialog box, choose the Publish to File System option button.
+  4. Click the Publish button. When the publishing process is finished, the solution .wsp file will be created.
+  5. Copy the resulting file to the folder with the Install.ps1 file (BuildAndInstall folder by default).
 
 b. With the help of the build.bat file provided:
-1. Go to the BuildAndInstall folder.
-2. Run the build.bat file.
-3. The resulting solution .wsp file will be created and placed to the BuildAndInstall folder.
+  1. Go to the BuildAndInstall folder.
+  2. Run the build.bat file.
+  3. The resulting solution .wsp file will be created and placed to the BuildAndInstall folder.
 
 ## How it works
 
@@ -116,46 +127,44 @@ b. With the help of the build.bat file provided:
 * After 10 seconds of inactivity, ONLYOFFICE Document Server sends a POST to the callback URL letting SharePoint ONLYOFFICE solution know that the clients have finished editing the document and closed it.
 * SharePoint ONLYOFFICE solution downloads the new version of the document, replacing the old one.
 
-## ONLYOFFICE Document Server editions 
+## ONLYOFFICE Docs editions 
 
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
-**ONLYOFFICE Document Server:**
-
 * Community Edition (`onlyoffice-documentserver` package)
-* Integration Edition (`onlyoffice-documentserver-ie` package)
+* Enterprise Edition (`onlyoffice-documentserver-ee` package)
 
 The table below will help you make the right choice.
 
-| Pricing and licensing | Community Edition | Integration Edition |
+| Pricing and licensing | Community Edition | Enterprise Edition |
 | ------------- | ------------- | ------------- |
-| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
-| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/integration-edition-prices.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
+| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  | [Start Free Trial](https://www.onlyoffice.com/enterprise-edition-free.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
+| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/enterprise-edition.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
 | Simultaneous connections | up to 20 maximum  | As in chosen pricing plan |
 | Number of users | up to 20 recommended | As in chosen pricing plan |
 | License | GNU AGPL v.3 | Proprietary |
-| **Support** | **Community Edition** | **Integration Edition** | 
+| **Support** | **Community Edition** | **Enterprise Edition** | 
 | Documentation | [Help Center](https://helpcenter.onlyoffice.com/server/docker/opensource/index.aspx) | [Help Center](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx) |
 | Standard support | [GitHub](https://github.com/ONLYOFFICE/DocumentServer/issues) or paid | One year support included |
 | Premium support | [Buy Now](https://www.onlyoffice.com/support.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint) | [Buy Now](https://www.onlyoffice.com/support.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint) |
-| **Services** | **Community Edition** | **Integration Edition** | 
+| **Services** | **Community Edition** | **Enterprise Edition** | 
 | Conversion Service                | + | + | 
 | Document Builder Service          | + | + | 
-| **Interface** | **Community Edition** | **Integration Edition** |
+| **Interface** | **Community Edition** | **Enterprise Edition** |
 | Tabbed interface                       | + | + |
 | White Label                            | - | - |
 | Integrated test example (node.js)     | - | + |
-| **Plugins & Macros** | **Community Edition** | **Integration Edition** |
+| **Plugins & Macros** | **Community Edition** | **Enterprise Edition** |
 | Plugins                           | + | + |
 | Macros                            | + | + |
-| **Collaborative capabilities** | **Community Edition** | **Integration Edition** |
+| **Collaborative capabilities** | **Community Edition** | **Enterprise Edition** |
 | Two co-editing modes              | + | + |
 | Comments                          | + | + |
 | Built-in chat                     | + | + |
 | Review and tracking changes       | + | + |
 | Display modes of tracking changes | + | + |
 | Version history                   | + | + |
-| **Document Editor features** | **Community Edition** | **Integration Edition** |
+| **Document Editor features** | **Community Edition** | **Enterprise Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
 | Adding Content control          | - | + | 
@@ -164,21 +173,21 @@ The table below will help you make the right choice.
 | Table of contents               | + | + |
 | Navigation panel                | + | + |
 | Comparing Documents             | - | +* |
-| **Spreadsheet Editor features** | **Community Edition** | **Integration Edition** |
+| **Spreadsheet Editor features** | **Community Edition** | **Enterprise Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
 | Functions, formulas, equations  | + | + |
 | Table templates                 | + | + |
-| Pivot tables                    | +** | +** |
-| **Presentation Editor features** | **Community Edition** | **Integration Edition** |
+| Pivot tables                    | + | + |
+| Conditional formatting  for viewing | +** | +** |
+| **Presentation Editor features** | **Community Edition** | **Enterprise Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
 | Animations                      | + | + |
 | Presenter mode                  | + | + |
 | Notes                           | + | + |
-| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
+| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  | [Start Free Trial](https://www.onlyoffice.com/enterprise-edition-free.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
 
 \* It's possible to add documents for comparison from your local drive and from URL. Adding files for comparison from storage is not available yet.
 
-\** Changing style and deleting (Full support coming soon)
-
+\** Support for all conditions and gradient. Adding/Editing capabilities are coming soon
