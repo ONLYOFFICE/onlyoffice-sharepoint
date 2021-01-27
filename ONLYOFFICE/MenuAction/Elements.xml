@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <CustomAction Id="45f5cf2d-a328-4dad-ae7a-191243aace27.MenuAction"
-                RegistrationType="ContentType"
-                RegistrationId="0x01"
+                RegistrationType="List"
+                RegistrationId="101"
                 Location="EditControlBlock"
                 Sequence="106"
                 Title="$Resources:Resource,EditIn"
@@ -12,14 +12,7 @@
     Start the URL with the token ~remoteAppUrl if the page is in the
     associated web project, use ~appWebUrl if page is in the app project.
     -->
-    <UrlAction Url="javascript:
-               var url = '';
-               if(_spPageContextInfo.webServerRelativeUrl.substr(_spPageContextInfo.webServerRelativeUrl.length - 1) != '/')
-                   url = _spPageContextInfo.webServerRelativeUrl + '/';
-               else
-                   url = _spPageContextInfo.webServerRelativeUrl;
-               window.open(url + '_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}&amp;action=track');
-               " />
+    <UrlAction Url="~site/_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}&amp;action=track" />
     
   </CustomAction>                                                     
 </Elements>
