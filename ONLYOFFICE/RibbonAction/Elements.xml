@@ -27,17 +27,7 @@
       </CommandUIDefinitions>
       <CommandUIHandlers>
         <CommandUIHandler Command="Invoke_RibbonAction"
-                          CommandAction="javascript:
-                          var url = '', listUrl = '';
-                          if(_spPageContextInfo.webServerRelativeUrl.substr(_spPageContextInfo.webServerRelativeUrl.length - 1) != '/'){
-                             url = _spPageContextInfo.webServerRelativeUrl + '/'; //if subsite
-                             listUrl = _spPageContextInfo.webServerRelativeUrl + '/';
-                          } 
-                          else{
-                             url = _spPageContextInfo.webServerRelativeUrl;
-                          }
-                          window.open(url + '_layouts/Onlyoffice/editorPage.aspx?SPListItemId={SelectedItemId}&amp;SPListId={SelectedListId}&amp;SPSource={Source}&amp;SPListURLDir='+escape(listUrl)+'{ListUrlDir}&amp;action=download');
-                          "
+                          CommandAction="~site/_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}"
                           EnabledScript="javascript:
                               function enableONLYOFFICEButton() {
                                   var items = SP.ListOperation.Selection.getSelectedItems();
