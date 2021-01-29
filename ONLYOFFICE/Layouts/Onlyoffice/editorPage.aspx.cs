@@ -59,11 +59,12 @@ namespace Onlyoffice.Layouts
                          lang = "",
                          CurrentUserName = "",
                          CurrentUserLogin = "",
-                         SPListItemId, SPListURLDir, SPSource, SPListId, Folder, Secret,
+                         SPListItemId, SPListURLDir, SPSourceAction, Folder, Secret,
                          DocumentSeverHost = "@http://localhost",
                          host = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
+                         SubSite = HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "": "15/";
 
         protected int CurrentUserId = 0;
@@ -76,8 +77,12 @@ namespace Onlyoffice.Layouts
         {
             SPListItemId = Request["SPListItemId"];
             SPListURLDir = Request["SPListURLDir"];
-            SPListId = Request["SPListId"];
-            SPSource = Request["SPSource"];
+            SPSourceAction = Request["SPSourceAction"];
+
+            if (SPSourceAction == "Ribbon")
+            {
+                SPListURLDir = SubSite + SPListURLDir;
+            }
 
             SPUserToken userToken;
             SPSecurity.RunWithElevatedPrivileges(delegate ()

@@ -27,7 +27,7 @@
       </CommandUIDefinitions>
       <CommandUIHandlers>
         <CommandUIHandler Command="Invoke_RibbonAction"
-                          CommandAction="~site/_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}"
+                          CommandAction="~site/_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}&amp;SPSourceAction=Ribbon"
                           EnabledScript="javascript:
                               function enableONLYOFFICEButton() {
                                   var items = SP.ListOperation.Selection.getSelectedItems();
