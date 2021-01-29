@@ -87,7 +87,7 @@ namespace Onlyoffice.Layouts
             SPUserToken userToken;
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
-                using (SPSite site = new SPSite(host))
+                using (SPSite site = new SPSite(SPUrl))
                 {
                     using (SPWeb web = site.OpenWeb())
                     {
@@ -98,12 +98,7 @@ namespace Onlyoffice.Layouts
                             DocumentSeverHost = web.Properties["DocumentServerHost"];
                         }
                         DocumentSeverHost += DocumentSeverHost.EndsWith("/") ? "" : "/";
-                    }
-                }
-                using (SPSite site = new SPSite(SPUrl))
-                {
-                    using (SPWeb web = site.OpenWeb())
-                    {
+
                         //check secret key
 //==================================================================================
                         if (web.Properties["SharePointSecret"] == null)
