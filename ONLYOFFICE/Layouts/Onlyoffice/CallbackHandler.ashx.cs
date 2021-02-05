@@ -43,7 +43,6 @@ namespace Onlyoffice
         public void ProcessRequest(HttpContext context)
         {
             string data = context.Request["data"];
-            data = data.Replace(" ", "+");
 
             bool isValidData = false;
             string  action = "",
