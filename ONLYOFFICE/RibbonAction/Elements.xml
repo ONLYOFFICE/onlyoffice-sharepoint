@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <CustomAction Id="2e2cc692-7235-4f2a-8094-a0b41bc33b4b.RibbonAction"
-                RegistrationType="List"
-                RegistrationId="101"
+                RegistrationType="ContentType"
+                RegistrationId="0x01"
                 Location="CommandUI.Ribbon"
                 Sequence="10001"
                 >
@@ -27,17 +27,7 @@
       </CommandUIDefinitions>
       <CommandUIHandlers>
         <CommandUIHandler Command="Invoke_RibbonAction"
-                          CommandAction="javascript:
-                          var url = '', listUrl = '';
-                          if(_spPageContextInfo.webServerRelativeUrl.substr(_spPageContextInfo.webServerRelativeUrl.length - 1) != '/'){
-                             url = _spPageContextInfo.webServerRelativeUrl + '/'; //if subsite
-                             listUrl = _spPageContextInfo.webServerRelativeUrl + '/';
-                          } 
-                          else{
-                             url = _spPageContextInfo.webServerRelativeUrl;
-                          }
-                          window.open(url + '_layouts/Onlyoffice/editorPage.aspx?SPListItemId={SelectedItemId}&amp;SPListId={SelectedListId}&amp;SPSource={Source}&amp;SPListURLDir='+escape(listUrl)+'{ListUrlDir}&amp;action=download');
-                          "
+                          CommandAction="~site/_layouts/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&amp;SPListURLDir={ListUrlDir}&amp;SPSourceAction=Ribbon"
                           EnabledScript="javascript:
                               function enableONLYOFFICEButton() {
                                   var items = SP.ListOperation.Selection.getSelectedItems();

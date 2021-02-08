@@ -59,11 +59,12 @@ namespace Onlyoffice.Layouts
                          lang = "",
                          CurrentUserName = "",
                          CurrentUserLogin = "",
-                         SPListItemId, SPListURLDir, SPSource, SPListId, Folder, Secret,
+                         SPListItemId, SPListURLDir, SPSourceAction, Folder, Secret,
                          DocumentSeverHost = "@http://localhost",
                          host = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
+                         SubSite = HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "": "15/";
 
         protected int CurrentUserId = 0;
@@ -76,13 +77,17 @@ namespace Onlyoffice.Layouts
         {
             SPListItemId = Request["SPListItemId"];
             SPListURLDir = Request["SPListURLDir"];
-            SPListId = Request["SPListId"];
-            SPSource = Request["SPSource"];
+            SPSourceAction = Request["SPSourceAction"];
+
+            if (SPSourceAction == "Ribbon")
+            {
+                SPListURLDir = SubSite + SPListURLDir;
+            }
 
             SPUserToken userToken;
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
-                using (SPSite site = new SPSite(host))
+                using (SPSite site = new SPSite(SPUrl))
                 {
                     using (SPWeb web = site.OpenWeb())
                     {
@@ -93,12 +98,7 @@ namespace Onlyoffice.Layouts
                             DocumentSeverHost = web.Properties["DocumentServerHost"];
                         }
                         DocumentSeverHost += DocumentSeverHost.EndsWith("/") ? "" : "/";
-                    }
-                }
-                using (SPSite site = new SPSite(SPUrl))
-                {
-                    using (SPWeb web = site.OpenWeb())
-                    {
+
                         //check secret key
 //==================================================================================
                         if (web.Properties["SharePointSecret"] == null)
@@ -157,9 +157,16 @@ namespace Onlyoffice.Layouts
 //==================================================================================               
                         try
                         {
-                            SPWeb w = s.OpenWeb();
+
                             //SPRoleAssignmentCollection ss = w.RoleAssignments;
-                            SPList list = w.GetList(SPListURLDir);
+
+                            //hack for SP2019. try to access by user, else access by admin
+                            var type = web.GetList(SPListURLDir).Title.ToString();
+                            var logList = s.RootWeb.Lists.TryGetList(type);
+
+                            SPList list = logList != null ? logList : web.GetList(SPListURLDir);
+                            SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
 
                             SPFile file = item.File;
@@ -264,10 +271,20 @@ namespace Onlyoffice.Layouts
                             SPRoleAssignment userRoles = docLibrary.RoleAssignments.GetAssignmentByPrincipal(currentUser);
                             canEdit = CheckRolesForEditing(userRoles);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            Log.LogError(ex.Message);
                             SPGroupCollection groupColl = web.Groups;
+                            if (groupColl.Count == 0)
+                            {
+                                try
+                                {
+                                    SPRoleAssignment currentUserRole = web.RoleAssignments.GetAssignmentByPrincipal(currentUser);
+                                    canEdit = CheckRolesForEditing(currentUserRole);
+                                }
+                                catch (Exception e) { Log.LogError(e.Message); }
 
+                            }
                             foreach (SPGroup group in groupColl)
                             {
                                 try
@@ -276,7 +293,7 @@ namespace Onlyoffice.Layouts
                                     canEdit = CheckRolesForEditing(groupsRoles);
                                     if (canEdit) break;
                                 }
-                                catch (Exception) { }
+                                catch (Exception exception) { Log.LogError(exception.Message); }
                             }
                         }
                     }

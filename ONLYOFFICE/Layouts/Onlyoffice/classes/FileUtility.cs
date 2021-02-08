@@ -42,15 +42,15 @@ namespace Onlyoffice
         public static readonly List<string> CanViewTypes = new List<string>
             {
                 "docx", "xlsx", "pptx", "ppsx",
-                "txt", "csv", "odt", "ods","odp",
-                "doc", "xls", "ppt", "pps","epub",
-                "rtf", "mht", "html", "htm","xps","pdf","djvu"
+                "txt", "csv", "odt", "ods", "odp",
+                "doc", "xls", "ppt", "pps", "epub",
+                "rtf", "mht", "html", "htm", "xps", "pdf", "djvu"
             };
 
         public static readonly List<string> TextDoc = new List<string>
             {
                 "docx", "txt", "odt", "doc", "rtf", "html",
-                "htm", "xps", "pdf", "djvu"
+                "htm", "xps", "pdf", "djvu", "epub"
             };
 
         public static readonly List<string> PresentationDoc = new List<string>
@@ -61,11 +61,6 @@ namespace Onlyoffice
         public static readonly List<string> SpreadsheetDoc = new List<string>
             {
                 "xlsx", "csv", "ods", "xls"
-            };
-
-        public static readonly List<string> ConvDoc = new List<string>
-            {
-                "epub"
             };
 
         public static string GetDocType(string extension)
@@ -81,10 +76,6 @@ namespace Onlyoffice
             else if (SpreadsheetDoc.Contains(extension))
             {
                 return "spreadsheet";
-            }
-            else if (ConvDoc.Contains(extension))
-            {
-                return "conv";
             }
             else 
             {
