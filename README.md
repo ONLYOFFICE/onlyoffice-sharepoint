@@ -73,26 +73,6 @@ Where the documentserver is the name of the server with the ONLYOFFICE Document 
 
 ## Compiling SharePoint ONLYOFFICE integration solution
 
-If you have SharePoint with version later than 2010, you will not need to change anything, you can compile the project. In case you have SharePoint 2010 and want to build the project for this version, you will need to open the ONLYOFFICE.csproj file and find the lines:
-
-```
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <TargetOfficeVersion>15.0</TargetOfficeVersion>
-```
-
-Replace these lines with the following ones:
-
-```
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetOfficeVersion>14.0</TargetOfficeVersion>
-```
-
-And go to the steps below after that.
-
 There are two ways to compile ONLYOFFICE SharePoint integration solution:
 
 a. Using MS Visual Studio:
@@ -110,15 +90,15 @@ b. With the help of the build.bat file provided:
 ## How it works
 
 * User navigates to a document within SharePoint and selects the Edit in ONLYOFFICE action on context menu or ribbon.
-* SharePoint ONLYOFFICE solution makes a request to the editor page (URL of the form: `/_layouts/15/Onlyoffice/editorPage.aspx?SPListItemId={SelectedItemId}&SPListId={SelectedListId}&SPSource={Source}&SPListURLDir={ListUrlDir}`).
+* SharePoint ONLYOFFICE solution makes a request to the editor page (URL of the form: `/_layouts/15/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&SPListURLDir={ListUrlDir}&action=track`).
 * SharePoint ONLYOFFICE solution prepares a JSON object with the following properties:
   * **url** - the URL that ONLYOFFICE Document Server uses to download the document;
-  * **callback** - the URL that ONLYOFFICE Document Server informs about status of the document editing;
-  * **documentServerUrl** - the URL that the client needs to reply to ONLYOFFICE Document Server (can be set at the settings page);
-  * **key** - the file identificator from SharePoint;
-  * **fileName** - the document Title (name);
-  * **userId** - the identification of the user;
-  * **userName** - the name of the user.
+  * **callbackUrl** - the URL that ONLYOFFICE Document Server informs about status of the document editing;
+  * **DocumentSeverHost** - the URL that the client needs to reply to ONLYOFFICE Document Server (can be set at the settings page);
+  * **Key** - the file identificator from SharePoint;
+  * **FileName** - the document Title (name);
+  * **CurrentUserId** - the identification of the user;
+  * **CurrentUserName** - the name of the user.
 
 * SharePoint ONLYOFFICE solution constructs a page, filling in all of those values so that the client browser can load up the editor.
 * The client browser makes a request for the javascript library from ONLYOFFICE Document Server and sends ONLYOFFICE Document Server the DocEditor configuration with the above properties.

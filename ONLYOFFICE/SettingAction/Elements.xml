@@ -3,7 +3,7 @@
   <CustomAction Id="SiteActionsToolbar"
                 GroupId="SiteActions" 
                 Location="Microsoft.SharePoint.StandardMenu" 
-                Sequence="1000" 
+                Sequence="10001" 
                 Title="$Resources:Resource,Settings"
                 Rights="ManageWeb">
     <UrlAction Url="~site/_layouts/Onlyoffice/Settings.aspx"/>
