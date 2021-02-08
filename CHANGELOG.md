@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.0
+## Changed
+- compatible with SharePoint 2019
+- SharePoint 2016 and earlier are no longer supported
+
 ## 1.2
 ## Changed
 - support for special character in name
