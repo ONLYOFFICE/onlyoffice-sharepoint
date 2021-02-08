@@ -17,7 +17,9 @@
                     "info": {
                         "author":   "<%= FileAuthor %>",
                         "created":  "<%= FileTimeCreated %>",
-                        "folder":   "<%= Folder %>"
+                        "folder":   "<%= Folder %>",
+                        "owner":   "<%= FileAuthor %>",
+                        "uploaded":  "<%= FileTimeCreated %>"
                     },
                     "key":          "<%= Key %>",
                     "permissions": {
