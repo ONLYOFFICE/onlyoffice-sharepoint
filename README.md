@@ -6,8 +6,7 @@ This app enables users to edit office documents from SharePoint using ONLYOFFICE
 
 The app allows to:
 
-* Create and edit text documents, spreadsheets, and presentations.
-* Share documents with other users.
+* Edit text documents, spreadsheets, and presentations.
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
 
 Supported formats: 
