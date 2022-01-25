@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System SIA 2021
+ * (c) Copyright Ascensio System SIA 2022
  *
  * The MIT License (MIT)
  *
