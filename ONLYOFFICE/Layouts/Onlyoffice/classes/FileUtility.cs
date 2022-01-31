@@ -36,12 +36,12 @@ namespace Onlyoffice
     {        
         public static readonly List<string> CanEditTypes = new List<string>
             {
-                "docx", "xlsx", "pptx", "ppsx"
+                "docx", "docxf", "oform", "xlsx", "pptx", "ppsx"
             };
 
         public static readonly List<string> CanViewTypes = new List<string>
             {
-                "docx", "xlsx", "pptx", "ppsx",
+                "docx", "docxf", "oform", "xlsx", "pptx", "ppsx",
                 "txt", "csv", "odt", "ods", "odp",
                 "doc", "xls", "ppt", "pps", "epub",
                 "rtf", "mht", "html", "htm", "xps", "pdf", "djvu"
@@ -49,7 +49,7 @@ namespace Onlyoffice
 
         public static readonly List<string> TextDoc = new List<string>
             {
-                "docx", "txt", "odt", "doc", "rtf", "html",
+                "docx", "docxf", "oform", "txt", "odt", "doc", "rtf", "html",
                 "htm", "xps", "pdf", "djvu", "epub"
             };
 
