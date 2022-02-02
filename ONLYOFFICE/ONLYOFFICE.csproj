@@ -54,6 +54,9 @@
     <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Layouts\Onlyoffice\EditorHandler.ashx.cs">
+      <DependentUpon>EditorHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\Onlyoffice\classes\Encryption.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\FileUtility.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Log.cs" />
@@ -104,6 +107,7 @@
     </None>
     <None Include="key.snk" />
     <Content Include="Layouts\Onlyoffice\CallbackHandler.ashx" />
+    <Content Include="Layouts\Onlyoffice\EditorHandler.ashx" />
     <None Include="Layouts\Onlyoffice\default.master" />
     <None Include="Layouts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{06e4bd40-266b-4874-a996-1a82b14f2b08}</SharePointProjectItemId>
