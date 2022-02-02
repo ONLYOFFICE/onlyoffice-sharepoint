@@ -46,8 +46,36 @@
                 },
                 "height": "100%",
                 "type": "desktop",
-                "width": "100%"
+                "width": "100%",
+                "events": {
+                    "onRequestSaveAs": onRequestSaveAs
+                }
             });
+
+            function onRequestSaveAs (event) {
+
+                let data = {
+                    fileType: event.data.fileType,
+                    title: event.data.title,
+                    url: event.data.url,
+                    folder: "<%= Folder %>"
+                };
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=saveas", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        console.info(json.message);
+                    })
+                    .catch(e => {
+                        console.error("SaveAs Error: ", e);
+                    });
+            }
 
         </script>
    </asp:panel>
