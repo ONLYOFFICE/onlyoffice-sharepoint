@@ -38,12 +38,29 @@ namespace Onlyoffice
 {
     public class EditorHandler : IHttpHandler
     {
-        protected int secret; 
 
         public void ProcessRequest(HttpContext context)
         {
             string action = context.Request["action"];
+            string SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
+                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
 
+            context.Response.AddHeader("Content-Type", "application/json");
+
+            switch (action)
+            {
+                case "saveas":
+                    SaveAs(SPUrl, context);
+                    break;
+
+                default:
+                    context.Response.Write("{\"error\": \"Action is not supported\"}");
+                    break;
+            }
+        }
+
+        static void SaveAs(string SPUrl, HttpContext context)
+        {
             string bodyStr;
             using (StreamReader reader = new StreamReader(context.Request.InputStream))
                 bodyStr = reader.ReadToEnd();
@@ -55,9 +72,7 @@ namespace Onlyoffice
             string url = (string)body["url"];
             string folder = (string)body["folder"];
 
-            string SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
-                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
-            SPSecurity.RunWithElevatedPrivileges(delegate()
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
                 using (SPSite site = new SPSite(SPUrl))
                 using (SPWeb web = site.OpenWeb())
@@ -86,7 +101,6 @@ namespace Onlyoffice
                 }
             });
 
-            context.Response.AddHeader("Content-Type", "application/json");
             context.Response.Write("{\"message\": \"Saveas is completed\"}");
         }
         public bool IsReusable
