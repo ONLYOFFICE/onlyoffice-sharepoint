@@ -51,9 +51,9 @@ namespace Onlyoffice.Layouts
                          FileAuthor = "",
                          FileTimeCreated = "",
                          FileEditorMode = "view",
-                         urlDocDownload = "",
+                         urlHashDownload = "",
                          documentType = "",
-                         urlDocTrack = "",
+                         urlHashTrack = "",
                          GoToBack = "",
                          GoToBackText = "",
                          lang = "",
@@ -225,8 +225,8 @@ namespace Onlyoffice.Layouts
 
             //generate url hash 
 //==================================================================================  
-            urlDocDownload = Encryption.GetUrlHash(SPListItemId, Folder, SPListURLDir, "download", Secret);
-            urlDocTrack    = Encryption.GetUrlHash(SPListItemId, Folder, SPListURLDir, "track", Secret);
+            urlHashDownload = Encryption.GetUrlHash("download", Secret, SPListItemId, Folder, SPListURLDir);
+            urlHashTrack    = Encryption.GetUrlHash("track", Secret, SPListItemId, Folder, SPListURLDir);
         }
 
         /// <summary>

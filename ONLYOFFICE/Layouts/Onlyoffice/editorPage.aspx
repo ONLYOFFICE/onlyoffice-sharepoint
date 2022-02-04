@@ -26,7 +26,7 @@
                         "edit":      "<%= canEdit.ToString().ToLower() %>",
                     },
                     "title":        "<%= FileName %>",
-                    "url": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlDocDownload) %>"
+                    "url": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlHashDownload) %>"
                 },
                 "documentType": "<%= documentType %>",
                 "editorConfig": {
@@ -42,7 +42,7 @@
                             "url":  "<%= GoToBack %>"
                         },
                     },
-                    "callbackUrl": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlDocTrack)%>"
+                    "callbackUrl": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlHashTrack)%>"
                 },
                 "height": "100%",
                 "type": "desktop",

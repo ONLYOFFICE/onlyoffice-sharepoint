@@ -42,13 +42,11 @@ namespace Onlyoffice
 
         public void ProcessRequest(HttpContext context)
         {
+            Dictionary<string, object> validData = new Dictionary<string, object>();
             string data = context.Request["data"];
 
             bool isValidData = false;
             string  action = "",
-                    SPListItemId = "",
-                    SPListURLDir = "",
-                    Folder = "",
                     url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
             //get secret key
@@ -61,7 +59,7 @@ namespace Onlyoffice
                 }
             });
 
-            isValidData = Encryption.Decode(data, ref SPListItemId, ref Folder, ref SPListURLDir, ref action, secret);//check, are request data valid
+            isValidData = Encryption.Decode(data, secret, validData);//check, are request data valid
 
             if (!isValidData)
             {
@@ -70,19 +68,22 @@ namespace Onlyoffice
                 return;
             }
 
+            action = (string)validData["action"];
             if (action == "download")
             {
-                Download(url, SPListURLDir, SPListItemId, context);
+                Download(url, validData, context);
             }
             else if (action == "track")
             {
-                Track(url, SPListURLDir, SPListItemId, Folder, context);
+                Track(url, validData, context);
             }
         }
 
-        static void Download(string url, string SPListURLDir, string SPListItemId, HttpContext context)
+        static void Download(string url, Dictionary<string, object> data, HttpContext context)
         {
             SPUserToken userToken = null;
+            string SPListURLDir = (string)data["SPListURLDir"];
+            string SPListItemId = (string)data["SPListItemId"];
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
@@ -125,9 +126,12 @@ namespace Onlyoffice
             });
         }
 
-        static void Track(string url, string SPListURLDir, string SPListItemId, string Folder, HttpContext context)
+        static void Track(string url, Dictionary<string, object> data, HttpContext context)
         {
             SPUserToken userToken = null;
+            string SPListURLDir = (string)data["SPListURLDir"];
+            string SPListItemId = (string)data["SPListItemId"];
+            string Folder = (string)data["Folder"];
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {

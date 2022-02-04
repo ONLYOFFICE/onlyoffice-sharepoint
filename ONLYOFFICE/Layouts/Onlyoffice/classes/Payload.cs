@@ -28,19 +28,25 @@ namespace Onlyoffice
 {
     public class Payload
     {
-        public Payload() { }
+        public Payload() 
+        {
+            this.SPListItemId = string.Empty;
+            this.Folder = string.Empty;
+            this.SPListURLDir = string.Empty;
+            this.action = string.Empty;
+        }
 
-        public Payload(string SPListItemId, string Folder, string SPListURLDir, string action)
+        public Payload(string action, string SPListItemId, string Folder, string SPListURLDir)
         {
             this.SPListItemId = SPListItemId;
             this.Folder = Folder;
-            this.SPListDir = SPListURLDir;
+            this.SPListURLDir = SPListURLDir;
             this.action = action;
-        }
+         }
 
         public string SPListItemId { get; set; }
         public string Folder { get; set; }
-        public string SPListDir { get; set; }
+        public string SPListURLDir { get; set; }
         public string action { get; set; }
     }
 }
