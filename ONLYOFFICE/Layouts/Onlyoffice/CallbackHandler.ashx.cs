@@ -93,13 +93,9 @@ namespace Onlyoffice
                     {
                         userToken = web.AllUsers[0].UserToken;
                         SPSite s = new SPSite(url, userToken);
-                        //hack for SP2019. try to access by user, else access by admin
-                        var type = web.GetList(SPListURLDir).Title.ToString();
-                        var logList = s.RootWeb.Lists.TryGetList(type);
 
-                        SPList list = logList != null ? logList : web.GetList(SPListURLDir);
-                        SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
-
+                        SPWeb w = s.OpenWeb();
+                        var list = w.GetList(SPListURLDir);
 
                         SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                         //get and send file
@@ -149,12 +145,12 @@ namespace Onlyoffice
                             var userList = (System.Collections.ArrayList)fileData["users"];
                             var userID = Int32.Parse(userList[0].ToString());
 
-                            var users = web.AllUsers;
-                            for (int i = 0; i < users.Count; i++)
+                            var allUsers = web.AllUsers;
+                            for (int i = 0; i < allUsers.Count; i++)
                             {
-                                if (users[i].ID == userID)
+                                if (allUsers[i].ID == userID)
                                 {
-                                    userToken = users[i].UserToken;
+                                    userToken = allUsers[i].UserToken;
                                     break;
                                 }
                             }
@@ -170,12 +166,8 @@ namespace Onlyoffice
                         }
 
                         SPSite s = new SPSite(url, userToken);
-                        //hack for SP2019. try to access by user, else access by admin
-                        var type = web.GetList(SPListURLDir).Title.ToString();
-                        var logList = s.OpenWeb().Lists.TryGetList(type);
-
-                        SPList list = logList ?? web.GetList(SPListURLDir);
-                        SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+                        SPWeb w = s.OpenWeb();
+                        var list = w.GetList(SPListURLDir);
 
                         try
                         {

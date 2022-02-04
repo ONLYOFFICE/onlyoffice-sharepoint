@@ -121,20 +121,17 @@ namespace Onlyoffice.Layouts
                         
                         // get current user ID and Name
 //==================================================================================
-                        userToken = web.AllUsers[0].UserToken;
-                        SPSite s = new SPSite(SPUrl, userToken);
-                        
-                        var currentUserName = User.Identity.Name.Substring(User.Identity.Name.LastIndexOf("\\") + 1); 
-                        var users = web.AllUsers;
+                        string CurrentUserLogin = User.Identity.Name;
 
-                        for (var i=0; i< users.Count; i++)
+                        var allUsers = web.AllUsers;
+                        for (var i=0; i< allUsers.Count; i++)
                         {
-                            var userNameOfList = users[i].LoginName.Substring(users[i].LoginName.LastIndexOf("\\") + 1);
-                            if (userNameOfList == currentUserName)
+                            var userNameOfList = allUsers[i].LoginName;
+                            if (string.Compare(userNameOfList, CurrentUserLogin, StringComparison.CurrentCultureIgnoreCase) == 0)
                             {
-                                currentUser = users[i];
-                                CurrentUserId = users[i].ID;
-                                CurrentUserName = users[i].Name;
+                                currentUser = allUsers[i];
+                                CurrentUserId = allUsers[i].ID;
+                                CurrentUserName = allUsers[i].Name;
                                 break;
                             }
                         }
@@ -157,15 +154,11 @@ namespace Onlyoffice.Layouts
 //==================================================================================               
                         try
                         {
+                            userToken = web.GetUserToken(CurrentUserLogin);
+                            SPSite s = new SPSite(SPUrl, userToken);
 
-                            //SPRoleAssignmentCollection ss = w.RoleAssignments;
-
-                            //hack for SP2019. try to access by user, else access by admin
-                            var type = web.GetList(SPListURLDir).Title.ToString();
-                            var logList = s.RootWeb.Lists.TryGetList(type);
-
-                            SPList list = logList != null ? logList : web.GetList(SPListURLDir);
-                            SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+                            SPWeb w = s.OpenWeb();
+                            var list = w.GetList(SPListURLDir);
 
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
 
