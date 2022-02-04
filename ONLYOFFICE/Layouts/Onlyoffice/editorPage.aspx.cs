@@ -225,7 +225,7 @@ namespace Onlyoffice.Layouts
 
             //generate url hash 
 //==================================================================================  
-            urlHashDownload = Encryption.GetUrlHash("download", Secret, SPListItemId, Folder, SPListURLDir);
+            urlHashDownload = Encryption.GetUrlHash("download", Secret, SPListItemId, Folder, SPListURLDir, CurrentUserId);
             urlHashTrack    = Encryption.GetUrlHash("track", Secret, SPListItemId, Folder, SPListURLDir);
         }
 

@@ -84,6 +84,7 @@ namespace Onlyoffice
             SPUserToken userToken = null;
             string SPListURLDir = (string)data["SPListURLDir"];
             string SPListItemId = (string)data["SPListItemId"];
+            int userId = (int)data["userId"];
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
@@ -92,10 +93,12 @@ namespace Onlyoffice
                 {
                     try
                     {
-                        userToken = web.AllUsers[0].UserToken;
-                        SPSite s = new SPSite(url, userToken);
+                        SPUser user = web.AllUsers.GetByID(userId);
+                        userToken = user.UserToken;
 
+                        SPSite s = new SPSite(url, userToken);
                         SPWeb w = s.OpenWeb();
+
                         var list = w.GetList(SPListURLDir);
 
                         SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
@@ -149,19 +152,8 @@ namespace Onlyoffice
                             var userList = (System.Collections.ArrayList)fileData["users"];
                             var userID = Int32.Parse(userList[0].ToString());
 
-                            var allUsers = web.AllUsers;
-                            for (int i = 0; i < allUsers.Count; i++)
-                            {
-                                if (allUsers[i].ID == userID)
-                                {
-                                    userToken = allUsers[i].UserToken;
-                                    break;
-                                }
-                            }
-                            if (userToken == null)
-                            {
-                                userToken = web.AllUsers[0].UserToken;
-                            }
+                            SPUser user = web.AllUsers.GetByID(userID);
+                            userToken = user.UserToken;
                         }
                         catch (Exception ex) {
 

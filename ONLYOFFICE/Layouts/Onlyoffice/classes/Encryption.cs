@@ -37,13 +37,14 @@ namespace Onlyoffice
 {
     class Encryption
     {
-        public static string GetUrlHash(string action, string Secret, string SPListItemId, string Folder, string SPListURLDir)
+        public static string GetUrlHash(string action, string Secret, string SPListItemId, string Folder, string SPListURLDir, int userId = 0)
         {
             Payload payload = new Payload();
             payload.action = action;
             payload.SPListItemId = SPListItemId;
             payload.Folder = Folder;
             payload.SPListURLDir = SPListURLDir;
+            payload.userId = userId;
 
             var serializer = new JavaScriptSerializer();
             var str = serializer.Serialize(payload);
@@ -80,6 +81,7 @@ namespace Onlyoffice
                 validData["Folder"] = info.Folder;
                 validData["SPListURLDir"] = info.SPListURLDir;
                 validData["action"] = info.action;
+                validData["userId"] = info.userId;
             }
             catch (Exception ex) 
             {

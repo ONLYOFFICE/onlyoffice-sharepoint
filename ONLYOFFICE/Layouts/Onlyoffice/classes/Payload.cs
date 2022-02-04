@@ -34,19 +34,22 @@ namespace Onlyoffice
             this.Folder = string.Empty;
             this.SPListURLDir = string.Empty;
             this.action = string.Empty;
+            this.userId = 0;
         }
 
-        public Payload(string action, string SPListItemId, string Folder, string SPListURLDir)
+        public Payload(string action, string SPListItemId, string Folder, string SPListURLDir, int userId = 0)
         {
             this.SPListItemId = SPListItemId;
             this.Folder = Folder;
             this.SPListURLDir = SPListURLDir;
             this.action = action;
+            this.userId = userId;
          }
 
         public string SPListItemId { get; set; }
         public string Folder { get; set; }
         public string SPListURLDir { get; set; }
         public string action { get; set; }
+        public int userId { get; set; }
     }
 }
