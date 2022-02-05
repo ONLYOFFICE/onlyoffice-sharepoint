@@ -145,11 +145,6 @@ namespace Onlyoffice.Layouts
 
                         GoToBackText = LoadResource("GoToBack");                       
 
-
-                        //get user/group roles
-//==================================================================================
-                        canEdit = CheckForEditing(SPUrl, SPListURLDir, currentUser);
-
                         //generate key and get file info for DocEditor 
 //==================================================================================               
                         try
@@ -165,6 +160,8 @@ namespace Onlyoffice.Layouts
                             SPFile file = item.File;
 
                             //SPBasePermissions bp =SPContext.Current.Web.GetUserEffectivePermissions(SPContext.Current.Web.CurrentUser.LoginName);
+
+                            canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
                             if (file != null)
                             {
@@ -247,67 +244,6 @@ namespace Onlyoffice.Layouts
         {
             return Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource," + _resName,
                 "core", (uint)SPContext.Current.Web.UICulture.LCID);           
-        }
-
-        public static bool CheckForEditing(string SPUrl, string SPListURLDir, SPUser currentUser)
-        {
-            var canEdit = false;
-            SPSecurity.RunWithElevatedPrivileges(delegate()
-            {
-                using (SPSite site = new SPSite(SPUrl))
-                {
-                    using (SPWeb web = site.OpenWeb())
-                    {
-                        SPList docLibrary = web.GetList(SPListURLDir);
-                        try
-                        {
-                            SPRoleAssignment userRoles = docLibrary.RoleAssignments.GetAssignmentByPrincipal(currentUser);
-                            canEdit = CheckRolesForEditing(userRoles);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.LogError(ex.Message);
-                            SPGroupCollection groupColl = web.Groups;
-                            if (groupColl.Count == 0)
-                            {
-                                try
-                                {
-                                    SPRoleAssignment currentUserRole = web.RoleAssignments.GetAssignmentByPrincipal(currentUser);
-                                    canEdit = CheckRolesForEditing(currentUserRole);
-                                }
-                                catch (Exception e) { Log.LogError(e.Message); }
-
-                            }
-                            foreach (SPGroup group in groupColl)
-                            {
-                                try
-                                {
-                                    SPRoleAssignment groupsRoles = docLibrary.RoleAssignments.GetAssignmentByPrincipal(group);
-                                    canEdit = CheckRolesForEditing(groupsRoles);
-                                    if (canEdit) break;
-                                }
-                                catch (Exception exception) { Log.LogError(exception.Message); }
-                            }
-                        }
-                    }
-                }
-            });
-            return canEdit;
-        }
-
-        public static bool CheckRolesForEditing(SPRoleAssignment Roles)
-        {
-            foreach (SPRoleDefinition role in Roles.RoleDefinitionBindings)
-            {
-                if (role.Type.ToString() == "Editor" // in SP10 SPRoleType.Editor does not exist
-                    || role.Type == SPRoleType.Administrator
-                    || role.Type == SPRoleType.Contributor
-                    || role.Type == SPRoleType.WebDesigner)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
