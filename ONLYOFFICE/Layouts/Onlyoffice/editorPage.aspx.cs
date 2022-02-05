@@ -121,20 +121,16 @@ namespace Onlyoffice.Layouts
                         
                         // get current user ID and Name
 //==================================================================================
-                        string CurrentUserLogin = User.Identity.Name;
-
-                        var allUsers = web.AllUsers;
-                        for (var i=0; i< allUsers.Count; i++)
+                        try
                         {
-                            var userNameOfList = allUsers[i].LoginName;
-                            if (string.Compare(userNameOfList, CurrentUserLogin, StringComparison.CurrentCultureIgnoreCase) == 0)
-                            {
-                                currentUser = allUsers[i];
-                                CurrentUserId = allUsers[i].ID;
-                                CurrentUserName = allUsers[i].Name;
-                                break;
-                            }
+                            CurrentUserLogin = User.Identity.Name;
+
+                            currentUser = web.AllUsers.GetByLoginNoThrow(CurrentUserLogin);
+                            CurrentUserId = currentUser.ID;
+                            CurrentUserName = currentUser.Name;
+
                         }
+                        catch (Exception ex) { Log.LogError(ex.Message); }
 
                         //get language
 //==================================================================================
