@@ -100,8 +100,8 @@ namespace Onlyoffice
                         SPWeb w = s.OpenWeb();
 
                         var list = w.GetList(SPListURLDir);
-
                         SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
+
                         //get and send file
                         SPFile file = item.File;
                         var ContentType = MimeMapping.GetMimeMapping(file.Name);

@@ -134,7 +134,6 @@ namespace Onlyoffice.Layouts
 
                         //get language
 //==================================================================================
-
                         var lcid = (int)web.Language;
                         var defaultCulture = new CultureInfo(lcid);
                         lang = defaultCulture.IetfLanguageTag;
@@ -152,10 +151,7 @@ namespace Onlyoffice.Layouts
                             var list = w.GetList(SPListURLDir);
 
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
-
                             SPFile file = item.File;
-
-                            //SPBasePermissions bp =SPContext.Current.Web.GetUserEffectivePermissions(SPContext.Current.Web.CurrentUser.LoginName);
 
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
@@ -185,15 +181,13 @@ namespace Onlyoffice.Layouts
                                     {
                                         var canEditType = FileUtility.CanEditTypes.Contains(FileType);
                                         canEdit = canEdit & canEditType;
-                                        FileEditorMode = canEdit == true ? "edit" : FileEditorMode;
-                                        //documentType = FileUtility.docTypes[FileType];   DocType.GetDocType(FileName)   
+                                        FileEditorMode = canEdit == true ? "edit" : FileEditorMode; 
                                         documentType = FileUtility.GetDocType(FileType);
                                     }
                                     else
                                     {
                                         Response.Redirect(SPUrl);
                                     }
-
                                 }
                                 catch (Exception ex)
                                 {
