@@ -61,6 +61,9 @@ namespace Onlyoffice
 
         static void SaveAs(string SPUrl, HttpContext context)
         {
+            bool canCreate = false;
+            bool success = false;
+
             string bodyStr;
             using (StreamReader reader = new StreamReader(context.Request.InputStream))
                 bodyStr = reader.ReadToEnd();
@@ -81,28 +84,56 @@ namespace Onlyoffice
                     var userToken = web.GetUserToken(userName);
 
                     SPSite s = new SPSite(SPUrl, userToken);
-
                     SPWeb w = s.OpenWeb();
 
-                    w.AllowUnsafeUpdates = true;
-                    w.Update();
-
                     SPFolder SPFolder = w.GetFolder(folder);
+
+                    if (SPFolder.Item != null)
+                    {
+                        canCreate = SPFolder.Item.DoesUserHavePermissionsForUI(SPBasePermissions.AddListItems);
+                    }
+                    else
+                    {
+                        canCreate = SPFolder.DocumentLibrary.DoesUserHavePermissionsForUI(SPBasePermissions.AddListItems);
+                    }
+
+                    if (!canCreate)
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                        context.Response.Write("{\"message\": \"Saveas is forbidden\"}");
+                        return;
+                    }
 
                     byte[] fileDataArr = null;
                     using (var wc = new WebClient())
                         fileDataArr = wc.DownloadData(url);
 
-                    SPFolder.Files.Add(title, fileDataArr, false);
-                    SPFolder.Update();
+                    try
+                    {
+                        w.AllowUnsafeUpdates = true;
+                        w.Update();
 
-                    w.AllowUnsafeUpdates = false;
-                    w.Update();
+                        SPFolder.Files.Add(title, fileDataArr, false);
+                        SPFolder.Update();
+                        success = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogError(ex.Message);
+                        context.Response.Write("{\"message\": \"Saveas failed\"}");
+                    }
+                    finally
+                    {
+                        w.AllowUnsafeUpdates = false;
+                        w.Update();
+                    }
                 }
             });
 
-            context.Response.Write("{\"message\": \"Saveas is completed\"}");
+            if(success)
+                context.Response.Write("{\"message\": \"Saveas is completed\"}");
         }
+
         public bool IsReusable
         {
             get { return false; }
