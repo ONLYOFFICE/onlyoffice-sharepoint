@@ -152,49 +152,38 @@ namespace Onlyoffice.Layouts
 
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             SPFile file = item.File;
+                            if (file == null)
+                                Response.Redirect(SPUrl);
 
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
-                            if (file != null)
+                            Key = file.ETag;
+                            Key = GenerateRevisionId(Key);
+
+                            Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
+                            Folder = Folder.Replace("\\", "/");
+                            GoToBack = host + Folder;
+
+                            FileAuthor = file.Author.Name;
+
+                            var tzi = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
+                            FileTimeCreated = TimeZoneInfo.ConvertTimeFromUtc(file.TimeCreated, tzi).ToString();
+
+                            FileName = file.Name;
+
+                            var tmp = FileName.Split('.');
+                            FileType = tmp[tmp.Length - 1];
+
+                            //check document format
+                            documentType = FileUtility.GetDocType(FileType);
+                            if (string.IsNullOrEmpty(documentType))
+                                Response.Redirect(SPUrl);
+
+                            if (FileUtility.CanViewTypes.Contains(FileType))
                             {
-                                Key = file.ETag;
-                                Key = GenerateRevisionId(Key);
-
-                                Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
-                                Folder = Folder.Replace("\\", "/");
-                                GoToBack = host + Folder;
-
-                                FileAuthor = file.Author.Name;
-
-                                var tzi = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
-                                FileTimeCreated = TimeZoneInfo.ConvertTimeFromUtc(file.TimeCreated, tzi).ToString();
-
-                                FileName = file.Name;
-
-                                var tmp = FileName.Split('.');
-                                FileType = tmp[tmp.Length - 1];
-
-                                //check document format
-                                try
-                                {
-                                    if (FileUtility.CanViewTypes.Contains(FileType))
-                                    {
-                                        var canEditType = FileUtility.CanEditTypes.Contains(FileType);
-                                        canEdit = canEdit & canEditType;
-                                        FileEditorMode = canEdit == true ? "edit" : FileEditorMode; 
-                                        documentType = FileUtility.GetDocType(FileType);
-                                    }
-                                    else
-                                    {
-                                        Response.Redirect(SPUrl);
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    //if a error - redirect to home page
-                                    Log.LogError(ex.Message);
-                                    Response.Redirect(SPUrl);
-                                }
+                                var canEditType = FileUtility.CanEditTypes.Contains(FileType);
+                                canEdit = canEdit & canEditType;
+                                FileEditorMode = canEdit ? "edit" : FileEditorMode;
                             }
                             else
                             {
@@ -213,7 +202,7 @@ namespace Onlyoffice.Layouts
             //generate url hash 
 //==================================================================================  
             urlHashDownload = Encryption.GetUrlHash("download", Secret, SPListItemId, Folder, SPListURLDir, CurrentUserId);
-            urlHashTrack    = Encryption.GetUrlHash("track", Secret, SPListItemId, Folder, SPListURLDir);
+            urlHashTrack = Encryption.GetUrlHash("track", Secret, SPListItemId, Folder, SPListURLDir);
         }
 
         /// <summary>
