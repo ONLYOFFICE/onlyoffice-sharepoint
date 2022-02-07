@@ -123,6 +123,7 @@ namespace Onlyoffice
                     catch (Exception ex) 
                     {
                         Log.LogError(ex.Message);
+                        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     }
                     
                 }
@@ -154,19 +155,11 @@ namespace Onlyoffice
 
                             SPUser user = web.AllUsers.GetByID(userID);
                             userToken = user.UserToken;
-                        }
-                        catch (Exception ex) {
 
-                            Log.LogError(ex.Message);
-                            userToken = web.AllUsers[0].UserToken; 
-                        }
+                            SPSite s = new SPSite(url, userToken);
+                            SPWeb w = s.OpenWeb();
 
-                        SPSite s = new SPSite(url, userToken);
-                        SPWeb w = s.OpenWeb();
-                        var list = w.GetList(SPListURLDir);
-
-                        try
-                        {
+                            var list = w.GetList(SPListURLDir);
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             
                             //save file to SharePoint
@@ -177,7 +170,7 @@ namespace Onlyoffice
                                 var replaceExistingFiles = true;
 
                                 var fileName = item.File.Name;
-                            
+
                                 w.AllowUnsafeUpdates = true; //for list update in SharePoint necessary AllowUnsafeUpdates = true
                                 w.Update();
 
@@ -205,6 +198,7 @@ namespace Onlyoffice
                         catch (Exception ex)
                         {
                             Log.LogError(ex.Message);
+                            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         }
                     }
                 }
