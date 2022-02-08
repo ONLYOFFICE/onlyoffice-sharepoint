@@ -133,7 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Resource.ru-RU.resx" />
-    <Content Include="Resources\Resource.en-US.resx" />
+    <Content Include="Resources\Resource.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

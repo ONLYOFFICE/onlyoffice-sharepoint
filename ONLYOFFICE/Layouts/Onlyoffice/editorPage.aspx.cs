@@ -51,9 +51,9 @@ namespace Onlyoffice.Layouts
                          FileAuthor = "",
                          FileTimeCreated = "",
                          FileEditorMode = "view",
-                         urlDocDownload = "",
+                         urlHashDownload = "",
                          documentType = "",
-                         urlDocTrack = "",
+                         urlHashTrack = "",
                          GoToBack = "",
                          GoToBackText = "",
                          lang = "",
@@ -121,100 +121,69 @@ namespace Onlyoffice.Layouts
                         
                         // get current user ID and Name
 //==================================================================================
-                        userToken = web.AllUsers[0].UserToken;
-                        SPSite s = new SPSite(SPUrl, userToken);
-                        
-                        var currentUserName = User.Identity.Name.Substring(User.Identity.Name.LastIndexOf("\\") + 1); 
-                        var users = web.AllUsers;
-
-                        for (var i=0; i< users.Count; i++)
+                        try
                         {
-                            var userNameOfList = users[i].LoginName.Substring(users[i].LoginName.LastIndexOf("\\") + 1);
-                            if (userNameOfList == currentUserName)
-                            {
-                                currentUser = users[i];
-                                CurrentUserId = users[i].ID;
-                                CurrentUserName = users[i].Name;
-                                break;
-                            }
+                            CurrentUserLogin = User.Identity.Name;
+
+                            currentUser = web.AllUsers.GetByLoginNoThrow(CurrentUserLogin);
+                            CurrentUserId = currentUser.ID;
+                            CurrentUserName = currentUser.Name;
+
                         }
+                        catch (Exception ex) { Log.LogError(ex.Message); }
 
                         //get language
 //==================================================================================
-
                         var lcid = (int)web.Language;
                         var defaultCulture = new CultureInfo(lcid);
                         lang = defaultCulture.IetfLanguageTag;
 
                         GoToBackText = LoadResource("GoToBack");                       
 
-
-                        //get user/group roles
-//==================================================================================
-                        canEdit = CheckForEditing(SPUrl, SPListURLDir, currentUser);
-
                         //generate key and get file info for DocEditor 
 //==================================================================================               
                         try
                         {
+                            userToken = web.GetUserToken(CurrentUserLogin);
+                            SPSite s = new SPSite(SPUrl, userToken);
 
-                            //SPRoleAssignmentCollection ss = w.RoleAssignments;
-
-                            //hack for SP2019. try to access by user, else access by admin
-                            var type = web.GetList(SPListURLDir).Title.ToString();
-                            var logList = s.RootWeb.Lists.TryGetList(type);
-
-                            SPList list = logList != null ? logList : web.GetList(SPListURLDir);
-                            SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
+                            SPWeb w = s.OpenWeb();
+                            var list = w.GetList(SPListURLDir);
 
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
-
                             SPFile file = item.File;
+                            if (file == null)
+                                Response.Redirect(SPUrl);
 
-                            //SPBasePermissions bp =SPContext.Current.Web.GetUserEffectivePermissions(SPContext.Current.Web.CurrentUser.LoginName);
+                            canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
-                            if (file != null)
+                            Key = file.ETag;
+                            Key = GenerateRevisionId(Key);
+
+                            Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
+                            Folder = Folder.Replace("\\", "/");
+                            GoToBack = host + Folder;
+
+                            FileAuthor = file.Author.Name;
+
+                            var tzi = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
+                            FileTimeCreated = TimeZoneInfo.ConvertTimeFromUtc(file.TimeCreated, tzi).ToString();
+
+                            FileName = file.Name;
+
+                            var tmp = FileName.Split('.');
+                            FileType = tmp[tmp.Length - 1];
+
+                            //check document format
+                            documentType = FileUtility.GetDocType(FileType);
+                            if (string.IsNullOrEmpty(documentType))
+                                Response.Redirect(SPUrl);
+
+                            if (FileUtility.CanViewTypes.Contains(FileType))
                             {
-                                Key = file.ETag;
-                                Key = GenerateRevisionId(Key);
-
-                                Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
-                                Folder = Folder.Replace("\\", "/");
-                                GoToBack = host + Folder;
-
-                                FileAuthor = file.Author.Name;
-
-                                var tzi = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
-                                FileTimeCreated = TimeZoneInfo.ConvertTimeFromUtc(file.TimeCreated, tzi).ToString();
-
-                                FileName = file.Name;
-
-                                var tmp = FileName.Split('.');
-                                FileType = tmp[tmp.Length - 1];
-
-                                //check document format
-                                try
-                                {
-                                    if (FileUtility.CanViewTypes.Contains(FileType))
-                                    {
-                                        var canEditType = FileUtility.CanEditTypes.Contains(FileType);
-                                        canEdit = canEdit & canEditType;
-                                        FileEditorMode = canEdit == true ? "edit" : FileEditorMode;
-                                        //documentType = FileUtility.docTypes[FileType];   DocType.GetDocType(FileName)   
-                                        documentType = FileUtility.GetDocType(FileType);
-                                    }
-                                    else
-                                    {
-                                        Response.Redirect(SPUrl);
-                                    }
-
-                                }
-                                catch (Exception ex)
-                                {
-                                    //if a error - redirect to home page
-                                    Log.LogError(ex.Message);
-                                    Response.Redirect(SPUrl);
-                                }
+                                var canEditType = FileUtility.CanEditTypes.Contains(FileType);
+                                canEdit = canEdit & canEditType;
+                                FileEditorMode = canEdit ? "edit" : FileEditorMode;
                             }
                             else
                             {
@@ -232,8 +201,8 @@ namespace Onlyoffice.Layouts
 
             //generate url hash 
 //==================================================================================  
-            urlDocDownload = Encryption.GetUrlHash(SPListItemId, Folder, SPListURLDir, "download", Secret);
-            urlDocTrack    = Encryption.GetUrlHash(SPListItemId, Folder, SPListURLDir, "track", Secret);
+            urlHashDownload = Encryption.GetUrlHash("download", Secret, SPListItemId, Folder, SPListURLDir, CurrentUserId);
+            urlHashTrack = Encryption.GetUrlHash("track", Secret, SPListItemId, Folder, SPListURLDir);
         }
 
         /// <summary>
@@ -254,67 +223,6 @@ namespace Onlyoffice.Layouts
         {
             return Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource," + _resName,
                 "core", (uint)SPContext.Current.Web.UICulture.LCID);           
-        }
-
-        public static bool CheckForEditing(string SPUrl, string SPListURLDir, SPUser currentUser)
-        {
-            var canEdit = false;
-            SPSecurity.RunWithElevatedPrivileges(delegate()
-            {
-                using (SPSite site = new SPSite(SPUrl))
-                {
-                    using (SPWeb web = site.OpenWeb())
-                    {
-                        SPList docLibrary = web.GetList(SPListURLDir);
-                        try
-                        {
-                            SPRoleAssignment userRoles = docLibrary.RoleAssignments.GetAssignmentByPrincipal(currentUser);
-                            canEdit = CheckRolesForEditing(userRoles);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.LogError(ex.Message);
-                            SPGroupCollection groupColl = web.Groups;
-                            if (groupColl.Count == 0)
-                            {
-                                try
-                                {
-                                    SPRoleAssignment currentUserRole = web.RoleAssignments.GetAssignmentByPrincipal(currentUser);
-                                    canEdit = CheckRolesForEditing(currentUserRole);
-                                }
-                                catch (Exception e) { Log.LogError(e.Message); }
-
-                            }
-                            foreach (SPGroup group in groupColl)
-                            {
-                                try
-                                {
-                                    SPRoleAssignment groupsRoles = docLibrary.RoleAssignments.GetAssignmentByPrincipal(group);
-                                    canEdit = CheckRolesForEditing(groupsRoles);
-                                    if (canEdit) break;
-                                }
-                                catch (Exception exception) { Log.LogError(exception.Message); }
-                            }
-                        }
-                    }
-                }
-            });
-            return canEdit;
-        }
-
-        public static bool CheckRolesForEditing(SPRoleAssignment Roles)
-        {
-            foreach (SPRoleDefinition role in Roles.RoleDefinitionBindings)
-            {
-                if (role.Type.ToString() == "Editor" // in SP10 SPRoleType.Editor does not exist
-                    || role.Type == SPRoleType.Administrator
-                    || role.Type == SPRoleType.Contributor
-                    || role.Type == SPRoleType.WebDesigner)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
