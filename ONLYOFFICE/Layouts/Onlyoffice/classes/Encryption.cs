@@ -37,21 +37,28 @@ namespace Onlyoffice
 {
     class Encryption
     {
-        public static string GetUrlHash(string SPListItemId, string folder, string SPListURLDir, string action, string Secret)
+        public static string GetUrlHash(string action, string Secret, string SPListItemId, string Folder, string SPListURLDir, int userId = 0)
         {
+            Payload payload = new Payload();
+            payload.action = action;
+            payload.SPListItemId = SPListItemId;
+            payload.Folder = Folder;
+            payload.SPListURLDir = SPListURLDir;
+            payload.userId = userId;
+
             var serializer = new JavaScriptSerializer();
-            var str = serializer.Serialize(new Payload(SPListItemId, folder, SPListURLDir, action));
+            var str = serializer.Serialize(payload);
 
             var hash = Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(str + Secret)));
 
-            var payload = hash + "?" + str;
+            var payloadStr = hash + "?" + str;
 
-            payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(payload));
+            payloadStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(payloadStr));
 
-            return payload;
+            return payloadStr;
         }
 
-        public static bool Decode(string data, ref string SPListItemId, ref string Folder, ref string SPListDir, ref string action, int secret)
+        public static bool Decode(string data, int secret, Dictionary<string, object> validData)
         {
             string  hash = string.Empty,
                     payload = string.Empty,
@@ -70,10 +77,11 @@ namespace Onlyoffice
 
                 var info = new JavaScriptSerializer().Deserialize<Payload>(payload);
 
-                SPListItemId = info.SPListItemId;
-                Folder = info.Folder;
-                SPListDir = info.SPListDir;
-                action = info.action;
+                validData["SPListItemId"] = info.SPListItemId;
+                validData["Folder"] = info.Folder;
+                validData["SPListURLDir"] = info.SPListURLDir;
+                validData["action"] = info.action;
+                validData["userId"] = info.userId;
             }
             catch (Exception ex) 
             {

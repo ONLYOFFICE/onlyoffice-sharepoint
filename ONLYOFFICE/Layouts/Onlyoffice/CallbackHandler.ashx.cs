@@ -42,13 +42,11 @@ namespace Onlyoffice
 
         public void ProcessRequest(HttpContext context)
         {
+            Dictionary<string, object> validData = new Dictionary<string, object>();
             string data = context.Request["data"];
 
             bool isValidData = false;
             string  action = "",
-                    SPListItemId = "",
-                    SPListURLDir = "",
-                    Folder = "",
                     url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
             //get secret key
@@ -61,7 +59,7 @@ namespace Onlyoffice
                 }
             });
 
-            isValidData = Encryption.Decode(data, ref SPListItemId, ref Folder, ref SPListURLDir, ref action, secret);//check, are request data valid
+            isValidData = Encryption.Decode(data, secret, validData);//check, are request data valid
 
             if (!isValidData)
             {
@@ -70,19 +68,23 @@ namespace Onlyoffice
                 return;
             }
 
+            action = (string)validData["action"];
             if (action == "download")
             {
-                Download(url, SPListURLDir, SPListItemId, context);
+                Download(url, validData, context);
             }
             else if (action == "track")
             {
-                Track(url, SPListURLDir, SPListItemId, Folder, context);
+                Track(url, validData, context);
             }
         }
 
-        static void Download(string url, string SPListURLDir, string SPListItemId, HttpContext context)
+        static void Download(string url, Dictionary<string, object> data, HttpContext context)
         {
             SPUserToken userToken = null;
+            string SPListURLDir = (string)data["SPListURLDir"];
+            string SPListItemId = (string)data["SPListItemId"];
+            int userId = (int)data["userId"];
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
@@ -91,17 +93,15 @@ namespace Onlyoffice
                 {
                     try
                     {
-                        userToken = web.AllUsers[0].UserToken;
+                        SPUser user = web.AllUsers.GetByID(userId);
+                        userToken = user.UserToken;
+
                         SPSite s = new SPSite(url, userToken);
-                        //hack for SP2019. try to access by user, else access by admin
-                        var type = web.GetList(SPListURLDir).Title.ToString();
-                        var logList = s.RootWeb.Lists.TryGetList(type);
+                        SPWeb w = s.OpenWeb();
 
-                        SPList list = logList != null ? logList : web.GetList(SPListURLDir);
-                        SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
-
-
+                        var list = w.GetList(SPListURLDir);
                         SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
+
                         //get and send file
                         SPFile file = item.File;
                         var ContentType = MimeMapping.GetMimeMapping(file.Name);
@@ -123,15 +123,19 @@ namespace Onlyoffice
                     catch (Exception ex) 
                     {
                         Log.LogError(ex.Message);
+                        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     }
                     
                 }
             });
         }
 
-        static void Track(string url, string SPListURLDir, string SPListItemId, string Folder, HttpContext context)
+        static void Track(string url, Dictionary<string, object> data, HttpContext context)
         {
             SPUserToken userToken = null;
+            string SPListURLDir = (string)data["SPListURLDir"];
+            string SPListItemId = (string)data["SPListItemId"];
+            string Folder = (string)data["Folder"];
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
@@ -149,36 +153,13 @@ namespace Onlyoffice
                             var userList = (System.Collections.ArrayList)fileData["users"];
                             var userID = Int32.Parse(userList[0].ToString());
 
-                            var users = web.AllUsers;
-                            for (int i = 0; i < users.Count; i++)
-                            {
-                                if (users[i].ID == userID)
-                                {
-                                    userToken = users[i].UserToken;
-                                    break;
-                                }
-                            }
-                            if (userToken == null)
-                            {
-                                userToken = web.AllUsers[0].UserToken;
-                            }
-                        }
-                        catch (Exception ex) {
+                            SPUser user = web.AllUsers.GetByID(userID);
+                            userToken = user.UserToken;
 
-                            Log.LogError(ex.Message);
-                            userToken = web.AllUsers[0].UserToken; 
-                        }
+                            SPSite s = new SPSite(url, userToken);
+                            SPWeb w = s.OpenWeb();
 
-                        SPSite s = new SPSite(url, userToken);
-                        //hack for SP2019. try to access by user, else access by admin
-                        var type = web.GetList(SPListURLDir).Title.ToString();
-                        var logList = s.OpenWeb().Lists.TryGetList(type);
-
-                        SPList list = logList ?? web.GetList(SPListURLDir);
-                        SPWeb w = logList != null ? s.OpenWeb() : site.OpenWeb();
-
-                        try
-                        {
+                            var list = w.GetList(SPListURLDir);
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             
                             //save file to SharePoint
@@ -189,7 +170,7 @@ namespace Onlyoffice
                                 var replaceExistingFiles = true;
 
                                 var fileName = item.File.Name;
-                            
+
                                 w.AllowUnsafeUpdates = true; //for list update in SharePoint necessary AllowUnsafeUpdates = true
                                 w.Update();
 
@@ -217,6 +198,7 @@ namespace Onlyoffice
                         catch (Exception ex)
                         {
                             Log.LogError(ex.Message);
+                            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         }
                     }
                 }
