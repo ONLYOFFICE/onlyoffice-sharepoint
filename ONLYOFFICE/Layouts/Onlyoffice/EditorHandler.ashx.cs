@@ -64,6 +64,8 @@ namespace Onlyoffice
             bool canCreate = false;
             bool success = false;
 
+            SPUserToken userToken = null;
+
             string bodyStr;
             using (StreamReader reader = new StreamReader(context.Request.InputStream))
                 bodyStr = reader.ReadToEnd();
@@ -80,8 +82,16 @@ namespace Onlyoffice
                 using (SPSite site = new SPSite(SPUrl))
                 using (SPWeb web = site.OpenWeb())
                 {
-                    var userName = context.User.Identity.Name;
-                    var userToken = web.GetUserToken(userName);
+                    var userName = context.User.Identity.Name.Substring(context.User.Identity.Name.LastIndexOf("\\") + 1);
+                    for (var i = 0; i < web.AllUsers.Count; i++)
+                    {
+                        if (string.Compare(web.AllUsers[i].LoginName.Substring(web.AllUsers[i].LoginName.LastIndexOf("\\") + 1),
+                                            userName, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        {
+                            userToken = web.AllUsers[i].UserToken;
+                            break;
+                        }
+                    }
 
                     SPSite s = new SPSite(SPUrl, userToken);
                     SPWeb w = s.OpenWeb();

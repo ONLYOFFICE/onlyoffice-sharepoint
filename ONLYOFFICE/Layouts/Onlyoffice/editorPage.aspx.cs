@@ -84,7 +84,6 @@ namespace Onlyoffice.Layouts
                 SPListURLDir = SubSite + SPListURLDir;
             }
 
-            SPUserToken userToken;
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
                 using (SPSite site = new SPSite(SPUrl))
@@ -118,19 +117,24 @@ namespace Onlyoffice.Layouts
                         }
                         Secret = web.Properties["SharePointSecret"];
 
-                        
                         // get current user ID and Name
 //==================================================================================
-                        try
+                        CurrentUserLogin = User.Identity.Name.Substring(User.Identity.Name.LastIndexOf("\\") + 1);
+                        for (var i = 0; i < web.AllUsers.Count; i++) 
                         {
-                            CurrentUserLogin = User.Identity.Name;
+                            if (string.Compare(web.AllUsers[i].LoginName.Substring(web.AllUsers[i].LoginName.LastIndexOf("\\") + 1),
+                                                CurrentUserLogin, StringComparison.CurrentCultureIgnoreCase) == 0)
+                            {
+                                currentUser = web.AllUsers[i];
+                                break;
+                            }
+                        }
 
-                            currentUser = web.AllUsers.GetByLoginNoThrow(CurrentUserLogin);
+                        if (currentUser != null)
+                        {
                             CurrentUserId = currentUser.ID;
                             CurrentUserName = currentUser.Name;
-
                         }
-                        catch (Exception ex) { Log.LogError(ex.Message); }
 
                         //get language
 //==================================================================================
@@ -144,8 +148,7 @@ namespace Onlyoffice.Layouts
 //==================================================================================               
                         try
                         {
-                            userToken = web.GetUserToken(CurrentUserLogin);
-                            SPSite s = new SPSite(SPUrl, userToken);
+                            SPSite s = new SPSite(SPUrl, currentUser.UserToken);
 
                             SPWeb w = s.OpenWeb();
                             var list = w.GetList(SPListURLDir);
