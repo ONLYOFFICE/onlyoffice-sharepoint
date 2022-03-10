@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System SIA 2021
+ * (c) Copyright Ascensio System SIA 2022
  *
  * The MIT License (MIT)
  *
@@ -28,19 +28,28 @@ namespace Onlyoffice
 {
     public class Payload
     {
-        public Payload() { }
+        public Payload() 
+        {
+            this.SPListItemId = string.Empty;
+            this.Folder = string.Empty;
+            this.SPListURLDir = string.Empty;
+            this.action = string.Empty;
+            this.userId = 0;
+        }
 
-        public Payload(string SPListItemId, string Folder, string SPListURLDir, string action)
+        public Payload(string action, string SPListItemId, string Folder, string SPListURLDir, int userId = 0)
         {
             this.SPListItemId = SPListItemId;
             this.Folder = Folder;
-            this.SPListDir = SPListURLDir;
+            this.SPListURLDir = SPListURLDir;
             this.action = action;
-        }
+            this.userId = userId;
+         }
 
         public string SPListItemId { get; set; }
         public string Folder { get; set; }
-        public string SPListDir { get; set; }
+        public string SPListURLDir { get; set; }
         public string action { get; set; }
+        public int userId { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System SIA 2021
+ * (c) Copyright Ascensio System SIA 2022
  *
  * The MIT License (MIT)
  *
@@ -39,6 +39,8 @@ namespace Onlyoffice
         static MimeMapping()
         {
             AddMimeMapping(".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            AddMimeMapping(".docxf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.docxf");
+            AddMimeMapping(".oform", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.oform");
             AddMimeMapping(".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             AddMimeMapping(".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
             AddMimeMapping(".ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");

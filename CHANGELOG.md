@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.1.0
+## Added
+- support docxf and oform formats
+- "save as" in editor
+
 ## 2.0
 ## Changed
 - compatible with SharePoint 2019
