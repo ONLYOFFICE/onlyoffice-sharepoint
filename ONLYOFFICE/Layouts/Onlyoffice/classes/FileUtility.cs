@@ -50,7 +50,7 @@ namespace Onlyoffice
         public static readonly List<string> TextDoc = new List<string>
             {
                 "docx", "docxf", "oform", "txt", "odt", "doc", "rtf", "html",
-                "htm", "xps", "pdf", "djvu", "epub"
+                "htm", "xps", "pdf", "djvu", "epub", "mht"
             };
 
         public static readonly List<string> PresentationDoc = new List<string>
