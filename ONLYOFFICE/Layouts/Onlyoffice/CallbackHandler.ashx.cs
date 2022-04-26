@@ -32,6 +32,7 @@ using System.Security.Cryptography;
 using System.Net;
 using System.IO;
 using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Onlyoffice
@@ -148,10 +149,45 @@ namespace Onlyoffice
                             body = reader.ReadToEnd();
                         
                         var fileData = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(body);
+
+                        var statusTrack = (int)fileData["status"];
+                        var usersTrack = fileData.ContainsKey("users") ? (ArrayList)fileData["users"] : null;
+                        var urlTrack = fileData.ContainsKey("url") ? (string)fileData["url"] : string.Empty;
+
+                        if (!string.IsNullOrEmpty(web.Properties["JwtSecret"]))
+                        {
+                            var token = string.Empty;
+                            if (fileData.ContainsKey("token"))
+                            {
+                                token = fileData["token"].ToString();
+                            }
+                            else if (context.Request.Headers.Get("Authorization") != null)
+                            {
+                                token = context.Request.Headers.Get("Authorization").Substring("Bearer ".Length);
+                            }
+                            else
+                            {
+                                Log.LogError("JWT expected");
+                                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                                return;
+                            }
+
+                            var payload  = Encryption.GetPayload(web.Properties["JwtSecret"], token);
+                            if (payload == null)
+                            {
+                                Log.LogError("JWT validation failed");
+                                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                                return;
+                            }
+
+                            statusTrack = (int)payload["status"];
+                            usersTrack = payload.ContainsKey("users") ? (ArrayList)payload["users"] : null;
+                            urlTrack = payload.ContainsKey("url") ? (string)payload["url"] : string.Empty;
+                        }
+
                         try
-                        { 
-                            var userList = (System.Collections.ArrayList)fileData["users"];
-                            var userID = Int32.Parse(userList[0].ToString());
+                        {
+                            var userID = Int32.Parse(usersTrack[0].ToString());
 
                             SPUser user = web.AllUsers.GetByID(userID);
                             userToken = user.UserToken;
@@ -163,10 +199,8 @@ namespace Onlyoffice
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             
                             //save file to SharePoint
-                            if ((int)fileData["status"] == 2)
+                            if (statusTrack == 2)
                             {
-                                var req = (string)fileData["url"];
-
                                 var replaceExistingFiles = true;
 
                                 var fileName = item.File.Name;
@@ -176,7 +210,7 @@ namespace Onlyoffice
 
                                 byte[] fileDataArr = null;
                                 using (var wc = new WebClient())
-                                    fileDataArr = wc.DownloadData(req);
+                                    fileDataArr = wc.DownloadData(urlTrack);
 
                                 if (Folder != "")
                                 {
