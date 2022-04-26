@@ -32,6 +32,9 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.IO;
+using JWT;
+using JWT.Algorithms;
+using JWT.Serializers;
 
 namespace Onlyoffice
 {
@@ -91,6 +94,42 @@ namespace Onlyoffice
             currentHash = Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(payload + secret)));
 
             return hash == currentHash;
+        }
+
+        public static string GetSignature(string secret, object payload)
+        {
+            var encoder = new JwtEncoder(new HMACSHA256Algorithm(),
+                                            new JsonNetSerializer(),
+                                            new JwtBase64UrlEncoder());
+
+            var token = encoder.Encode(payload, secret);
+
+            return token;
+        }
+
+        public static Dictionary<string, object> GetPayload(string secret, string token)
+        {
+            try
+            {
+                var serializer = new JsonNetSerializer();
+                var provider = new UtcDateTimeProvider();
+                var validator = new JwtValidator(serializer, provider);
+
+                var decoder = new JwtDecoder(serializer,
+                                                validator,
+                                                new JwtBase64UrlEncoder(),
+                                                new HMACSHA256Algorithm());
+
+                var json = decoder.Decode(token, secret, verify: true);
+                var data = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
+
+                return data;
+            }
+            catch (Exception ex) 
+            {
+                Log.LogError(ex.Message);
+                return null;
+            }
         }
     }
 }
