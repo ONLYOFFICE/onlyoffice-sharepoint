@@ -13,27 +13,17 @@
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
     <div class="settings_container">
-        <asp:Label
-            ID="DocumentServerTitle"
-            runat="server"
-            CssClass="document_server_title"
-        />
-        <asp:TextBox
-            ID="DocumentServerHost"
-            MaxLength="40"
-            runat="server"
-            CssClass="document_server_host"
-        />
+        <p>
+            <asp:Label ID="DocumentServerTitle" runat="server" CssClass="setting_title" /> <br />
+            <asp:TextBox ID="DocumentServerHost" MaxLength="40" runat="server" CssClass="setting_input" />
+        </p>
+        <p>
+            <asp:Label ID="JwtSecretTitle" runat="server" CssClass="setting_title" /> <br />
+            <asp:TextBox ID="JwtSecret" MaxLength="40" runat="server" CssClass="setting_input" />
+        </p>
+
+        <asp:Label ID="Message" runat="server" CssClass="setting_message" /> <br />
     </div>
-    <asp:Label
-            ID="Message"
-            runat="server"
-            CssClass="document_server_message"
-        />
-    <asp:Button
-        ID="SaveSettings"
-        runat="server"
-        OnClick="Save_Click"
-        CssClass="save_settings"
-        />
+
+    <asp:Button ID="SaveSettings" runat="server" OnClick="Save_Click" CssClass="setting_save" />
 </asp:Content>

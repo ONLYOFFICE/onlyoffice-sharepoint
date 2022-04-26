@@ -40,8 +40,9 @@ namespace Onlyoffice.Layouts
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
         protected void Page_Load(object sender, EventArgs e)
         {
-            DocumentServerTitle.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);
-            SaveSettings.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,Save", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            DocumentServerTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            JwtSecretTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtSecret", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            SaveSettings.Text = SPUtility.GetLocalizedString("$Resources:Resource,Save", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             using (SPSite site = new SPSite(url))
             {
                 using (SPWeb web = site.OpenWeb())
@@ -56,6 +57,11 @@ namespace Onlyoffice.Layouts
                                 if (web.Properties["DocumentServerHost"] != null)
                                 {
                                     DocumentServerHost.Text = web.Properties["DocumentServerHost"];
+                                }
+
+                                if (web.Properties["JwtSecret"] != null)
+                                {
+                                    JwtSecret.Text = web.Properties["JwtSecret"];
                                 }
                             }
                             catch (Exception ex) 
@@ -74,6 +80,7 @@ namespace Onlyoffice.Layouts
         protected void Save_Click(object sender, System.EventArgs e)
         {
             String DSHost = DocumentServerHost.Text;
+            String JWTSecret = JwtSecret.Text;
 
             using (SPSite site = new SPSite(url))
             using (SPWeb web = site.OpenWeb())
@@ -91,8 +98,18 @@ namespace Onlyoffice.Layouts
                         {
                             web.Properties["DocumentServerHost"] = DSHost;
                         }
+
+                        if (web.Properties["JwtSecret"] == null)
+                        {
+                            web.Properties.Add("JwtSecret", JWTSecret);
+                        }
+                        else
+                        {
+                            web.Properties["JwtSecret"] = JWTSecret;
+                        }
+
                         web.Properties.Update();
-                        Message.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+                        Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
                     }
                     catch(Exception ex)
                     {
