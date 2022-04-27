@@ -180,13 +180,19 @@ namespace Onlyoffice
                         if (!string.IsNullOrEmpty(web.Properties["JwtSecret"]))
                         {
                             var token = string.Empty;
+                            Dictionary<string, object> payload = null;
                             if (fileData.ContainsKey("token"))
                             {
                                 token = fileData["token"].ToString();
+                                payload  = Encryption.GetPayload(web.Properties["JwtSecret"], token);
                             }
                             else if (context.Request.Headers.Get("Authorization") != null)
                             {
                                 token = context.Request.Headers.Get("Authorization").Substring("Bearer ".Length);
+
+                                var header = Encryption.GetPayload(web.Properties["JwtSecret"], token);
+                                if (header != null && header.ContainsKey("payload"))
+                                    payload = (Dictionary<string, object>)header["payload"];
                             }
                             else
                             {
@@ -195,7 +201,6 @@ namespace Onlyoffice
                                 return;
                             }
 
-                            var payload  = Encryption.GetPayload(web.Properties["JwtSecret"], token);
                             if (payload == null)
                             {
                                 Log.LogError("JWT validation failed");
