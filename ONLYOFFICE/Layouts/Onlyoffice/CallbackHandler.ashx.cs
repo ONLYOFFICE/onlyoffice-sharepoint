@@ -92,6 +92,29 @@ namespace Onlyoffice
                 using (SPSite site = new SPSite(url))
                 using (SPWeb web = site.OpenWeb())
                 {
+                    if (!string.IsNullOrEmpty(web.Properties["JwtSecret"]))
+                    {
+                        var token = string.Empty;
+                        if (context.Request.Headers.Get("Authorization") != null)
+                        {
+                            token = context.Request.Headers.Get("Authorization").Substring("Bearer ".Length);
+                        }
+                        else
+                        {
+                            Log.LogError("JWT expected");
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            return;
+                        }
+
+                        var payload = Encryption.GetPayload(web.Properties["JwtSecret"], token);
+                        if (payload == null)
+                        {
+                            Log.LogError("JWT validation failed");
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            return;
+                        }
+                    }
+
                     try
                     {
                         SPUser user = web.AllUsers.GetByID(userId);
