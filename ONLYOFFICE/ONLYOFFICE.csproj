@@ -64,6 +64,7 @@
     <Compile Include="Layouts\Onlyoffice\EditorHandler.ashx.cs">
       <DependentUpon>EditorHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\Onlyoffice\classes\Configuration.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Encryption.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\FileUtility.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Log.cs" />
