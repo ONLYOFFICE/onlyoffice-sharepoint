@@ -41,11 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JWT">
-      <HintPath>Packages\jwt.8.9.0\lib\net6.0\JWT.dll</HintPath>
+      <HintPath>.nuget\packages\JWT.8.9.0\lib\net46\JWT.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Packages\newtonsoft.json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>.nuget\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,15 +60,15 @@
     <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Layouts\Onlyoffice\EditorHandler.ashx.cs">
-      <DependentUpon>EditorHandler.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Layouts\Onlyoffice\classes\Configuration.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Encryption.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\FileUtility.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Log.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\MimeMapping.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Payload.cs" />
+    <Compile Include="Layouts\Onlyoffice\EditorHandler.ashx.cs">
+      <DependentUpon>EditorHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\Onlyoffice\editorPage.aspx.cs">
       <DependentUpon>editorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
