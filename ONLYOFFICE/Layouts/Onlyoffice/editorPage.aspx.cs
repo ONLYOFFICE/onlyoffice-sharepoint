@@ -60,6 +60,7 @@ namespace Onlyoffice.Layouts
         private bool canEdit = false;
         private Configuration Configuration = new Configuration();
         private SPUser currentUser;
+        private AppConfig AppConfig;
 
         protected string DocumentSeverHost = "@http://localhost",
                          Folder = string.Empty,
@@ -85,35 +86,11 @@ namespace Onlyoffice.Layouts
                 {
                     using (SPWeb web = site.OpenWeb())
                     {
-                        //read settings
-//==================================================================================
-                        if (web.Properties["DocumentServerHost"] != null)
-                        {
-                            DocumentSeverHost = web.Properties["DocumentServerHost"];
-                        }
-                        DocumentSeverHost += DocumentSeverHost.EndsWith("/") ? "" : "/";
+                        AppConfig = new AppConfig(web);
 
-                        //check secret key
-//==================================================================================
-                        if (web.Properties["SharePointSecret"] == null)
-                        {
-                            var rnd = new Random();
-                            var spSecret = "";
-                            for (var i = 0; i < 6; i++ )
-                            {
-                                spSecret = spSecret + rnd.Next(1, 9).ToString();
-                            }
-                            web.AllowUnsafeUpdates = true;
-                            web.Update();
-                            web.Properties.Add("SharePointSecret", spSecret);
-                            web.Properties.Update();
-                            web.AllowUnsafeUpdates = true; 
-                            web.Update();
-                        }
-                        Secret = web.Properties["SharePointSecret"];
-
-                        if (web.Properties["JwtSecret"] != null)
-                            JwtSecret = web.Properties["JwtSecret"];
+                        DocumentSeverHost = AppConfig.GetDocumentServerHost();
+                        Secret = AppConfig.GetSharePointSecret();
+                        JwtSecret = AppConfig.GetJwtSecret();
 
                         // get current user ID and Name
 //==================================================================================

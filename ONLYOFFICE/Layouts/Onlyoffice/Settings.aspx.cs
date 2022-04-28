@@ -35,6 +35,8 @@ namespace Onlyoffice.Layouts
 {
     public partial class Settings : LayoutsPageBase
     {
+        private AppConfig appConfig;
+
         protected string path = AppDomain.CurrentDomain.BaseDirectory;
         protected string url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
@@ -47,6 +49,8 @@ namespace Onlyoffice.Layouts
             {
                 using (SPWeb web = site.OpenWeb())
                 {
+                    appConfig = new AppConfig(web);
+
                     var isAdmin = web.UserIsSiteAdmin;
                     if (isAdmin == true)
                     {
@@ -54,15 +58,8 @@ namespace Onlyoffice.Layouts
                         {
                             try
                             {
-                                if (web.Properties["DocumentServerHost"] != null)
-                                {
-                                    DocumentServerHost.Text = web.Properties["DocumentServerHost"];
-                                }
-
-                                if (web.Properties["JwtSecret"] != null)
-                                {
-                                    JwtSecret.Text = web.Properties["JwtSecret"];
-                                }
+                                DocumentServerHost.Text = appConfig.GetDocumentServerHost();
+                                JwtSecret.Text = appConfig.GetJwtSecret();
                             }
                             catch (Exception ex) 
                             {
@@ -85,30 +82,16 @@ namespace Onlyoffice.Layouts
             using (SPSite site = new SPSite(url))
             using (SPWeb web = site.OpenWeb())
             {
+                appConfig = new AppConfig(web);
+
                 var isAdmin = web.UserIsSiteAdmin;
                 if (isAdmin == true)
                 {
                     try
                     {
-                        if (web.Properties["DocumentServerHost"] == null)
-                        {
-                            web.Properties.Add("DocumentServerHost", DSHost);
-                        }
-                        else
-                        {
-                            web.Properties["DocumentServerHost"] = DSHost;
-                        }
+                        appConfig.SetDocumentServerHost(DSHost);
+                        appConfig.SetJwtSecret(JWTSecret);
 
-                        if (web.Properties["JwtSecret"] == null)
-                        {
-                            web.Properties.Add("JwtSecret", JWTSecret);
-                        }
-                        else
-                        {
-                            web.Properties["JwtSecret"] = JWTSecret;
-                        }
-
-                        web.Properties.Update();
                         Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
                     }
                     catch(Exception ex)
