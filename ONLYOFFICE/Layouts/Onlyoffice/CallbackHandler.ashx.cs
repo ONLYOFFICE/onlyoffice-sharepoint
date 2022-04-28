@@ -37,6 +37,16 @@ using System.Collections.Generic;
 
 namespace Onlyoffice
 {
+    enum Status
+    {
+        Editing = 1,
+        MustSave = 2,
+        Corrupted = 3,
+        Closed = 4,
+        ForceSave = 6,
+        CorruptedForceSave = 7
+    }
+
     public class CallbackHandler : IHttpHandler
     {
         protected int secret; 
@@ -64,6 +74,7 @@ namespace Onlyoffice
 
             if (!isValidData)
             {
+                Log.LogError("Hash data is invalid");
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 context.Response.StatusDescription = "Access denied.";
                 return;
@@ -227,7 +238,7 @@ namespace Onlyoffice
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             
                             //save file to SharePoint
-                            if (statusTrack == 2)
+                            if (statusTrack == (int)Status.MustSave)
                             {
                                 var replaceExistingFiles = true;
 

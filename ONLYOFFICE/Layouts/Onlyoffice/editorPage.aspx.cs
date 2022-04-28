@@ -45,8 +45,7 @@ namespace Onlyoffice.Layouts
 {
     public partial class editorPage : LayoutsPageBase
     {
-        private string FileEditorMode = "view",
-                       urlHashDownload = string.Empty,
+        private string urlHashDownload = string.Empty,
                        urlHashTrack = string.Empty,
                        CurrentUserLogin = string.Empty,
                        SPListItemId = string.Empty,
@@ -178,7 +177,6 @@ namespace Onlyoffice.Layouts
                             Configuration.Document.FileType = tmp[tmp.Length - 1];
 
                             //check document format
-                            Configuration.DocumentType = FileUtility.GetDocType(Configuration.Document.FileType);
                             if (string.IsNullOrEmpty(Configuration.DocumentType))
                                 Response.Redirect(SPUrl);
 
@@ -186,14 +184,13 @@ namespace Onlyoffice.Layouts
                             {
                                 var canEditType = FileUtility.CanEditTypes.Contains(Configuration.Document.FileType);
                                 canEdit = canEdit & canEditType;
-                                FileEditorMode = canEdit ? "edit" : FileEditorMode;
+                                Configuration.EditorConfig.EditorMode = canEdit ? EditorMode.Edit : EditorMode.View;
                             }
                             else
                             {
                                 Response.Redirect(SPUrl);
                             }
 
-                            Configuration.EditorConfig.Mode = FileEditorMode;
                             Configuration.Document.Permissions.Edit = canEdit;
                         }
                         catch (Exception ex)

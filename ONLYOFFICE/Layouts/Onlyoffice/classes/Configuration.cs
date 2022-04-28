@@ -9,14 +9,30 @@ using System.Runtime.Serialization.Json;
 
 namespace Onlyoffice
 {
+    public enum EditorType
+    {
+        Desktop,
+        Mobile,
+    }
+
+    public enum EditorMode
+    {
+        View,
+        Edit,
+    }
+
     [DataContract(Name = "editorConfig", Namespace = "")]
     public class Configuration
     {
+        private string _documentType;
+
         public Configuration()
         {
             Document = new DocumentConfig();
             EditorConfig = new EditorConfig();
-            Type = "desktop";
+            EditorType = EditorType.Desktop;
+
+            _documentType = FileUtility.TypeUnknown;
         }
 
         [DataMember(Name = "document")]
@@ -26,10 +42,32 @@ namespace Onlyoffice
         public EditorConfig EditorConfig { get; set; }
 
         [DataMember(Name="documentType")]
-        public string DocumentType { get; set; }
+        public string DocumentType 
+        { 
+            get
+            {
+                if (!string.IsNullOrEmpty(Document.FileType))
+                    return FileUtility.GetDocType(Document.FileType);
+
+                return _documentType;
+            }
+            set 
+            {
+                _documentType = value;
+            }
+        }
+
+        public EditorType EditorType { get; set; }
 
         [DataMember(Name = "type")]
-        public string Type { get; set; }
+        public string Type
+        { 
+            get
+            {
+                return EditorType.ToString().ToLower();
+            }
+            set { }
+        }
 
         [DataMember(Name = "token", EmitDefaultValue = false)]
         public string Token { get; set; }
@@ -86,8 +124,17 @@ namespace Onlyoffice
         [DataMember(Name = "lang")]
         public string Lang { get; set; }
 
+        public EditorMode EditorMode { get; set; }
+
         [DataMember(Name = "mode")]
-        public string Mode { get; set; }
+        public string Mode 
+        { 
+            get
+            {
+                return EditorMode.ToString().ToLower();
+            }
+            set { }
+        }
 
         [DataMember(Name = "user")]
         public UserConfig User { get; set; }

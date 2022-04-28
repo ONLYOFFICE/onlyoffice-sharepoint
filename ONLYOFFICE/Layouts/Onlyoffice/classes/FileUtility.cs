@@ -33,7 +33,12 @@ using Microsoft.SharePoint.Administration;
 namespace Onlyoffice
 {
     public static class FileUtility
-    {        
+    {
+        public const string TypeText = "text";
+        public const string TypePresentation = "presentation";
+        public const string TypeSpreadsheet = "spreadsheet";
+        public const string TypeUnknown = "";
+
         public static readonly List<string> CanEditTypes = new List<string>
             {
                 "docx", "docxf", "oform", "xlsx", "pptx", "ppsx"
@@ -67,19 +72,19 @@ namespace Onlyoffice
         {
             if (TextDoc.Contains(extension))
             {
-                return "text";
+                return TypeText;
             }
             else if (PresentationDoc.Contains(extension))
             {
-                return "presentation";
+                return TypePresentation;
             }
             else if (SpreadsheetDoc.Contains(extension))
             {
-                return "spreadsheet";
+                return TypeSpreadsheet;
             }
             else 
             {
-                return "";
+                return TypeUnknown;
             }
         }
     }
