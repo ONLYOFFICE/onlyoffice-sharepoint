@@ -30,16 +30,10 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Web.Script.Serialization;
-using System.Net;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
-using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebControls;
-using Onlyoffice;
 
 namespace Onlyoffice.Layouts
 {

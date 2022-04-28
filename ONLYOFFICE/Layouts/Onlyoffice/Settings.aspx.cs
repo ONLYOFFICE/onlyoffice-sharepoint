@@ -25,7 +25,6 @@
 */
 
 using System;
-using System.Web.Script.Serialization;
 using System.Web;
 using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebControls;
