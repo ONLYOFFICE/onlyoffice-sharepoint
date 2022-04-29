@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- JWT support
+
 ## 2.1.0
 ## Added
 - support docxf and oform formats
