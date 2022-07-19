@@ -1,5 +1,6 @@
 # Change Log
 
+## 3.0.0
 ## Added
 - JWT support
 - document server v6.0 and earlier is no longer supported
