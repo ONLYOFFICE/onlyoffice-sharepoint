@@ -2,6 +2,7 @@
 
 ## Added
 - JWT support
+- document server v6.0 and earlier is no longer supported
 
 ## 2.1.0
 ## Added

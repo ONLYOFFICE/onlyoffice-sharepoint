@@ -30,9 +30,9 @@ namespace Onlyoffice
 {
     public static class FileUtility
     {
-        public const string TypeText = "text";
-        public const string TypePresentation = "presentation";
-        public const string TypeSpreadsheet = "spreadsheet";
+        public const string TypeText = "word";
+        public const string TypePresentation = "slide";
+        public const string TypeSpreadsheet = "cell";
         public const string TypeUnknown = "";
 
         public static readonly List<string> CanEditTypes = new List<string>
