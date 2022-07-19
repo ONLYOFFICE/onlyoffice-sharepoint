@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="1f4d212f-e11e-480e-aa1f-0a0018f5e703" solutionId="1f4d212f-e11e-480e-aa1f-0a0018f5e703" resetWebServer="true" sharePointProductVersion="15.0" name="Onlyoffice" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <assemblies>
+    <customAssembly location="JWT.dll" deploymentTarget="GlobalAssemblyCache" sourcePath=".nuget\packages\JWT.8.9.0\lib\net46\JWT.dll" />
+    <customAssembly location="Newtonsoft.Json.dll" deploymentTarget="GlobalAssemblyCache" sourcePath=".nuget\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll" />
+  </assemblies>
   <features>
     <featureReference itemId="22eb1442-dccb-4b94-8ed7-f61f1ae42b2c" />
   </features>

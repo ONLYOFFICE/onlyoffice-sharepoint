@@ -129,6 +129,9 @@
   <data name="GoToBack" xml:space="preserve">
     <value>Go to back</value>
   </data>
+  <data name="JwtSecret" xml:space="preserve">
+    <value>Secret key (leave blank to disable)</value>
+  </data>
   <data name="RibbonTooltipText" xml:space="preserve">
     <value>Open this document for editing in ONLYOFFICE</value>
   </data>

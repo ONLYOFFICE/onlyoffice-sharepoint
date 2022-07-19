@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetOfficeVersion>19.0</TargetOfficeVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <RootNamespace>ONLYOFFICE</RootNamespace>
     <AssemblyName>ONLYOFFICE</AssemblyName>
@@ -40,6 +40,12 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JWT">
+      <HintPath>.nuget\packages\JWT.8.9.0\lib\net46\JWT.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>.nuget\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -54,14 +60,16 @@
     <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Layouts\Onlyoffice\EditorHandler.ashx.cs">
-      <DependentUpon>EditorHandler.ashx</DependentUpon>
-    </Compile>
+    <Compile Include="Layouts\Onlyoffice\classes\AppConfig.cs" />
+    <Compile Include="Layouts\Onlyoffice\classes\Configuration.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Encryption.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\FileUtility.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Log.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\MimeMapping.cs" />
     <Compile Include="Layouts\Onlyoffice\classes\Payload.cs" />
+    <Compile Include="Layouts\Onlyoffice\EditorHandler.ashx.cs">
+      <DependentUpon>EditorHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\Onlyoffice\editorPage.aspx.cs">
       <DependentUpon>editorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

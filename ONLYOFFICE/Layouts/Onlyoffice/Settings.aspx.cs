@@ -25,7 +25,6 @@
 */
 
 using System;
-using System.Web.Script.Serialization;
 using System.Web;
 using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebControls;
@@ -35,17 +34,22 @@ namespace Onlyoffice.Layouts
 {
     public partial class Settings : LayoutsPageBase
     {
+        private AppConfig appConfig;
+
         protected string path = AppDomain.CurrentDomain.BaseDirectory;
         protected string url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
         protected void Page_Load(object sender, EventArgs e)
         {
-            DocumentServerTitle.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);
-            SaveSettings.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,Save", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            DocumentServerTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            JwtSecretTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtSecret", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            SaveSettings.Text = SPUtility.GetLocalizedString("$Resources:Resource,Save", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             using (SPSite site = new SPSite(url))
             {
                 using (SPWeb web = site.OpenWeb())
                 {
+                    appConfig = new AppConfig(web);
+
                     var isAdmin = web.UserIsSiteAdmin;
                     if (isAdmin == true)
                     {
@@ -53,10 +57,8 @@ namespace Onlyoffice.Layouts
                         {
                             try
                             {
-                                if (web.Properties["DocumentServerHost"] != null)
-                                {
-                                    DocumentServerHost.Text = web.Properties["DocumentServerHost"];
-                                }
+                                DocumentServerHost.Text = appConfig.GetDocumentServerHost();
+                                JwtSecret.Text = appConfig.GetJwtSecret();
                             }
                             catch (Exception ex) 
                             {
@@ -74,25 +76,22 @@ namespace Onlyoffice.Layouts
         protected void Save_Click(object sender, System.EventArgs e)
         {
             String DSHost = DocumentServerHost.Text;
+            String JWTSecret = JwtSecret.Text;
 
             using (SPSite site = new SPSite(url))
             using (SPWeb web = site.OpenWeb())
             {
+                appConfig = new AppConfig(web);
+
                 var isAdmin = web.UserIsSiteAdmin;
                 if (isAdmin == true)
                 {
                     try
                     {
-                        if (web.Properties["DocumentServerHost"] == null)
-                        {
-                            web.Properties.Add("DocumentServerHost", DSHost);
-                        }
-                        else
-                        {
-                            web.Properties["DocumentServerHost"] = DSHost;
-                        }
-                        web.Properties.Update();
-                        Message.Text = Microsoft.SharePoint.Utilities.SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+                        appConfig.SetDocumentServerHost(DSHost);
+                        appConfig.SetJwtSecret(JWTSecret);
+
+                        Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
                     }
                     catch(Exception ex)
                     {

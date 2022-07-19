@@ -7,20 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Onlyoffice.Layouts {
-    
-    
-    public partial class Settings {
-        
-        /// <summary>
-        /// Link1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Link1;
-        
+namespace Onlyoffice.Layouts
+{
+
+
+    public partial class Settings
+    {
+
         /// <summary>
         /// DocumentServerTitle control.
         /// </summary>
@@ -29,7 +22,7 @@ namespace Onlyoffice.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DocumentServerTitle;
-        
+
         /// <summary>
         /// DocumentServerHost control.
         /// </summary>
@@ -38,7 +31,25 @@ namespace Onlyoffice.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox DocumentServerHost;
-        
+
+        /// <summary>
+        /// JwtSecretTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label JwtSecretTitle;
+
+        /// <summary>
+        /// JwtSecret control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox JwtSecret;
+
         /// <summary>
         /// Message control.
         /// </summary>
@@ -47,7 +58,7 @@ namespace Onlyoffice.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Message;
-        
+
         /// <summary>
         /// SaveSettings control.
         /// </summary>

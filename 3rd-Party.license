@@ -1,0 +1,9 @@
+SharePoint ONLYOFFICE integration app uses code from the following 3rd party projects:
+
+JWT - JWT (JSON Web Token) Implementation for .NET (Public Domain) (https://github.com/jwt-dotnet/jwt/blob/master/LICENSE.md)
+License:        MIT License
+License File:   JWT.license
+
+Newtonsoft.Json - Json.NET is a popular high-performance JSON framework for .NET (https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
+License:        MIT License
+License File:   Newtonsoft.Json.license
