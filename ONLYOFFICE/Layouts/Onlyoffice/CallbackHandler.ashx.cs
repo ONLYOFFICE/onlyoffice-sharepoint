@@ -105,13 +105,14 @@ namespace Onlyoffice
                     AppConfig AppConfig = new AppConfig(web);
 
                     string JwtSecret = AppConfig.GetJwtSecret();
+                    string JwtHeader = AppConfig.GetJwtHeader();
 
                     if (!string.IsNullOrEmpty(JwtSecret))
                     {
                         var token = string.Empty;
-                        if (context.Request.Headers.Get("Authorization") != null)
+                        if (context.Request.Headers.Get(JwtHeader) != null)
                         {
-                            token = context.Request.Headers.Get("Authorization").Substring("Bearer ".Length);
+                            token = context.Request.Headers.Get(JwtHeader).Substring("Bearer ".Length);
                         }
                         else
                         {
@@ -194,6 +195,7 @@ namespace Onlyoffice
                         AppConfig AppConfig = new AppConfig(web);
 
                         string JwtSecret = AppConfig.GetJwtSecret();
+                        string JwtHeader = AppConfig.GetJwtHeader();
 
                         if (!string.IsNullOrEmpty(JwtSecret))
                         {
@@ -204,9 +206,9 @@ namespace Onlyoffice
                                 token = fileData["token"].ToString();
                                 payload  = Encryption.GetPayload(JwtSecret, token);
                             }
-                            else if (context.Request.Headers.Get("Authorization") != null)
+                            else if (context.Request.Headers.Get(JwtHeader) != null)
                             {
-                                token = context.Request.Headers.Get("Authorization").Substring("Bearer ".Length);
+                                token = context.Request.Headers.Get(JwtHeader).Substring("Bearer ".Length);
 
                                 var header = Encryption.GetPayload(JwtSecret, token);
                                 if (header != null && header.ContainsKey("payload"))

@@ -43,6 +43,7 @@ namespace Onlyoffice.Layouts
         {
             DocumentServerTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             JwtSecretTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtSecret", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            JwtHeaderTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtHeader", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             SaveSettings.Text = SPUtility.GetLocalizedString("$Resources:Resource,Save", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             using (SPSite site = new SPSite(url))
             {
@@ -59,6 +60,7 @@ namespace Onlyoffice.Layouts
                             {
                                 DocumentServerHost.Text = appConfig.GetDocumentServerHost();
                                 JwtSecret.Text = appConfig.GetJwtSecret();
+                                JwtHeader.Text = appConfig.GetJwtHeader();
                             }
                             catch (Exception ex) 
                             {
@@ -77,6 +79,7 @@ namespace Onlyoffice.Layouts
         {
             String DSHost = DocumentServerHost.Text;
             String JWTSecret = JwtSecret.Text;
+            String JWTHeader = JwtHeader.Text;
 
             using (SPSite site = new SPSite(url))
             using (SPWeb web = site.OpenWeb())
@@ -90,6 +93,7 @@ namespace Onlyoffice.Layouts
                     {
                         appConfig.SetDocumentServerHost(DSHost);
                         appConfig.SetJwtSecret(JWTSecret);
+                        appConfig.SetJwtHeader(JWTHeader);
 
                         Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
                     }

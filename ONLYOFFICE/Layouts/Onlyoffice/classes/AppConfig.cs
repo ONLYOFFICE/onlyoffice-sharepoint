@@ -39,6 +39,8 @@ namespace Onlyoffice
 
         private const string _jwtSecret = "JwtSecret";
 
+        private const string _jwtHeader = "JwtHeader";
+
         public AppConfig(SPWeb Web) 
         {
             _web = Web;
@@ -109,6 +111,26 @@ namespace Onlyoffice
 
             if (value == null)
                 return null;
+
+            return value;
+        }
+
+        public void SetJwtHeader(string value)
+        {
+            if (_web.Properties[_jwtHeader] == null)
+                _web.Properties.Add(_jwtHeader, value);
+            else
+                _web.Properties[_jwtHeader] = value;
+
+            _web.Properties.Update();
+        }
+
+        public string GetJwtHeader()
+        {
+            var value = _web.Properties[_jwtHeader];
+
+            if (value == null)
+                return "AuthorizationJWT";
 
             return value;
         }
