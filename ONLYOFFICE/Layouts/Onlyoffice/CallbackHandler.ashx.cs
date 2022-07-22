@@ -48,7 +48,7 @@ namespace Onlyoffice
 
     public class CallbackHandler : IHttpHandler
     {
-        protected int secret; 
+        protected int secret;
 
         public void ProcessRequest(HttpContext context)
         {
@@ -102,7 +102,11 @@ namespace Onlyoffice
                 using (SPSite site = new SPSite(url))
                 using (SPWeb web = site.OpenWeb())
                 {
-                    if (!string.IsNullOrEmpty(web.Properties["JwtSecret"]))
+                    AppConfig AppConfig = new AppConfig(web);
+
+                    string JwtSecret = AppConfig.GetJwtSecret();
+
+                    if (!string.IsNullOrEmpty(JwtSecret))
                     {
                         var token = string.Empty;
                         if (context.Request.Headers.Get("Authorization") != null)
@@ -116,7 +120,7 @@ namespace Onlyoffice
                             return;
                         }
 
-                        var payload = Encryption.GetPayload(web.Properties["JwtSecret"], token);
+                        var payload = Encryption.GetPayload(JwtSecret, token);
                         if (payload == null)
                         {
                             Log.LogError("JWT validation failed");
@@ -187,20 +191,24 @@ namespace Onlyoffice
                         var usersTrack = fileData.ContainsKey("users") ? (ArrayList)fileData["users"] : null;
                         var urlTrack = fileData.ContainsKey("url") ? (string)fileData["url"] : string.Empty;
 
-                        if (!string.IsNullOrEmpty(web.Properties["JwtSecret"]))
+                        AppConfig AppConfig = new AppConfig(web);
+
+                        string JwtSecret = AppConfig.GetJwtSecret();
+
+                        if (!string.IsNullOrEmpty(JwtSecret))
                         {
                             var token = string.Empty;
                             Dictionary<string, object> payload = null;
                             if (fileData.ContainsKey("token"))
                             {
                                 token = fileData["token"].ToString();
-                                payload  = Encryption.GetPayload(web.Properties["JwtSecret"], token);
+                                payload  = Encryption.GetPayload(JwtSecret, token);
                             }
                             else if (context.Request.Headers.Get("Authorization") != null)
                             {
                                 token = context.Request.Headers.Get("Authorization").Substring("Bearer ".Length);
 
-                                var header = Encryption.GetPayload(web.Properties["JwtSecret"], token);
+                                var header = Encryption.GetPayload(JwtSecret, token);
                                 if (header != null && header.ContainsKey("payload"))
                                     payload = (Dictionary<string, object>)header["payload"];
                             }
