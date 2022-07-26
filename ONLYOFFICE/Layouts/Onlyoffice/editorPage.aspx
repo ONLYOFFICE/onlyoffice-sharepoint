@@ -9,48 +9,13 @@
 
         <script type="text/javascript" src= "<%= DocumentSeverHost %>web-apps/apps/api/documents/api.js"></script>
         <script type="text/javascript">
+            var config = <%= ConfigurationJSON %>;
 
-        window.docEditor = new DocsAPI.DocEditor("placeholder",
-            {
-                "document": {
-                    "fileType":     "<%= FileType %>",
-                    "info": {
-                        "author":   "<%= FileAuthor %>",
-                        "created":  "<%= FileTimeCreated %>",
-                        "folder":   "<%= Folder %>",
-                        "owner":   "<%= FileAuthor %>",
-                        "uploaded":  "<%= FileTimeCreated %>"
-                    },
-                    "key":          "<%= Key %>",
-                    "permissions": {
-                        "edit":      "<%= canEdit.ToString().ToLower() %>",
-                    },
-                    "title":        "<%= FileName %>",
-                    "url": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlHashDownload) %>"
-                },
-                "documentType": "<%= documentType %>",
-                "editorConfig": {
-                    "lang":         "<%= lang %>",
-                    "mode":         "<%= FileEditorMode %>",
-                    "user": {
-                        "id":       "<%= CurrentUserId %>",
-                        "name":     "<%= CurrentUserName %>"
-                    },
-                    "customization": {
-                        "goback": {
-                            "text": "<%= GoToBackText %>",
-                            "url":  "<%= GoToBack %>"
-                        },
-                    },
-                    "callbackUrl": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlHashTrack)%>"
-                },
-                "height": "100%",
-                "type": "desktop",
-                "width": "100%",
-                "events": {
-                    "onRequestSaveAs": onRequestSaveAs
-                }
-            });
+            config["events"] = {
+                "onRequestSaveAs": onRequestSaveAs
+            }
+
+            window.docEditor = new DocsAPI.DocEditor("placeholder", config);
 
             function onRequestSaveAs (event) {
 

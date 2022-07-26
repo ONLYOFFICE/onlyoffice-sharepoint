@@ -30,48 +30,38 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Web.Script.Serialization;
-using System.Net;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
-using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebControls;
-using Onlyoffice;
 
 namespace Onlyoffice.Layouts
 {
     public partial class editorPage : LayoutsPageBase
     {
-        protected string Key = "YQXK78GQD4FF", //random for initialization
-                         FileName = "",
-                         FileType = "",
-                         FileAuthor = "",
-                         FileTimeCreated = "",
-                         FileEditorMode = "view",
-                         urlHashDownload = "",
-                         documentType = "",
-                         urlHashTrack = "",
-                         GoToBack = "",
-                         GoToBackText = "",
-                         lang = "",
-                         CurrentUserName = "",
-                         CurrentUserLogin = "",
-                         SPListItemId, SPListURLDir, SPSourceAction, Folder, Secret,
-                         DocumentSeverHost = "@http://localhost",
-                         host = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority,
+        private string urlHashDownload = string.Empty,
+                       urlHashTrack = string.Empty,
+                       CurrentUserLogin = string.Empty,
+                       SPListItemId = string.Empty,
+                       SPListURLDir = string.Empty,
+                       SPSourceAction = string.Empty,
+                       Secret = string.Empty,
+                       JwtSecret = string.Empty,
+                       Host = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority,
+                       SubSite = HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
+
+        private int CurrentUserId = 0;
+        private bool canEdit = false;
+        private Configuration Configuration = new Configuration();
+        private SPUser currentUser;
+        private AppConfig AppConfig;
+
+        protected string DocumentSeverHost = "@http://localhost",
+                         Folder = string.Empty,
+                         SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/",
+                         ConfigurationJSON = string.Empty,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
-                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
-                         SubSite = HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts")),
-                         SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "": "15/";
-
-        protected int CurrentUserId = 0;
-
-        protected bool canEdit = false;
-
-        SPUser currentUser;
+                                                                                                            HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -90,32 +80,11 @@ namespace Onlyoffice.Layouts
                 {
                     using (SPWeb web = site.OpenWeb())
                     {
-                        //read settings
-//==================================================================================
-                        if (web.Properties["DocumentServerHost"] != null)
-                        {
-                            DocumentSeverHost = web.Properties["DocumentServerHost"];
-                        }
-                        DocumentSeverHost += DocumentSeverHost.EndsWith("/") ? "" : "/";
+                        AppConfig = new AppConfig(web);
 
-                        //check secret key
-//==================================================================================
-                        if (web.Properties["SharePointSecret"] == null)
-                        {
-                            var rnd = new Random();
-                            var spSecret = "";
-                            for (var i = 0; i < 6; i++ )
-                            {
-                                spSecret = spSecret + rnd.Next(1, 9).ToString();
-                            }
-                            web.AllowUnsafeUpdates = true;
-                            web.Update();
-                            web.Properties.Add("SharePointSecret", spSecret);
-                            web.Properties.Update();
-                            web.AllowUnsafeUpdates = true; 
-                            web.Update();
-                        }
-                        Secret = web.Properties["SharePointSecret"];
+                        DocumentSeverHost = AppConfig.GetDocumentServerHost();
+                        Secret = AppConfig.GetSharePointSecret();
+                        JwtSecret = AppConfig.GetJwtSecret();
 
                         // get current user ID and Name
 //==================================================================================
@@ -132,17 +101,15 @@ namespace Onlyoffice.Layouts
 
                         if (currentUser != null)
                         {
-                            CurrentUserId = currentUser.ID;
-                            CurrentUserName = currentUser.Name;
+                            Configuration.EditorConfig.User.Id = CurrentUserId = currentUser.ID;
+                            Configuration.EditorConfig.User.Name = currentUser.Name;
                         }
 
                         //get language
 //==================================================================================
                         var lcid = (int)web.Language;
                         var defaultCulture = new CultureInfo(lcid);
-                        lang = defaultCulture.IetfLanguageTag;
-
-                        GoToBackText = LoadResource("GoToBack");                       
+                        Configuration.EditorConfig.Lang = defaultCulture.IetfLanguageTag;                     
 
                         //generate key and get file info for DocEditor 
 //==================================================================================               
@@ -160,38 +127,42 @@ namespace Onlyoffice.Layouts
 
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
-                            Key = file.ETag;
-                            Key = GenerateRevisionId(Key);
+                            Configuration.Document.Key = GenerateRevisionId(file.ETag);
 
                             Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
                             Folder = Folder.Replace("\\", "/");
-                            GoToBack = host + Folder;
 
-                            FileAuthor = file.Author.Name;
+                            Configuration.Document.Info.Folder = Folder;
+                            Configuration.EditorConfig.Customization.GoBack.Text = LoadResource("GoToBack");
+                            Configuration.EditorConfig.Customization.GoBack.Url = Host + Folder;
+
+                            Configuration.Document.Info.Author = file.Author.Name;
+                            Configuration.Document.Info.Owner = file.Author.Name;
 
                             var tzi = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
-                            FileTimeCreated = TimeZoneInfo.ConvertTimeFromUtc(file.TimeCreated, tzi).ToString();
+                            Configuration.Document.Info.Created = Configuration.Document.Info.Uploaded = TimeZoneInfo.ConvertTimeFromUtc(file.TimeCreated, tzi).ToString();
 
-                            FileName = file.Name;
+                            Configuration.Document.Title = file.Name;
 
-                            var tmp = FileName.Split('.');
-                            FileType = tmp[tmp.Length - 1];
+                            var tmp = Configuration.Document.Title.Split('.');
+                            Configuration.Document.FileType = tmp[tmp.Length - 1];
 
                             //check document format
-                            documentType = FileUtility.GetDocType(FileType);
-                            if (string.IsNullOrEmpty(documentType))
+                            if (string.IsNullOrEmpty(Configuration.DocumentType))
                                 Response.Redirect(SPUrl);
 
-                            if (FileUtility.CanViewTypes.Contains(FileType))
+                            if (FileUtility.CanViewTypes.Contains(Configuration.Document.FileType))
                             {
-                                var canEditType = FileUtility.CanEditTypes.Contains(FileType);
+                                var canEditType = FileUtility.CanEditTypes.Contains(Configuration.Document.FileType);
                                 canEdit = canEdit & canEditType;
-                                FileEditorMode = canEdit ? "edit" : FileEditorMode;
+                                Configuration.EditorConfig.EditorMode = canEdit ? EditorMode.Edit : EditorMode.View;
                             }
                             else
                             {
                                 Response.Redirect(SPUrl);
                             }
+
+                            Configuration.Document.Permissions.Edit = canEdit;
                         }
                         catch (Exception ex)
                         {
@@ -206,6 +177,14 @@ namespace Onlyoffice.Layouts
 //==================================================================================  
             urlHashDownload = Encryption.GetUrlHash("download", Secret, SPListItemId, Folder, SPListURLDir, CurrentUserId);
             urlHashTrack = Encryption.GetUrlHash("track", Secret, SPListItemId, Folder, SPListURLDir);
+
+            Configuration.Document.Url = string.Format("{0}_layouts/{1}Onlyoffice/CallbackHandler.ashx?data={2}", SPUrl, SPVersion, urlHashDownload);
+            Configuration.EditorConfig.CallbackUrl = string.Format("{0}_layouts/{1}Onlyoffice/CallbackHandler.ashx?data={2}", SPUrl, SPVersion, urlHashTrack);
+
+            if (!string.IsNullOrEmpty(JwtSecret))
+                Configuration.Token = Encryption.GetSignature(JwtSecret, Configuration);
+
+            ConfigurationJSON = Configuration.Serialize(Configuration);
         }
 
         /// <summary>

@@ -28,17 +28,27 @@ using Microsoft.SharePoint;
 using System;
 using System.Web;
 using System.Web.Script.Serialization;
-using System.Security.Cryptography;
 using System.Net;
 using System.IO;
 using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Onlyoffice
 {
+    enum Status
+    {
+        Editing = 1,
+        MustSave = 2,
+        Corrupted = 3,
+        Closed = 4,
+        ForceSave = 6,
+        CorruptedForceSave = 7
+    }
+
     public class CallbackHandler : IHttpHandler
     {
-        protected int secret; 
+        protected int secret;
 
         public void ProcessRequest(HttpContext context)
         {
@@ -63,6 +73,7 @@ namespace Onlyoffice
 
             if (!isValidData)
             {
+                Log.LogError("Hash data is invalid");
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 context.Response.StatusDescription = "Access denied.";
                 return;
@@ -91,6 +102,34 @@ namespace Onlyoffice
                 using (SPSite site = new SPSite(url))
                 using (SPWeb web = site.OpenWeb())
                 {
+                    AppConfig AppConfig = new AppConfig(web);
+
+                    string JwtSecret = AppConfig.GetJwtSecret();
+                    string JwtHeader = AppConfig.GetJwtHeader();
+
+                    if (!string.IsNullOrEmpty(JwtSecret))
+                    {
+                        var token = string.Empty;
+                        if (context.Request.Headers.Get(JwtHeader) != null)
+                        {
+                            token = context.Request.Headers.Get(JwtHeader).Substring("Bearer ".Length);
+                        }
+                        else
+                        {
+                            Log.LogError("JWT expected");
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            return;
+                        }
+
+                        var payload = Encryption.GetPayload(JwtSecret, token);
+                        if (payload == null)
+                        {
+                            Log.LogError("JWT validation failed");
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            return;
+                        }
+                    }
+
                     try
                     {
                         SPUser user = web.AllUsers.GetByID(userId);
@@ -148,10 +187,55 @@ namespace Onlyoffice
                             body = reader.ReadToEnd();
                         
                         var fileData = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(body);
+
+                        var statusTrack = (int)fileData["status"];
+                        var usersTrack = fileData.ContainsKey("users") ? (ArrayList)fileData["users"] : null;
+                        var urlTrack = fileData.ContainsKey("url") ? (string)fileData["url"] : string.Empty;
+
+                        AppConfig AppConfig = new AppConfig(web);
+
+                        string JwtSecret = AppConfig.GetJwtSecret();
+                        string JwtHeader = AppConfig.GetJwtHeader();
+
+                        if (!string.IsNullOrEmpty(JwtSecret))
+                        {
+                            var token = string.Empty;
+                            Dictionary<string, object> payload = null;
+                            if (fileData.ContainsKey("token"))
+                            {
+                                token = fileData["token"].ToString();
+                                payload  = Encryption.GetPayload(JwtSecret, token);
+                            }
+                            else if (context.Request.Headers.Get(JwtHeader) != null)
+                            {
+                                token = context.Request.Headers.Get(JwtHeader).Substring("Bearer ".Length);
+
+                                var header = Encryption.GetPayload(JwtSecret, token);
+                                if (header != null && header.ContainsKey("payload"))
+                                    payload = (Dictionary<string, object>)header["payload"];
+                            }
+                            else
+                            {
+                                Log.LogError("JWT expected");
+                                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                                return;
+                            }
+
+                            if (payload == null)
+                            {
+                                Log.LogError("JWT validation failed");
+                                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                                return;
+                            }
+
+                            statusTrack = (int)payload["status"];
+                            usersTrack = payload.ContainsKey("users") ? (ArrayList)payload["users"] : null;
+                            urlTrack = payload.ContainsKey("url") ? (string)payload["url"] : string.Empty;
+                        }
+
                         try
-                        { 
-                            var userList = (System.Collections.ArrayList)fileData["users"];
-                            var userID = Int32.Parse(userList[0].ToString());
+                        {
+                            var userID = Int32.Parse(usersTrack[0].ToString());
 
                             SPUser user = web.AllUsers.GetByID(userID);
                             userToken = user.UserToken;
@@ -163,10 +247,8 @@ namespace Onlyoffice
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                             
                             //save file to SharePoint
-                            if ((int)fileData["status"] == 2)
+                            if (statusTrack == (int)Status.MustSave)
                             {
-                                var req = (string)fileData["url"];
-
                                 var replaceExistingFiles = true;
 
                                 var fileName = item.File.Name;
@@ -176,7 +258,7 @@ namespace Onlyoffice
 
                                 byte[] fileDataArr = null;
                                 using (var wc = new WebClient())
-                                    fileDataArr = wc.DownloadData(req);
+                                    fileDataArr = wc.DownloadData(urlTrack);
 
                                 if (Folder != "")
                                 {

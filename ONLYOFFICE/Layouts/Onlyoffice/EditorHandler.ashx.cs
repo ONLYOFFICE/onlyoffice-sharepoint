@@ -28,10 +28,8 @@ using Microsoft.SharePoint;
 using System;
 using System.Web;
 using System.Web.Script.Serialization;
-using System.Security.Cryptography;
 using System.Net;
 using System.IO;
-using System.Text;
 using System.Collections.Generic;
 
 namespace Onlyoffice

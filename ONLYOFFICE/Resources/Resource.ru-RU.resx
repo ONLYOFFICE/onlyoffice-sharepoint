@@ -129,6 +129,12 @@
   <data name="GoToBack" xml:space="preserve">
     <value>Вернуться назад</value>
   </data>
+  <data name="JwtHeader" xml:space="preserve">
+    <value>Заголовок секретного ключа</value>
+  </data>
+  <data name="JwtSecret" xml:space="preserve">
+    <value>Секретный ключ (оставьте пустым для отключения)</value>
+  </data>
   <data name="RibbonTooltipText" xml:space="preserve">
     <value>Открыть документ для редактирования в ONLYOFFICE</value>
   </data>

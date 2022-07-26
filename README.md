@@ -53,13 +53,20 @@ Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffi
 
 ## Configuring SharePoint ONLYOFFICE integration solution
 
-In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings. Enter the following address to connect ONLYOFFICE Document Server:
+In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings.
+Enter the following address to connect ONLYOFFICE Document Server:
 ```
 https://<documentserver>/
 ```
 Where the documentserver is the name of the server with the ONLYOFFICE Document Server installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Document Server for correct work.
 
 *Please note, that if you have subsites set up with SharePoint, you will need to additionally configure ONLYOFFICE Document Server connection with each of them, in order for it to work properly. Go to each subsite settings and enter the Document Server address to the proper field.*
+
+To restrict the access to ONLYOFFICE Document Server and for security reasons and data integrity the encrypted signature is used.
+Specify the _Secret key_ in the administrative settings.
+In the ONLYOFFICE Document Server [config file](https://api.onlyoffice.com/editors/signature/) specify the same secret key and enable the validation.
+
+If JWT protection is enabled, it is necessary to specify a custom header name since the SharePoint security policy blocks external 'Authorization' Headers. This header should be specified in the ONLYOFFICE Docs signature settings as well (further information can be found [here](https://api.onlyoffice.com/editors/signature/)).
 
 ## Compiling SharePoint ONLYOFFICE integration solution
 
