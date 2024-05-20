@@ -101,7 +101,8 @@ namespace Onlyoffice.Layouts
 
                         if (currentUser != null)
                         {
-                            Configuration.EditorConfig.User.Id = CurrentUserId = currentUser.ID;
+                            CurrentUserId = currentUser.ID;
+                            Configuration.EditorConfig.User.Id = CurrentUserId.ToString();
                             Configuration.EditorConfig.User.Name = currentUser.Name;
                         }
 
