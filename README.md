@@ -1,10 +1,10 @@
-﻿# SharePoint ONLYOFFICE integration solution
+﻿# ONLYOFFICE solution for SharePoint
 
-This app enables users to edit office documents from SharePoint using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
+This solution enables users to edit office documents from SharePoint using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
 ## Features
 
-The app allows to:
+The solution allows to:
 
 * Edit text documents, spreadsheets, and presentations.
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
@@ -26,7 +26,7 @@ To install Enterprise Edition, follow instructions [here](https://helpcenter.onl
 
 Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
-## Installing SharePoint ONLYOFFICE integration solution
+## Installing ONLYOFFICE solution for SharePoint
 
 1. Click Start, point to All Programs, point to Administrative Tools, and then click Services, and make sure that SharePoint Administration service is started.
 2. Click Start, click SharePoint Management Shell, go to the directory with the .wsp file.
@@ -51,7 +51,7 @@ Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffi
 9. Going back to Web Application Management click on the Anonymous Policy icon.
 10. Under Anonymous Access Restrictions select your Zone and set the Permissions to None – No policy and click Save.
 
-## Configuring SharePoint ONLYOFFICE integration solution
+## Configuring ONLYOFFICE solution for SharePoint
 
 In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings.
 Enter the following address to connect ONLYOFFICE Document Server:
@@ -68,9 +68,9 @@ In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/editors/signatur
 
 If JWT protection is enabled, it is necessary to specify a custom header name since the SharePoint security policy blocks external 'Authorization' Headers. This header should be specified in the ONLYOFFICE Docs signature settings as well (further information can be found [here](https://api.onlyoffice.com/editors/signature/)).
 
-## Compiling SharePoint ONLYOFFICE integration solution
+## Compiling ONLYOFFICE solution for SharePoint
 
-There are two ways to compile ONLYOFFICE SharePoint integration solution:
+There are two ways to compile ONLYOFFICE solution for SharePoint:
 
 a. Using MS Visual Studio:
   1. Enter the SharePoint server and open this project in Visual Studio.

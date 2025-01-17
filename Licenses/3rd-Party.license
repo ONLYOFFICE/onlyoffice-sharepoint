@@ -1,4 +1,4 @@
-SharePoint ONLYOFFICE integration app uses code from the following 3rd party projects:
+ONLYOFFICE solution for SharePoint uses code from the following 3rd party projects:
 
 JWT           - JWT (JSON Web Token) Implementation for .NET (Public Domain) (https://github.com/jwt-dotnet/jwt/blob/master/LICENSE.md)
 License:        MIT License
