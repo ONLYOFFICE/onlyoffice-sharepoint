@@ -8,7 +8,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ascensio System SIA")]
 [assembly: AssemblyProduct("ONLYOFFICE")]
-[assembly: AssemblyCopyright("Ascensio System SIA 2024")]
+[assembly: AssemblyCopyright("Ascensio System SIA 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
