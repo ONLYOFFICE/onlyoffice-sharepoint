@@ -9,7 +9,7 @@ The solution allows to:
 * Edit text documents, spreadsheets, and presentations.
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
 
-Supported formats: 
+Supported formats:
 
 * For viewing and editing: DOCX, XLSX, PPTX.
 * For viewing only: PDF, DJVU, TXT, CSV, ODT, ODS, ODP, DOC, XLS, PPT, PPS, EPUB, RTF, HTML, HTM, MHT, XPS.
@@ -20,7 +20,7 @@ You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvabl
 
 You can install free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
 
-To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx) for Debian, Ubuntu, or derivatives.  
+To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx) for Debian, Ubuntu, or derivatives.
 
 To install Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/installation/docs-enterprise-index.aspx).
 
@@ -62,8 +62,8 @@ Where the documentserver is the name of the server with the ONLYOFFICE Document 
 
 *Please note, that if you have subsites set up with SharePoint, you will need to additionally configure ONLYOFFICE Document Server connection with each of them, in order for it to work properly. Go to each subsite settings and enter the Document Server address to the proper field.*
 
-Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. 
-Specify your own **Secret key** in the SharePoint administrative settings. 
+Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
+Specify your own **Secret key** in the SharePoint administrative settings.
 In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/), specify the same secret key and enable the validation.
 
 If JWT protection is enabled, it is necessary to specify a custom header name since the SharePoint security policy blocks external 'Authorization' Headers. This header should be specified in the ONLYOFFICE Docs signature settings as well (further information can be found [here](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/)).
@@ -104,7 +104,7 @@ b. With the help of the build.bat file provided:
 * After 10 seconds of inactivity, ONLYOFFICE Document Server sends a POST to the callback URL letting SharePoint ONLYOFFICE solution know that the clients have finished editing the document and closed it.
 * SharePoint ONLYOFFICE solution downloads the new version of the document, replacing the old one.
 
-## ONLYOFFICE Docs editions 
+## ONLYOFFICE Docs editions
 
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
@@ -147,8 +147,8 @@ The table below will help you make the right choice.
 | **Document Editor features** | **Community Edition** | **Enterprise Edition** |
 | Font and paragraph formatting   | + | + |
 | Object insertion                | + | + |
-| Adding Content control          | + | + | 
-| Editing Content control         | + | + | 
+| Adding Content control          | + | + |
+| Editing Content control         | + | + |
 | Layout tools                    | + | + |
 | Table of contents               | + | + |
 | Navigation panel                | + | + |
@@ -160,9 +160,9 @@ The table below will help you make the right choice.
 | Functions, formulas, equations  | + | + |
 | Table templates                 | + | + |
 | Pivot tables                    | + | + |
-| Data validation           | + | + |
+| Data validation                 | + | + |
 | Conditional formatting          | + | + |
-| Sparklines                   | + | + |
+| Sparklines                      | + | + |
 | Sheet Views                     | + | + |
 | **Presentation Editor features** | **Community Edition** | **Enterprise Edition** |
 | Font and paragraph formatting   | + | + |
@@ -172,7 +172,7 @@ The table below will help you make the right choice.
 | Presenter mode                  | + | + |
 | Notes                           | + | + |
 | **Form creator features** | **Community Edition** | **Enterprise Edition** |
-| Adding form fields           | + | + |
+| Adding form fields              | + | + |
 | Form preview                    | + | + |
 | Saving as PDF                   | + | + |
 | **Working with PDF**      | **Community Edition** | **Enterprise Edition** |
