@@ -152,10 +152,11 @@ namespace Onlyoffice.Layouts
                             if (string.IsNullOrEmpty(Configuration.DocumentType))
                                 Response.Redirect(SPUrl);
 
-                            if (FileUtility.CanViewTypes.Contains(Configuration.Document.FileType))
+                            var format = FileUtility.GetFormat(Configuration.Document.FileType);
+
+                            if (format.Actions.Contains(FileUtility.ActionView))
                             {
-                                var canEditType = FileUtility.CanEditTypes.Contains(Configuration.Document.FileType);
-                                canEdit = canEdit & canEditType;
+                                canEdit = canEdit & format.Actions.Contains(FileUtility.ActionEdit);
                                 Configuration.EditorConfig.EditorMode = canEdit ? EditorMode.Edit : EditorMode.View;
                             }
                             else
