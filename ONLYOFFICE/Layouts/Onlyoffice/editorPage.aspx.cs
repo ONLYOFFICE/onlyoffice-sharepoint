@@ -146,7 +146,7 @@ namespace Onlyoffice.Layouts
                             Configuration.Document.Title = file.Name;
 
                             var tmp = Configuration.Document.Title.Split('.');
-                            Configuration.Document.FileType = tmp[tmp.Length - 1];
+                            Configuration.Document.FileType = tmp[tmp.Length - 1].ToLower();
 
                             //check document format
                             if (string.IsNullOrEmpty(Configuration.DocumentType))
