@@ -57,7 +57,7 @@
 
     <asp:Button ID="SaveSettings" runat="server" OnClick="Save_Click" CssClass="setting_save" />
 
-    <a href="" target="_blank" class="banner">
+    <a href="https://www.onlyoffice.com/docs-registration" target="_blank" class="banner">
         <img src="./images/DocsCloudBanner.svg"/>
     </a>
 </asp:Content>
