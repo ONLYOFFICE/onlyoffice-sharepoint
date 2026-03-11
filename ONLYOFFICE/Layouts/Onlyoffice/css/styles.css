@@ -27,12 +27,25 @@
 .settings_container {
     margin-left: 10px;
 }
-.settings_container p {
+.input_container {
     margin-top: 10px;
+}
+.settings_header {
+    font-size: 20px;
+}
+.settings_description {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 14px 0;
 }
 .setting_title {
     color: black;
     display: inline-block;
+    font-weight: 600;
+}
+.setting_title:not(.settings_header) {
+    margin-bottom: 4px;
 }
 .setting_input {
     display: inline-block;
@@ -50,4 +63,47 @@
     width: 70px;
     margin-top: 10px;
     line-height: 0;
+}
+.tooltip_container {
+    position: relative;
+    display: inline-block;
+    height: 14px;
+    bottom: -2px;
+}
+.tooltip_text {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-32px);
+    background: #ffffff;
+    color: #000000;
+    padding: 8px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    margin-bottom: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.tooltip_text:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 23px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #ffffff;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+}
+.tooltip_container:hover .tooltip_text {
+    opacity: 1;
+}
+.banner {
+    display: block;
+    margin: 16px 0 0 10px;
+    cursor: pointer;
 }
