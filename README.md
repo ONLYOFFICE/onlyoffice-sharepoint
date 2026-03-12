@@ -9,10 +9,22 @@ The solution allows to:
 * Edit text documents, spreadsheets, and presentations.
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
 
-Supported formats:
+**Supported formats:**
 
-* For viewing and editing: DOCX, XLSX, PPTX.
-* For viewing only: PDF, DJVU, TXT, CSV, ODT, ODS, ODP, DOC, XLS, PPT, PPS, EPUB, RTF, HTML, HTM, MHT, XPS.
+For viewing:
+
+- **WORD**: DOC, DOCM, DOCX, DOT, DOTM, DOTX, EPUB, FB2, FODT, HML, HTM, HTML, HWP, HWPX, MD, MHT, MHTML, ODT, OTT, PAGES, RTF, STW, SXW, TXT, WPS, WPT, XML
+- **CELL**: CSV, ET, ETT, FODS, NUMBERS, ODS, OTS, SXC, XLS, XLSB, XLSM, XLSX, XLT, XLTM, XLTX
+- **SLIDE**: DPS, DPT, FODP, KEY, ODG, ODP, OTP, POT, POTM, POTX, PPS, PPSM, PPSX, PPT, PPTM, PPTX, SXI
+- **PDF**: DJVU, DOCXF, OFORM, OXPS, PDF, XPS
+- **DIAGRAM**: VSDM, VSDX, VSSM, VSSX, VSTM, VSTX
+
+For editing:
+
+- **WORD**: DOCM, DOCX, DOTM, DOTX
+- **CELL**: XLSB, XLSM, XLSX, XLTM, XLTX
+- **SLIDE**: POTM, POTX, PPSM, PPSX, PPTM, PPTX
+- **PDF**: PDF
 
 ## Installing ONLYOFFICE Docs
 

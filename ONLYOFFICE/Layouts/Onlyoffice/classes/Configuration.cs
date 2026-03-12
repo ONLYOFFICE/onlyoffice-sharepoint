@@ -70,7 +70,7 @@ namespace Onlyoffice
             get
             {
                 if (!string.IsNullOrEmpty(Document.FileType))
-                    return FileUtility.GetDocType(Document.FileType);
+                    return FileUtility.GetFormat(Document.FileType).Type;
 
                 return _documentType;
             }
