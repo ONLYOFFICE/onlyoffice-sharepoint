@@ -15,15 +15,15 @@
     <div class="settings_container">
         <p>
             <asp:Label ID="DocumentServerTitle" runat="server" CssClass="setting_title" /> <br />
-            <asp:TextBox ID="DocumentServerHost" MaxLength="40" runat="server" CssClass="setting_input" />
+            <asp:TextBox ID="DocumentServerHost" MaxLength="255" runat="server" CssClass="setting_input" />
         </p>
         <p>
             <asp:Label ID="JwtSecretTitle" runat="server" CssClass="setting_title" /> <br />
-            <asp:TextBox ID="JwtSecret" MaxLength="40" runat="server" CssClass="setting_input" />
+            <asp:TextBox ID="JwtSecret" MaxLength="255" runat="server" CssClass="setting_input" />
         </p>
         <p>
             <asp:Label ID="JwtHeaderTitle" runat="server" CssClass="setting_title" /> <br />
-            <asp:TextBox ID="JwtHeader" MaxLength="40" runat="server" CssClass="setting_input" />
+            <asp:TextBox ID="JwtHeader" MaxLength="255" runat="server" CssClass="setting_input" />
         </p>
 
         <asp:Label ID="Message" runat="server" CssClass="setting_message" /> <br />

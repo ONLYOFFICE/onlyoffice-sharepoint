@@ -8,7 +8,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ascensio System SIA")]
 [assembly: AssemblyProduct("ONLYOFFICE")]
-[assembly: AssemblyCopyright("Ascensio System SIA 2022")]
+[assembly: AssemblyCopyright("Ascensio System SIA 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -16,6 +16,6 @@ using System.Security;
 
 [assembly: Guid("12854e7f-31b0-4634-9ae0-ce6aeef3d2a5")]
 
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+[assembly: AssemblyVersion("3.1.0.0")]
+[assembly: AssemblyFileVersion("3.1.0.0")]
 

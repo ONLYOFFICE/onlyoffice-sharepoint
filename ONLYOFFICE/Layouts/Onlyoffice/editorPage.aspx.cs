@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2026
  *
  * The MIT License (MIT)
  *
@@ -101,7 +101,8 @@ namespace Onlyoffice.Layouts
 
                         if (currentUser != null)
                         {
-                            Configuration.EditorConfig.User.Id = CurrentUserId = currentUser.ID;
+                            CurrentUserId = currentUser.ID;
+                            Configuration.EditorConfig.User.Id = CurrentUserId.ToString();
                             Configuration.EditorConfig.User.Name = currentUser.Name;
                         }
 
@@ -145,16 +146,17 @@ namespace Onlyoffice.Layouts
                             Configuration.Document.Title = file.Name;
 
                             var tmp = Configuration.Document.Title.Split('.');
-                            Configuration.Document.FileType = tmp[tmp.Length - 1];
+                            Configuration.Document.FileType = tmp[tmp.Length - 1].ToLower();
 
                             //check document format
                             if (string.IsNullOrEmpty(Configuration.DocumentType))
                                 Response.Redirect(SPUrl);
 
-                            if (FileUtility.CanViewTypes.Contains(Configuration.Document.FileType))
+                            var format = FileUtility.GetFormat(Configuration.Document.FileType);
+
+                            if (format.Actions.Contains(FileUtility.ActionView))
                             {
-                                var canEditType = FileUtility.CanEditTypes.Contains(Configuration.Document.FileType);
-                                canEdit = canEdit & canEditType;
+                                canEdit = canEdit & format.Actions.Contains(FileUtility.ActionEdit);
                                 Configuration.EditorConfig.EditorMode = canEdit ? EditorMode.Edit : EditorMode.View;
                             }
                             else

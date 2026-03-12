@@ -1,6 +1,6 @@
 ﻿/*
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2026
  *
  * The MIT License (MIT)
  *
@@ -70,7 +70,7 @@ namespace Onlyoffice
             get
             {
                 if (!string.IsNullOrEmpty(Document.FileType))
-                    return FileUtility.GetDocType(Document.FileType);
+                    return FileUtility.GetFormat(Document.FileType).Type;
 
                 return _documentType;
             }
@@ -220,7 +220,7 @@ namespace Onlyoffice
     public class UserConfig
     {
         [DataMember(Name = "id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [DataMember(Name = "name")]
         public string Name { get; set; }

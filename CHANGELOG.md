@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.1.0
+## Changed
+- supported format list
+
 ## 3.0.0
 ## Added
 - JWT support
