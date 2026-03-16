@@ -58,6 +58,8 @@ namespace Onlyoffice.Layouts
             SecretTooltip.Text = SPUtility.GetLocalizedString("$Resources:Resource,SecretTooltip", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             JwtHeaderTooltip.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtHeaderTooltip", "core", (uint)SPContext.Current.Web.UICulture.LCID);
 
+            DemoCheckbox.Text = SPUtility.GetLocalizedString("$Resources:Resource,DemoCheckboxTitle", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+
             using (SPSite site = new SPSite(url))
             {
                 using (SPWeb web = site.OpenWeb())
@@ -74,6 +76,24 @@ namespace Onlyoffice.Layouts
                                 DocumentServerHost.Text = appConfig.GetDocumentServerHost();
                                 JwtSecret.Text = appConfig.GetJwtSecret();
                                 JwtHeader.Text = appConfig.GetJwtHeader();
+
+                                if (appConfig.GetDemoEnabled())
+                                {
+                                    DemoCheckbox.Checked = true;
+                                    DemoDescription.Text = GetDemoCheckboxDescription(true);
+                                }
+                                else
+                                {
+                                    DemoCheckbox.Checked = false;
+                                    DemoDescription.Text = GetDemoCheckboxDescription(false);
+                                }
+
+                                if (!appConfig.DemoAvailable())
+                                {
+                                    DemoCheckbox.Checked = true;
+                                    DemoCheckbox.Enabled = false;
+                                    DemoDescription.Text = SPUtility.GetLocalizedString("$Resources:Resource,DemoCheckboxExpired", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+                                }
                             }
                             catch (Exception ex) 
                             {
@@ -107,6 +127,8 @@ namespace Onlyoffice.Layouts
                         appConfig.SetDocumentServerHost(DSHost);
                         appConfig.SetJwtSecret(JWTSecret);
                         appConfig.SetJwtHeader(JWTHeader);
+                        appConfig.SetDemoEnabled(DemoCheckbox.Checked);
+                        DemoDescription.Text = GetDemoCheckboxDescription(DemoCheckbox.Checked);
 
                         Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
                     }
@@ -117,6 +139,14 @@ namespace Onlyoffice.Layouts
                     }
                 }
             } 
+        }
+
+        protected string GetDemoCheckboxDescription(bool connected)
+        {
+            return SPUtility.GetLocalizedString(
+                "$Resources:Resource,DemoCheckbox" + (connected ? "Connected" : "Description"),
+                "core", (uint)SPContext.Current.Web.UICulture.LCID
+            ).Replace("[date]", appConfig.GetDemoStartDate().Value.AddDays(DocsDemo.Trial).ToString("yyyy.MM.dd"));
         }
     }
 }

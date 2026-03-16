@@ -57,6 +57,7 @@
 .setting_message {
     display: block;
     font-size: 14px;
+    margin-top: 24px;
 }
 .setting_save {
     height: 25px;
@@ -106,4 +107,80 @@
     display: block;
     margin: 16px 0 0 10px;
     cursor: pointer;
+}
+
+.demo_checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.demo_checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border-radius: 50%;
+    border: 2px solid #C8C8C8;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.demo_checkbox input[type="checkbox"]:checked {
+    background: #C22CC1;
+    border-color: #ffffff;
+}
+
+.demo_checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 7px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.demo_checkbox input[type="checkbox"]:checked:disabled {
+    background: #ffffff;
+    border-color: #C8C8C8;
+    cursor: default;
+}
+
+.demo_checkbox input[type="checkbox"]:checked:disabled::after {
+    border-color: #C8C8C8;
+}
+
+.demo_checkbox input[type="checkbox"]:disabled label,
+.demo_checkbox input[type="checkbox"]:disabled {
+    cursor: default;
+}
+
+.demo_checkbox input[type="checkbox"]:focus {
+    outline: none;
+}
+
+.demo_checkbox input[type="checkbox"]:focus-visible {
+    box-shadow: 0 0 0 3px rgba(146, 31, 144, 0.25);
+}
+
+.demo_checkbox label {
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.demo_description {
+    margin-left: 24px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #686868;
 }

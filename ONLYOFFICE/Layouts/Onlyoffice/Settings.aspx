@@ -51,8 +51,13 @@
             <asp:TextBox ID="JwtHeader" MaxLength="255" runat="server" CssClass="setting_input" />
         </div>
 
+        <asp:CheckBox id="DemoCheckbox" runat="server" Text=""
+            TextAlign="Right"
+            CssClass="demo_checkbox"
+        /> <br />
+        <asp:Label ID="DemoDescription" runat="server" CssClass="demo_description"/> <br />
 
-        <asp:Label ID="Message" runat="server" CssClass="setting_message" /> <br />
+        <asp:Label ID="Message" runat="server" CssClass="setting_message" />
     </div>
 
     <asp:Button ID="SaveSettings" runat="server" OnClick="Save_Click" CssClass="setting_save" />

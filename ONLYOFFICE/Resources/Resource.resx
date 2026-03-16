@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DemoCheckboxConnected" xml:space="preserve">
+    <value>You are successfully connected to the demo server. It will be available until [date]. To disable it, uncheck the box.</value>
+  </data>
+  <data name="DemoCheckboxDescription" xml:space="preserve">
+    <value>This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period.</value>
+  </data>
+  <data name="DemoCheckboxExpired" xml:space="preserve">
+    <value>The 30-day test period is over. You are no longer able to connect to the demo server.</value>
+  </data>
+  <data name="DemoCheckboxTitle" xml:space="preserve">
+    <value>Connect to demo ONLYOFFICE Docs server</value>
+  </data>
   <data name="DocsTooltip" xml:space="preserve">
     <value>Here, please specify the address of your ONLYOFFICE Docs server.</value>
   </data>

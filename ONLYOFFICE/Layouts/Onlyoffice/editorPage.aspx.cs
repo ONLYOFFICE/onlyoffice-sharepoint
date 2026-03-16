@@ -82,9 +82,17 @@ namespace Onlyoffice.Layouts
                     {
                         AppConfig = new AppConfig(web);
 
-                        DocumentSeverHost = AppConfig.GetDocumentServerHost();
                         Secret = AppConfig.GetSharePointSecret();
-                        JwtSecret = AppConfig.GetJwtSecret();
+
+                        if (AppConfig.UseDemo())
+                        {
+                            DocumentSeverHost = DocsDemo.Host;
+                            JwtSecret = DocsDemo.Secret;
+                        } else
+                        {
+                            DocumentSeverHost = AppConfig.GetDocumentServerHost();
+                            JwtSecret = AppConfig.GetJwtSecret();
+                        }
 
                         // get current user ID and Name
 //==================================================================================

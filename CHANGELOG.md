@@ -3,6 +3,7 @@
 ##
 ## Changed
 - supported format list
+- support Docs demo connection
 
 ## 3.0.0
 ## Added
@@ -22,7 +23,8 @@
 ## 1.2
 ## Changed
 - support for special character in name
-- support editors v5.4
+- support editors v5.4
+
 ## 1.1
 ## Changed
 - opening document from subsite

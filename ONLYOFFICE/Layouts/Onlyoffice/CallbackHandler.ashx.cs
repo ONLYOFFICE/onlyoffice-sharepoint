@@ -104,8 +104,8 @@ namespace Onlyoffice
                 {
                     AppConfig AppConfig = new AppConfig(web);
 
-                    string JwtSecret = AppConfig.GetJwtSecret();
-                    string JwtHeader = AppConfig.GetJwtHeader();
+                    string JwtSecret = AppConfig.UseDemo() ? DocsDemo.Secret : AppConfig.GetJwtSecret();
+                    string JwtHeader = AppConfig.UseDemo() ? DocsDemo.Header : AppConfig.GetJwtHeader();
 
                     if (!string.IsNullOrEmpty(JwtSecret))
                     {
@@ -194,8 +194,8 @@ namespace Onlyoffice
 
                         AppConfig AppConfig = new AppConfig(web);
 
-                        string JwtSecret = AppConfig.GetJwtSecret();
-                        string JwtHeader = AppConfig.GetJwtHeader();
+                        string JwtSecret = AppConfig.UseDemo() ? DocsDemo.Secret : AppConfig.GetJwtSecret();
+                        string JwtHeader = AppConfig.UseDemo() ? DocsDemo.Header : AppConfig.GetJwtHeader();
 
                         if (!string.IsNullOrEmpty(JwtSecret))
                         {
