@@ -1,25 +1,47 @@
 ﻿# ONLYOFFICE solution for SharePoint
 
-This solution enables users to edit office documents from SharePoint using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
+Imagine opening any SharePoint document — docx, xlsx, pptx — and having a full-fledged modern editor appear instantly, with real-time co-editing, comments, versioning, and everything else you'd expect from a modern office suite. That's exactly what the ONLYOFFICE integration does.
+
+You connect [ONLYOFFICE Docs](https://www.onlyoffice.com/docs), deploy a lightweight SharePoint solution package, and your team gets a seamless editing experience right inside the SharePoint interface.
+
+<p align="center">
+  <a href="https://www.onlyoffice.com/office-for-sharepoint">
+    <img width="800" src="https://static-site.onlyoffice.com/public/images/templates/office-for-sharepoint/hero/screen5@2x.png" alt="ONLYOFFICE for SharePoint">
+  </a>
+</p>
 
 ## Features
 
-The solution allows to:
+### Full editing, right inside SharePoint ✍️
 
-* Edit text documents, spreadsheets, and presentations.
-* Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat.
+- DOCX, XLSX, PPTX, PDF editing
+- Autosave, revision control
+- Smooth performance (even with large files)
 
-**Supported formats:**
+### Real-time co-authoring 👥
 
-For viewing:
+- Fast + Strict co-editing modes
+- Comments & Track Changes
+- Conflict-free collaboration
+- Built-in chat and version history
+
+### Secure by design 🔐
+
+- JWT protection
+- Custom JWT header for SharePoint environments
+- HTTPS recommended everywhere
+
+### Supported formats
+
+**For viewing:**
 
 - **WORD**: DOC, DOCM, DOCX, DOT, DOTM, DOTX, EPUB, FB2, FODT, HML, HTM, HTML, HWP, HWPX, MD, MHT, MHTML, ODT, OTT, PAGES, RTF, STW, SXW, TXT, WPS, WPT, XML
 - **CELL**: CSV, ET, ETT, FODS, NUMBERS, ODS, OTS, SXC, XLS, XLSB, XLSM, XLSX, XLT, XLTM, XLTX
 - **SLIDE**: DPS, DPT, FODP, KEY, ODG, ODP, OTP, POT, POTM, POTX, PPS, PPSM, PPSX, PPT, PPTM, PPTX, SXI
-- **PDF**: DJVU, DOCXF, OFORM, OXPS, PDF, XPS
+- **PDF**: DJVU, OXPS, PDF, XPS
 - **DIAGRAM**: VSDM, VSDX, VSSM, VSSX, VSTM, VSTX
 
-For editing:
+**For editing:**
 
 - **WORD**: DOCM, DOCX, DOTM, DOTX
 - **CELL**: XLSB, XLSM, XLSX, XLTM, XLTX
@@ -30,18 +52,25 @@ For editing:
 
 You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvable and connectable both from SharePoint and any end clients. ONLYOFFICE Document Server must also be able to POST to SharePoint directly.
 
-You can install free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
+### ☁️ Option 1: ONLYOFFICE Docs Cloud
 
-To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx) for Debian, Ubuntu, or derivatives.
+No installation needed — just [register here](https://www.onlyoffice.com/docs-registration) and get instant access. Your registration email includes all required connection details.
 
-To install Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/installation/docs-enterprise-index.aspx).
+### 🏠 Option 2: Self-hosted ONLYOFFICE Docs
+
+Install ONLYOFFICE Docs on your own infrastructure for full control. You have two main choices:
+
+* **Community Edition (Free)**: Ideal for small teams and personal use.
+  * The **recommended** installation method is [Docker](https://github.com/onlyoffice/Docker-DocumentServer).
+  * To install it on Debian, Ubuntu, or other derivatives, click [here](https://helpcenter.onlyoffice.com/docs/installation/docs-community-install-ubuntu.aspx).
+* **Enterprise Edition**: Provides scalability for larger organizations. To install, click [here](https://helpcenter.onlyoffice.com/docs/installation/enterprise).
 
 Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
 ## Installing ONLYOFFICE solution for SharePoint
 
-1. Click Start, point to All Programs, point to Administrative Tools, and then click Services, and make sure that SharePoint Administration service is started.
-2. Click Start, click SharePoint Management Shell, go to the directory with the .wsp file.
+1. Click Start, point to All Programs, point to Administrative Tools, and then click Services, and make sure that **SharePoint Administration service** is started.
+2. Click Start, click **SharePoint Management Shell**, go to the directory with the .wsp file.
 3. Run the Install.ps1 script:
     ```
     PS> .\Install.ps1
@@ -56,27 +85,26 @@ Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffi
     ```
     > On the SharePoint Central Administration Home page, click System Settings > Farm Management > Manage farm solutions.
     > On the Solution Management page, click the "onlyoffice.wsp", then click "Deploy Solution".
-5. On the SharePoint Central Administration home page, under Application Management, click Manage web applications.
-6. Make sure you select your site and click the Authentication Providers icon.
-7. In the Authentication Providers pop-up window click Default zone.
-8. Under Edit Authentication, check Enable anonymous access and click Save.
-9. Going back to Web Application Management click on the Anonymous Policy icon.
-10. Under Anonymous Access Restrictions select your Zone and set the Permissions to None – No policy and click Save.
+5. On the SharePoint Central Administration home page, under Application Management, click **Manage web applications**.
+6. Make sure you select your site and click the **Authentication Providers** icon.
+7. In the Authentication Providers pop-up window, click **Default zone**.
+8. Under Edit Authentication, check **Enable anonymous access** and click Save.
+9. Going back to Web Application Management click on the **Anonymous Policy** icon.
+10. Under Anonymous Access Restrictions select your Zone and set the Permissions to **None - No policy** and click Save.
 
-## Configuring ONLYOFFICE solution for SharePoint
+## Configuring ONLYOFFICE solution for SharePoint ⚙️
 
-In SharePoint open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings.
-Enter the following address to connect ONLYOFFICE Document Server:
+In SharePoint, open the `/_layouts/15/Onlyoffice/Settings.aspx` page with administrative settings.
+Enter the following address to connect ONLYOFFICE Docs (Document Server):
+
 ```
 https://<documentserver>/
 ```
-Where the documentserver is the name of the server with the ONLYOFFICE Document Server installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Document Server for correct work.
+Where the *documentserver* is the name of the server with ONLYOFFICE Docs installed. The address must be accessible for the user browser and from the SharePoint server. The SharePoint server address must also be accessible from ONLYOFFICE Docs for correct work.
 
 *Please note, that if you have subsites set up with SharePoint, you will need to additionally configure ONLYOFFICE Document Server connection with each of them, in order for it to work properly. Go to each subsite settings and enter the Document Server address to the proper field.*
 
-Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
-Specify your own **Secret key** in the SharePoint administrative settings.
-In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/), specify the same secret key and enable the validation.
+Configuration settings include JWT, enabled by default to protect the editors from unauthorized access. If setting a custom secret key, ensure it matches the one in the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/) for proper validation.
 
 If JWT protection is enabled, it is necessary to specify a custom header name since the SharePoint security policy blocks external 'Authorization' Headers. This header should be specified in the ONLYOFFICE Docs signature settings as well (further information can be found [here](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/)).
 
@@ -84,21 +112,21 @@ If JWT protection is enabled, it is necessary to specify a custom header name si
 
 There are two ways to compile ONLYOFFICE solution for SharePoint:
 
-a. Using MS Visual Studio:
+**a. Using MS Visual Studio:**
   1. Enter the SharePoint server and open this project in Visual Studio.
   2. In Solution Explorer, open the shortcut menu for the project and then choose Publish.
   3. In the Publish dialog box, choose the Publish to File System option button.
   4. Click the Publish button. When the publishing process is finished, the solution .wsp file will be created.
   5. Copy the resulting file to the folder with the Install.ps1 file (BuildAndInstall folder by default).
 
-b. With the help of the build.bat file provided:
+**b. With the help of the build.bat file provided:**
   1. Go to the BuildAndInstall folder.
   2. Run the build.bat file.
   3. The resulting solution .wsp file will be created and placed to the BuildAndInstall folder.
 
 ## How it works
 
-* User navigates to a document within SharePoint and selects the Edit in ONLYOFFICE action on context menu or ribbon.
+* User navigates to a document within SharePoint and selects the **Edit in ONLYOFFICE action** on context menu or ribbon.
 * SharePoint ONLYOFFICE solution makes a request to the editor page (URL of the form: `/_layouts/15/Onlyoffice/editorPage.aspx?SPListItemId={ItemId}&SPListURLDir={ListUrlDir}&action=track`).
 * SharePoint ONLYOFFICE solution prepares a JSON object with the following properties:
   * **url** - the URL that ONLYOFFICE Document Server uses to download the document;
@@ -120,32 +148,32 @@ b. With the help of the build.bat file provided:
 
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
-* Community Edition (`onlyoffice-documentserver` package)
-* Enterprise Edition (`onlyoffice-documentserver-ee` package)
+* Community Edition 🆓 (`onlyoffice-documentserver` package)
+* Enterprise Edition 🏢 (`onlyoffice-documentserver-ee` package)
 
-The table below will help you make the right choice.
+The table below will help you to make the right choice.
 
 | Pricing and licensing | Community Edition | Enterprise Edition |
 | ------------- | ------------- | ------------- |
-| | [Get it now](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-enterprise)  |
-| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/docs-enterprise-prices.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
+| | [Get it now](https://www.onlyoffice.com/download-community?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-enterprise)  |
+| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/docs-enterprise-prices?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint)  |
 | Simultaneous connections | up to 20 maximum  | As in chosen pricing plan |
 | Number of users | up to 20 recommended | As in chosen pricing plan |
 | License | GNU AGPL v.3 | Proprietary |
 | **Support** | **Community Edition** | **Enterprise Edition** |
-| Documentation | [Help Center](https://helpcenter.onlyoffice.com/installation/docs-community-index.aspx) | [Help Center](https://helpcenter.onlyoffice.com/installation/docs-enterprise-index.aspx) |
-| Standard support | [GitHub](https://github.com/ONLYOFFICE/DocumentServer/issues) or paid | One year support included |
+| Documentation | [Help Center](https://helpcenter.onlyoffice.com/docs/installation/community) | [Help Center](https://helpcenter.onlyoffice.com/docs/installation/enterprise) |
+| Standard support | [GitHub](https://github.com/ONLYOFFICE/DocumentServer/issues) or paid | 1 or 3 years support included |
 | Premium support | [Contact us](mailto:sales@onlyoffice.com) | [Contact us](mailto:sales@onlyoffice.com) |
 | **Services** | **Community Edition** | **Enterprise Edition** |
 | Conversion Service                | + | + |
 | Document Builder Service          | + | + |
 | **Interface** | **Community Edition** | **Enterprise Edition** |
-| Tabbed interface                       | + | + |
-| Dark theme                             | + | + |
-| 125%, 150%, 175%, 200% scaling         | + | + |
-| White Label                            | - | - |
-| Integrated test example (node.js)      | + | + |
-| Mobile web editors                     | - | +* |
+| Tabbed interface                  | + | + |
+| Dark theme                        | + | + |
+| 125%, 150%, 175%, 200% scaling    | + | + |
+| White Label                       | - | - |
+| Integrated test example (node.js) | + | + |
+| Mobile web editors                | - | +* |
 | **Plugins & Macros** | **Community Edition** | **Enterprise Edition** |
 | Plugins                           | + | + |
 | Macros                            | + | + |
@@ -187,11 +215,21 @@ The table below will help you make the right choice.
 | Adding form fields              | + | + |
 | Form preview                    | + | + |
 | Saving as PDF                   | + | + |
-| **Working with PDF**      | **Community Edition** | **Enterprise Edition** |
-| Text annotations (highlight, underline, cross out) | + | + |
+| **PDF Editor features**      | **Community Edition** | **Enterprise Edition** |
+| Text editing and co-editing                                | + | + |
+| Work with pages (adding, deleting, rotating)               | + | + |
+| Inserting objects (shapes, images, hyperlinks, etc.)       | + | + |
+| Text annotations (highlight, underline, cross out, stamps) | + | + |
 | Comments                        | + | + |
 | Freehand drawings               | + | + |
 | Form filling                    | + | + |
-| | [Get it now](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-enterprise)   |
+| | [Get it now](https://www.onlyoffice.com/download-community?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download?utm_source=github&utm_medium=cpc&utm_campaign=GitHubSharePoint#docs-enterprise)  |
 
 \* If supported by DMS.
+
+## Need help? User Feedback and Support 💡
+
+* **🐞 Found a bug?** Please report it by creating an [issue](https://github.com/ONLYOFFICE/onlyoffice-sharepoint/issues).
+* **❓ Have a question?** Ask our community and developers on the [ONLYOFFICE Forum](https://community.onlyoffice.com).
+* **👨‍💻 Need help for developers?** Check our [API documentation](https://api.onlyoffice.com).
+* **💡 Want to suggest a feature?** Share your ideas on our [feedback platform](https://feedback.onlyoffice.com/forums/966080-your-voice-matters).
