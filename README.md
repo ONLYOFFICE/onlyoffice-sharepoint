@@ -1,6 +1,6 @@
 ﻿# ONLYOFFICE solution for SharePoint
 
-Imagine opening any SharePoint document — docx, xlsx, pptx — and having a full-fledged modern editor appear instantly, with real-time co-editing, comments, versioning, and everything else you'd expect from a modern office suite. That’s exactly what the ONLYOFFICE integration does.
+Imagine opening any SharePoint document — docx, xlsx, pptx — and having a full-fledged modern editor appear instantly, with real-time co-editing, comments, versioning, and everything else you'd expect from a modern office suite. That's exactly what the ONLYOFFICE integration does.
 
 You connect [ONLYOFFICE Docs](https://www.onlyoffice.com/docs), deploy a lightweight SharePoint solution package, and your team gets a seamless editing experience right inside the SharePoint interface.
 
@@ -25,7 +25,7 @@ You connect [ONLYOFFICE Docs](https://www.onlyoffice.com/docs), deploy a lightwe
 - Conflict-free collaboration
 - Built-in chat and version history
 
-### Secure by design 🔐 
+### Secure by design 🔐
 
 - JWT protection
 - Custom JWT header for SharePoint environments
@@ -90,7 +90,7 @@ Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffi
 7. In the Authentication Providers pop-up window, click **Default zone**.
 8. Under Edit Authentication, check **Enable anonymous access** and click Save.
 9. Going back to Web Application Management click on the **Anonymous Policy** icon.
-10. Under Anonymous Access Restrictions select your Zone and set the Permissions to **None – No policy** and click Save.
+10. Under Anonymous Access Restrictions select your Zone and set the Permissions to **None - No policy** and click Save.
 
 ## Configuring ONLYOFFICE solution for SharePoint ⚙️
 
