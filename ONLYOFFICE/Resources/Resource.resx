@@ -183,4 +183,7 @@
   <data name="SuggestFeature" xml:space="preserve">
     <value>Suggest a feature</value>
   </data>
+  <data name="UsingDemoMessage" xml:space="preserve">
+    <value>You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data.</value>
+  </data>
 </root>

@@ -60,6 +60,7 @@ namespace Onlyoffice.Layouts
                          Folder = string.Empty,
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/",
                          ConfigurationJSON = string.Empty,
+                         UsingDemoMessage = string.Empty,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
 
@@ -88,6 +89,7 @@ namespace Onlyoffice.Layouts
                         {
                             DocumentSeverHost = DocsDemo.Host;
                             JwtSecret = DocsDemo.Secret;
+                            UsingDemoMessage = LoadResource("UsingDemoMessage");
                         } else
                         {
                             DocumentSeverHost = AppConfig.GetDocumentServerHost();
