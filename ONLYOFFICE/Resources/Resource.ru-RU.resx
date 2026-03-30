@@ -117,8 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DemoCheckboxConnected" xml:space="preserve">
+    <value>Вы подключены к демо-серверу. Он будет доступен до [date]. Чтобы отключить его, снимите флажок.</value>
+  </data>
+  <data name="DemoCheckboxDescription" xml:space="preserve">
+    <value>Это общедоступный тестовый сервер. Пожалуйста, не используйте его для хранения личных или конфиденциальных данных. Сервер будет доступен в течение 30 дней.</value>
+  </data>
+  <data name="DemoCheckboxExpired" xml:space="preserve">
+    <value>30-дневный тестовый период завершён. Подключение к демо-серверу больше недоступно.</value>
+  </data>
+  <data name="DemoCheckboxTitle" xml:space="preserve">
+    <value>Подключиться к демо-серверу ONLYOFFICE Docs</value>
+  </data>
+  <data name="DocsTooltip" xml:space="preserve">
+    <value>Укажите здесь адрес сервера ONLYOFFICE Docs.</value>
+  </data>
   <data name="DocumentServer" xml:space="preserve">
-    <value>Сервер менеджера документов</value>
+    <value>Адрес ONLYOFFICE Docs</value>
   </data>
   <data name="EditIn" xml:space="preserve">
     <value>Открыть в ONLYOFFICE</value>
@@ -130,10 +145,16 @@
     <value>Вернуться назад</value>
   </data>
   <data name="JwtHeader" xml:space="preserve">
-    <value>Заголовок секретного ключа</value>
+    <value>Заголовок JWT</value>
+  </data>
+  <data name="JwtHeaderTooltip" xml:space="preserve">
+    <value>Оставьте пустым, чтобы использовать заголовок по умолчанию. Значение по умолчанию — Authorization.</value>
   </data>
   <data name="JwtSecret" xml:space="preserve">
-    <value>Секретный ключ (оставьте пустым для отключения)</value>
+    <value>Секретный ключ ONLYOFFICE Docs</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Подробнее</value>
   </data>
   <data name="RibbonTooltipText" xml:space="preserve">
     <value>Открыть документ для редактирования в ONLYOFFICE</value>
@@ -141,10 +162,28 @@
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="SecretKeyPlaceholder" xml:space="preserve">
+    <value>Секретный ключ</value>
+  </data>
+  <data name="SecretTooltip" xml:space="preserve">
+    <value>Используйте автоматически сгенерированный секретный ключ JWT или задайте свой здесь и укажите такой же в конфигурационном файле ONLYOFFICE Docs.</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки ONLYOFFICE</value>
   </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Редактируйте документы, таблицы и презентации совместно прямо в SharePoint с помощью ONLYOFFICE Docs.</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
+    <value>Добро пожаловать в ONLYOFFICE Docs!</value>
+  </data>
   <data name="SuccessfulSave" xml:space="preserve">
     <value>Сохранено</value>
+  </data>
+  <data name="SuggestFeature" xml:space="preserve">
+    <value>Предложить функцию</value>
+  </data>
+  <data name="UsingDemoMessage" xml:space="preserve">
+    <value>Вы используете общедоступный демо-сервер ONLYOFFICE Docs. Пожалуйста, не храните на нём личные или конфиденциальные данные.</value>
   </data>
 </root>

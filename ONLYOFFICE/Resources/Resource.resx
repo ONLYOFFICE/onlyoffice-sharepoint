@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DemoCheckboxConnected" xml:space="preserve">
-    <value>You are successfully connected to the demo server. It will be available until [date]. To disable it, uncheck the box.</value>
+    <value>You are connected to the demo server. It will be available until [date]. To disable it, clear the checkbox.</value>
   </data>
   <data name="DemoCheckboxDescription" xml:space="preserve">
-    <value>This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period.</value>
+    <value>This is a public test server. Please do not use it to store private or sensitive data. The server will be available for 30 days.</value>
   </data>
   <data name="DemoCheckboxExpired" xml:space="preserve">
-    <value>The 30-day test period is over. You are no longer able to connect to the demo server.</value>
+    <value>The 30-day test period has ended. You can no longer connect to the demo server.</value>
   </data>
   <data name="DemoCheckboxTitle" xml:space="preserve">
-    <value>Connect to demo ONLYOFFICE Docs server</value>
+    <value>Connect to the ONLYOFFICE Docs demo server</value>
   </data>
   <data name="DocsTooltip" xml:space="preserve">
-    <value>Here, please specify the address of your ONLYOFFICE Docs server.</value>
+    <value>Please enter the address of your ONLYOFFICE Docs server here.</value>
   </data>
   <data name="DocumentServer" xml:space="preserve">
     <value>ONLYOFFICE Docs address</value>
@@ -142,10 +142,10 @@
     <value>File not found</value>
   </data>
   <data name="GoToBack" xml:space="preserve">
-    <value>Go to back</value>
+    <value>Go back</value>
   </data>
   <data name="JwtHeader" xml:space="preserve">
-    <value>Jwt header</value>
+    <value>JWT header</value>
   </data>
   <data name="JwtHeaderTooltip" xml:space="preserve">
     <value>Leave blank to use the default header. Default value is Authorization.</value>
@@ -178,12 +178,12 @@
     <value>Welcome to ONLYOFFICE Docs!</value>
   </data>
   <data name="SuccessfulSave" xml:space="preserve">
-    <value>Successful save</value>
+    <value>Saved successfully</value>
   </data>
   <data name="SuggestFeature" xml:space="preserve">
     <value>Suggest a feature</value>
   </data>
   <data name="UsingDemoMessage" xml:space="preserve">
-    <value>You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data.</value>
+    <value>You are using the public ONLYOFFICE Docs demo server. Please do not store private or sensitive data.</value>
   </data>
 </root>
