@@ -1,9 +1,14 @@
 # Change Log
 
+##
+## Added
+- plugin description and useful links in admin settings
+- support Docs demo connection
+- link to docs cloud
+
 ## 3.1.0
 ## Changed
 - supported format list
-- support Docs demo connection
 
 ## 3.0.0
 ## Added
