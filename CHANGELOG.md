@@ -1,5 +1,11 @@
 # Change Log
 
+##
+## Added
+- plugin description and useful links in admin settings
+- support Docs demo connection
+- link to docs cloud
+
 ## 3.1.0
 ## Changed
 - supported format list
@@ -22,7 +28,8 @@
 ## 1.2
 ## Changed
 - support for special character in name
-- support editors v5.4
+- support editors v5.4
+
 ## 1.1
 ## Changed
 - opening document from subsite

@@ -15,6 +15,42 @@ namespace Onlyoffice.Layouts
     {
 
         /// <summary>
+        /// SettingsHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SettingsHeader;
+
+        /// <summary>
+        /// SettingsDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SettingsDescription;
+
+        /// <summary>
+        /// LearnMoreLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LearnMoreLink;
+
+        /// <summary>
+        /// SuggestFeatureLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SuggestFeatureLink;
+
+        /// <summary>
         /// DocumentServerTitle control.
         /// </summary>
         /// <remarks>
@@ -22,6 +58,15 @@ namespace Onlyoffice.Layouts
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DocumentServerTitle;
+
+        /// <summary>
+        /// DocsTooltip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DocsTooltip;
 
         /// <summary>
         /// DocumentServerHost control.
@@ -42,6 +87,15 @@ namespace Onlyoffice.Layouts
         protected global::System.Web.UI.WebControls.Label JwtSecretTitle;
 
         /// <summary>
+        /// SecretTooltip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SecretTooltip;
+
+        /// <summary>
         /// JwtSecret control.
         /// </summary>
         /// <remarks>
@@ -60,6 +114,15 @@ namespace Onlyoffice.Layouts
         protected global::System.Web.UI.WebControls.Label JwtHeaderTitle;
 
         /// <summary>
+        /// JwtHeaderTooltip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label JwtHeaderTooltip;
+
+        /// <summary>
         /// JwtHeader control.
         /// </summary>
         /// <remarks>
@@ -67,6 +130,24 @@ namespace Onlyoffice.Layouts
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox JwtHeader;
+
+        /// <summary>
+        /// DemoCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox DemoCheckbox;
+
+        /// <summary>
+        /// DemoDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DemoDescription;
 
         /// <summary>
         /// Message control.

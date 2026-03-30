@@ -15,6 +15,12 @@
                 "onRequestSaveAs": onRequestSaveAs
             }
 
+            if ("<%= UsingDemoMessage %>") {
+                config.events.onAppReady = () => {
+                    window.docEditor.showMessage("<%= UsingDemoMessage %>");
+                }
+            }
+
             window.docEditor = new DocsAPI.DocEditor("placeholder", config);
 
             function onRequestSaveAs (event) {

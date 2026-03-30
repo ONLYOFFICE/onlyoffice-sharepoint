@@ -13,21 +13,56 @@
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
     <div class="settings_container">
-        <p>
-            <asp:Label ID="DocumentServerTitle" runat="server" CssClass="setting_title" /> <br />
+        <asp:Label ID="SettingsHeader" runat="server" CssClass="setting_title settings_header"/> <br />
+        <asp:Label ID="SettingsDescription" runat="server" CssClass="settings_description"/> <br />
+        <div style="margin-bottom: 30px;">
+            <a href="https://helpcenter.onlyoffice.com/integration/sharepoint.aspx" target="_blank" style="margin-right: 12px;">
+                <asp:Label ID="LearnMoreLink" runat="server"/>
+            </a>
+            <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" target="_blank">
+                <asp:Label ID="SuggestFeatureLink" runat="server"/>
+            </a>
+        </div>
+        <div class="input_container">
+            <asp:Label ID="DocumentServerTitle" runat="server" CssClass="setting_title" />
+            <div class="tooltip_container">
+                <img src="./images/i.svg"/>
+                <asp:Label ID="DocsTooltip" runat="server" CssClass="tooltip_text"/>
+            </div>
+            <br />
             <asp:TextBox ID="DocumentServerHost" MaxLength="255" runat="server" CssClass="setting_input" />
-        </p>
-        <p>
-            <asp:Label ID="JwtSecretTitle" runat="server" CssClass="setting_title" /> <br />
+        </div>
+        <div class="input_container">
+            <asp:Label ID="JwtSecretTitle" runat="server" CssClass="setting_title" />
+            <div class="tooltip_container">
+                <img src="./images/i.svg"/>
+                <asp:Label ID="SecretTooltip" runat="server" CssClass="tooltip_text"/>
+            </div>
+            <br />
             <asp:TextBox ID="JwtSecret" MaxLength="255" runat="server" CssClass="setting_input" />
-        </p>
-        <p>
-            <asp:Label ID="JwtHeaderTitle" runat="server" CssClass="setting_title" /> <br />
+        </div>
+        <div class="input_container">
+            <asp:Label ID="JwtHeaderTitle" runat="server" CssClass="setting_title" />
+            <div class="tooltip_container">
+                <img src="./images/i.svg"/>
+                <asp:Label ID="JwtHeaderTooltip" runat="server" CssClass="tooltip_text"/>
+            </div>
+            <br />
             <asp:TextBox ID="JwtHeader" MaxLength="255" runat="server" CssClass="setting_input" />
-        </p>
+        </div>
 
-        <asp:Label ID="Message" runat="server" CssClass="setting_message" /> <br />
+        <asp:CheckBox id="DemoCheckbox" runat="server" Text=""
+            TextAlign="Right"
+            CssClass="demo_checkbox"
+        /> <br />
+        <asp:Label ID="DemoDescription" runat="server" CssClass="demo_description"/> <br />
+
+        <asp:Label ID="Message" runat="server" CssClass="setting_message" />
     </div>
 
     <asp:Button ID="SaveSettings" runat="server" OnClick="Save_Click" CssClass="setting_save" />
+
+    <a href="https://www.onlyoffice.com/docs-registration" target="_blank" class="banner">
+        <img src="./images/DocsCloudBanner.svg"/>
+    </a>
 </asp:Content>

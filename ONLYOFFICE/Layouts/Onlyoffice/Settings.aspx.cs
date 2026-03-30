@@ -41,10 +41,25 @@ namespace Onlyoffice.Layouts
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
         protected void Page_Load(object sender, EventArgs e)
         {
+            SettingsHeader.Text = SPUtility.GetLocalizedString("$Resources:Resource,SettingsHeader", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            SettingsDescription.Text = SPUtility.GetLocalizedString("$Resources:Resource,SettingsDescription", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            LearnMoreLink.Text = SPUtility.GetLocalizedString("$Resources:Resource,LearnMore", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            SuggestFeatureLink.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuggestFeature", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             DocumentServerTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,DocumentServer", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             JwtSecretTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtSecret", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             JwtHeaderTitle.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtHeader", "core", (uint)SPContext.Current.Web.UICulture.LCID);
             SaveSettings.Text = SPUtility.GetLocalizedString("$Resources:Resource,Save", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+
+            DocumentServerHost.Attributes["placeholder"] = "http://";
+            JwtSecret.Attributes["placeholder"] = SPUtility.GetLocalizedString("$Resources:Resource,SecretKeyPlaceholder", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            JwtHeader.Attributes["placeholder"] = SPUtility.GetLocalizedString("$Resources:Resource,JwtHeader", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+
+            DocsTooltip.Text = SPUtility.GetLocalizedString("$Resources:Resource,DocsTooltip", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            SecretTooltip.Text = SPUtility.GetLocalizedString("$Resources:Resource,SecretTooltip", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+            JwtHeaderTooltip.Text = SPUtility.GetLocalizedString("$Resources:Resource,JwtHeaderTooltip", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+
+            DemoCheckbox.Text = SPUtility.GetLocalizedString("$Resources:Resource,DemoCheckboxTitle", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+
             using (SPSite site = new SPSite(url))
             {
                 using (SPWeb web = site.OpenWeb())
@@ -61,6 +76,24 @@ namespace Onlyoffice.Layouts
                                 DocumentServerHost.Text = appConfig.GetDocumentServerHost();
                                 JwtSecret.Text = appConfig.GetJwtSecret();
                                 JwtHeader.Text = appConfig.GetJwtHeader();
+
+                                if (appConfig.GetDemoEnabled())
+                                {
+                                    DemoCheckbox.Checked = true;
+                                    DemoDescription.Text = GetDemoCheckboxDescription(true);
+                                }
+                                else
+                                {
+                                    DemoCheckbox.Checked = false;
+                                    DemoDescription.Text = GetDemoCheckboxDescription(false);
+                                }
+
+                                if (!appConfig.DemoAvailable())
+                                {
+                                    DemoCheckbox.Checked = true;
+                                    DemoCheckbox.Enabled = false;
+                                    DemoDescription.Text = SPUtility.GetLocalizedString("$Resources:Resource,DemoCheckboxExpired", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+                                }
                             }
                             catch (Exception ex) 
                             {
@@ -94,6 +127,8 @@ namespace Onlyoffice.Layouts
                         appConfig.SetDocumentServerHost(DSHost);
                         appConfig.SetJwtSecret(JWTSecret);
                         appConfig.SetJwtHeader(JWTHeader);
+                        appConfig.SetDemoEnabled(DemoCheckbox.Checked);
+                        DemoDescription.Text = GetDemoCheckboxDescription(DemoCheckbox.Checked);
 
                         Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
                     }
@@ -104,6 +139,14 @@ namespace Onlyoffice.Layouts
                     }
                 }
             } 
+        }
+
+        protected string GetDemoCheckboxDescription(bool connected)
+        {
+            return SPUtility.GetLocalizedString(
+                "$Resources:Resource,DemoCheckbox" + (connected ? "Connected" : "Description"),
+                "core", (uint)SPContext.Current.Web.UICulture.LCID
+            ).Replace("[date]", appConfig.GetDemoStartDate().Value.AddDays(DocsDemo.Trial).ToString("yyyy.MM.dd"));
         }
     }
 }

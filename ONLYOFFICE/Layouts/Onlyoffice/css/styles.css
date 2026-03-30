@@ -27,12 +27,25 @@
 .settings_container {
     margin-left: 10px;
 }
-.settings_container p {
+.input_container {
     margin-top: 10px;
+}
+.settings_header {
+    font-size: 20px;
+}
+.settings_description {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 14px 0;
 }
 .setting_title {
     color: black;
     display: inline-block;
+    font-weight: 600;
+}
+.setting_title:not(.settings_header) {
+    margin-bottom: 4px;
 }
 .setting_input {
     display: inline-block;
@@ -44,10 +57,130 @@
 .setting_message {
     display: block;
     font-size: 14px;
+    margin-top: 24px;
 }
 .setting_save {
     height: 25px;
     width: 70px;
     margin-top: 10px;
     line-height: 0;
+}
+.tooltip_container {
+    position: relative;
+    display: inline-block;
+    height: 14px;
+    bottom: -2px;
+}
+.tooltip_text {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-32px);
+    background: #ffffff;
+    color: #000000;
+    padding: 8px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    margin-bottom: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.tooltip_text:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 23px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #ffffff;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+}
+.tooltip_container:hover .tooltip_text {
+    opacity: 1;
+}
+.banner {
+    display: block;
+    margin: 16px 0 0 10px;
+    cursor: pointer;
+}
+
+.demo_checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.demo_checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border-radius: 50%;
+    border: 2px solid #C8C8C8;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.demo_checkbox input[type="checkbox"]:checked {
+    background: #C22CC1;
+    border-color: #ffffff;
+}
+
+.demo_checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 7px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.demo_checkbox input[type="checkbox"]:checked:disabled {
+    background: #ffffff;
+    border-color: #C8C8C8;
+    cursor: default;
+}
+
+.demo_checkbox input[type="checkbox"]:checked:disabled::after {
+    border-color: #C8C8C8;
+}
+
+.demo_checkbox input[type="checkbox"]:disabled label,
+.demo_checkbox input[type="checkbox"]:disabled {
+    cursor: default;
+}
+
+.demo_checkbox input[type="checkbox"]:focus {
+    outline: none;
+}
+
+.demo_checkbox input[type="checkbox"]:focus-visible {
+    box-shadow: 0 0 0 3px rgba(146, 31, 144, 0.25);
+}
+
+.demo_checkbox label {
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.demo_description {
+    margin-left: 24px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #686868;
 }

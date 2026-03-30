@@ -60,6 +60,7 @@ namespace Onlyoffice.Layouts
                          Folder = string.Empty,
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/",
                          ConfigurationJSON = string.Empty,
+                         UsingDemoMessage = string.Empty,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
 
@@ -82,9 +83,18 @@ namespace Onlyoffice.Layouts
                     {
                         AppConfig = new AppConfig(web);
 
-                        DocumentSeverHost = AppConfig.GetDocumentServerHost();
                         Secret = AppConfig.GetSharePointSecret();
-                        JwtSecret = AppConfig.GetJwtSecret();
+
+                        if (AppConfig.UseDemo())
+                        {
+                            DocumentSeverHost = DocsDemo.Host;
+                            JwtSecret = DocsDemo.Secret;
+                            UsingDemoMessage = LoadResource("UsingDemoMessage");
+                        } else
+                        {
+                            DocumentSeverHost = AppConfig.GetDocumentServerHost();
+                            JwtSecret = AppConfig.GetJwtSecret();
+                        }
 
                         // get current user ID and Name
 //==================================================================================
