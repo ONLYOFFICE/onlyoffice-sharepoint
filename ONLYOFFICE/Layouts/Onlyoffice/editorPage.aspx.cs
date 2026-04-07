@@ -139,7 +139,7 @@ namespace Onlyoffice.Layouts
 
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
-                            Configuration.Document.Key = GenerateRevisionId(file.ETag);
+                            Configuration.Document.Key = GenerateRevisionId(file.UniqueId, file.TimeLastModified);
                             ApiUrl = DocumentServerHost + "web-apps/apps/api/documents/api.js?shardkey=" + Configuration.Document.Key;
 
                             Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
@@ -206,13 +206,23 @@ namespace Onlyoffice.Layouts
         /// </summary>
         /// <param name="expectedKey">Expected key</param>
         /// <returns>Supported key</returns>
-        public static string GenerateRevisionId(string expectedKey)
+        public static string GenerateRevisionId(Guid uniqueId, DateTime lastModified)
         {
-            expectedKey = expectedKey ?? "";
-            const int maxLength = 20;
-            if (expectedKey.Length > maxLength) expectedKey = Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(expectedKey)));
-            var key = Regex.Replace(expectedKey, "[^0-9a-zA-Z_]", "_");
-            return key.Substring(key.Length - Math.Min(key.Length, maxLength));
+            var input = $"{uniqueId:N}_{lastModified.Ticks}";
+
+            byte[] hash;
+
+            using (var sha = SHA256.Create())
+            {
+                hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
+        }
+
+            var base64 = Convert.ToBase64String(hash)
+                .Replace("+", "_")
+                .Replace("/", "_")
+                .Replace("=", "");
+
+            return base64.Substring(0, 20);
         }
 
         private string LoadResource(string _resName)
