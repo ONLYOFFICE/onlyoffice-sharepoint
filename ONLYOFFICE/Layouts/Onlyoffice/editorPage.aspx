@@ -7,7 +7,7 @@
     <asp:panel runat="server" id="panelMain" style="height: 100%; margin: 0;">
         <div id="placeholder" style="height: 100%"></div>
 
-        <script type="text/javascript" src= "<%= DocumentSeverHost %>web-apps/apps/api/documents/api.js"></script>
+        <script type="text/javascript" src= "<%= ApiUrl %>"></script>
         <script type="text/javascript">
             var config = <%= ConfigurationJSON %>;
 
