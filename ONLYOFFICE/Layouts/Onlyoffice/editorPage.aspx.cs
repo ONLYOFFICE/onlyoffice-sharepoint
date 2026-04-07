@@ -56,7 +56,8 @@ namespace Onlyoffice.Layouts
         private SPUser currentUser;
         private AppConfig AppConfig;
 
-        protected string DocumentSeverHost = "@http://localhost",
+        protected string DocumentServerHost = "@http://localhost",
+                         ApiUrl = string.Empty,
                          Folder = string.Empty,
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/",
                          ConfigurationJSON = string.Empty,
@@ -87,12 +88,12 @@ namespace Onlyoffice.Layouts
 
                         if (AppConfig.UseDemo())
                         {
-                            DocumentSeverHost = DocsDemo.Host;
+                            DocumentServerHost = DocsDemo.Host;
                             JwtSecret = DocsDemo.Secret;
                             UsingDemoMessage = LoadResource("UsingDemoMessage");
                         } else
                         {
-                            DocumentSeverHost = AppConfig.GetDocumentServerHost();
+                            DocumentServerHost = AppConfig.GetDocumentServerHost();
                             JwtSecret = AppConfig.GetJwtSecret();
                         }
 
@@ -139,6 +140,7 @@ namespace Onlyoffice.Layouts
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
                             Configuration.Document.Key = GenerateRevisionId(file.UniqueId, file.TimeLastModified);
+                            ApiUrl = DocumentServerHost + "web-apps/apps/api/documents/api.js?shardkey=" + Configuration.Document.Key;
 
                             Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
                             Folder = Folder.Replace("\\", "/");
@@ -213,7 +215,7 @@ namespace Onlyoffice.Layouts
             using (var sha = SHA256.Create())
             {
                 hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-            }
+        }
 
             var base64 = Convert.ToBase64String(hash)
                 .Replace("+", "_")

@@ -5,6 +5,7 @@
 - plugin description and useful links in admin settings
 - support Docs demo connection
 - link to docs cloud
+- shardkey param to url for requests to Docs
 
 ## 3.1.0
 ## Changed
