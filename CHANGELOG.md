@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 3.2.0
 ## Added
 - plugin description and useful links in admin settings
 - support Docs demo connection
