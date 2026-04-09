@@ -5,6 +5,7 @@
 - plugin description and useful links in admin settings
 - support Docs demo connection
 - link to docs cloud
+- show warning popup when jwt secret is empty
 
 ## 3.1.0
 ## Changed
