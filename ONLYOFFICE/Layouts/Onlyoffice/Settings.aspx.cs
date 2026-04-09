@@ -131,6 +131,17 @@ namespace Onlyoffice.Layouts
                         DemoDescription.Text = GetDemoCheckboxDescription(DemoCheckbox.Checked);
 
                         Message.Text = SPUtility.GetLocalizedString("$Resources:Resource,SuccessfulSave", "core", (uint)SPContext.Current.Web.UICulture.LCID);
+
+                        if (JWTSecret == string.Empty)
+                        {
+                            SaveModalTitle.Text = Message.Text;
+                            SaveModalDescription.Text = string.Format(
+                                SPUtility.GetLocalizedString("$Resources:Resource,NoJwtWarning", "core", (uint)SPContext.Current.Web.UICulture.LCID),
+                                "<a href=\"https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/security/\" target=\"_blank\">",
+                                "</a>"
+                            );
+                            SaveModalOverlay.Visible = true;
+                        }
                     }
                     catch(Exception ex)
                     {
@@ -147,6 +158,11 @@ namespace Onlyoffice.Layouts
                 "$Resources:Resource,DemoCheckbox" + (connected ? "Connected" : "Description"),
                 "core", (uint)SPContext.Current.Web.UICulture.LCID
             ).Replace("[date]", appConfig.GetDemoStartDate().Value.AddDays(DocsDemo.Trial).ToString("yyyy.MM.dd"));
+        }
+
+        protected void Close_Modal(object sender, System.EventArgs e)
+        {
+            SaveModalOverlay.Visible = false;
         }
     }
 }

@@ -156,6 +156,9 @@
   <data name="LearnMore" xml:space="preserve">
     <value>Learn more</value>
   </data>
+  <data name="NoJwtWarning" xml:space="preserve">
+    <value>To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page. To learn more, {0}click here{1}.</value>
+  </data>
   <data name="RibbonTooltipText" xml:space="preserve">
     <value>Open this document for editing in ONLYOFFICE</value>
   </data>

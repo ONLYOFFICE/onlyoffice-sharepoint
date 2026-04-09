@@ -62,6 +62,49 @@
 
     <asp:Button ID="SaveSettings" runat="server" OnClick="Save_Click" CssClass="setting_save" />
 
+    <asp:Panel ID="SaveModalOverlay" runat="server" CssClass="modal-overlay" Visible="false">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <asp:Label ID="SaveModalTitle" runat="server" CssClass="modal-title" />
+                <asp:LinkButton ID="SaveModalClose" runat="server" CssClass="modal-close" OnClick="Close_Modal" CausesValidation="false" aria-label="Close"></asp:LinkButton>
+            </div>
+            <div class="modal-body">
+                <asp:Label ID="SaveModalDescription" runat="server" CssClass="modal-description" />
+            </div>
+        </div>
+    </asp:Panel>
+
+    <script type="text/javascript">
+        (function () {
+            function initOnlyofficeSettingsModal() {
+                var overlay = document.getElementById('<%= SaveModalOverlay.ClientID %>');
+                if (!overlay) return;
+
+                var modal = overlay.querySelector('.modal');
+                if (modal) {
+                    modal.onclick = function (e) {
+                        if (e && e.stopPropagation) e.stopPropagation();
+                    };
+                }
+
+                overlay.onclick = function (e) {
+                    e = e || window.event;
+                    var target = e.target || e.srcElement;
+
+                    if (target === overlay) {
+                        __doPostBack('<%= SaveModalClose.UniqueID %>', '');
+                    }
+                };
+            }
+
+            if (window.addEventListener) {
+                window.addEventListener('load', initOnlyofficeSettingsModal);
+            } else if (window.attachEvent) {
+                window.attachEvent('onload', initOnlyofficeSettingsModal);
+            }
+        })();
+    </script>
+
     <a href="https://www.onlyoffice.com/docs-registration" target="_blank" class="banner">
         <img src="./images/DocsCloudBanner.svg"/>
     </a>
