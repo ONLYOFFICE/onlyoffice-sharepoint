@@ -6,6 +6,7 @@
 - support Docs demo connection
 - link to docs cloud
 - shardkey param to url for requests to Docs
+- show warning popup when jwt secret is empty
 
 ## 3.1.0
 ## Changed
