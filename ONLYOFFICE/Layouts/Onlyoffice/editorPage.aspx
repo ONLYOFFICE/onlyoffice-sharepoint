@@ -12,7 +12,8 @@
             var config = <%= ConfigurationJSON %>;
 
             config["events"] = {
-                "onRequestSaveAs": onRequestSaveAs
+                "onRequestSaveAs": onRequestSaveAs,
+                "onRequestHistory": onRequestHistory
             }
 
             if ("<%= UsingDemoMessage %>") {
@@ -45,6 +46,22 @@
                     })
                     .catch(e => {
                         console.error("SaveAs Error: ", e);
+                    });
+            }
+
+            function onRequestHistory() {
+                var params = new URLSearchParams({
+                    SPListItemId: "<%= SPListItemId %>",
+                    SPListURLDir: "<%= SPListURLDir %>"
+                });
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=history&" + params)
+                    .then(response => response.json())
+                    .then(json => {
+                        docEditor.refreshHistory(json);
+                    })
+                    .catch(e => {
+                        console.error("History Error: ", e);
                     });
             }
 

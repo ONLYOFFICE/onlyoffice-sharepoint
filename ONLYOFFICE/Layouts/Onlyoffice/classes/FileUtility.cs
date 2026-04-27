@@ -29,6 +29,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Onlyoffice
 {
@@ -125,6 +127,25 @@ namespace Onlyoffice
         public static FileFormat GetFormat(string ext)
         {
             return Formats.FirstOrDefault(f => f.Name == ext.TrimStart('.'));
+        }
+
+        public static string GenerateRevisionId(Guid uniqueId, DateTime lastModified)
+        {
+            var input = $"{uniqueId:N}_{lastModified.Ticks}";
+
+            byte[] hash;
+
+            using (var sha = SHA256.Create())
+            {
+                hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
+            }
+
+            var base64 = Convert.ToBase64String(hash)
+                .Replace("+", "_")
+                .Replace("/", "_")
+                .Replace("=", "");
+
+            return base64.Substring(0, 20);
         }
     }
 }

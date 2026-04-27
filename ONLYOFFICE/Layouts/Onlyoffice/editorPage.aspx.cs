@@ -42,8 +42,6 @@ namespace Onlyoffice.Layouts
         private string urlHashDownload = string.Empty,
                        urlHashTrack = string.Empty,
                        CurrentUserLogin = string.Empty,
-                       SPListItemId = string.Empty,
-                       SPListURLDir = string.Empty,
                        SPSourceAction = string.Empty,
                        Secret = string.Empty,
                        JwtSecret = string.Empty,
@@ -62,6 +60,8 @@ namespace Onlyoffice.Layouts
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/",
                          ConfigurationJSON = string.Empty,
                          UsingDemoMessage = string.Empty,
+                         SPListItemId = string.Empty,
+                         SPListURLDir = string.Empty,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
 
@@ -139,7 +139,7 @@ namespace Onlyoffice.Layouts
 
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
-                            Configuration.Document.Key = GenerateRevisionId(file.UniqueId, file.TimeLastModified);
+                            Configuration.Document.Key = FileUtility.GenerateRevisionId(file.UniqueId, file.TimeLastModified);
                             ApiUrl = DocumentServerHost + "web-apps/apps/api/documents/api.js?shardkey=" + Configuration.Document.Key;
 
                             Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
@@ -199,30 +199,6 @@ namespace Onlyoffice.Layouts
                 Configuration.Token = Encryption.GetSignature(JwtSecret, Configuration);
 
             ConfigurationJSON = Configuration.Serialize(Configuration);
-        }
-
-        /// <summary>
-        /// Translation key to a supported form.
-        /// </summary>
-        /// <param name="expectedKey">Expected key</param>
-        /// <returns>Supported key</returns>
-        public static string GenerateRevisionId(Guid uniqueId, DateTime lastModified)
-        {
-            var input = $"{uniqueId:N}_{lastModified.Ticks}";
-
-            byte[] hash;
-
-            using (var sha = SHA256.Create())
-            {
-                hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-        }
-
-            var base64 = Convert.ToBase64String(hash)
-                .Replace("+", "_")
-                .Replace("/", "_")
-                .Replace("=", "");
-
-            return base64.Substring(0, 20);
         }
 
         private string LoadResource(string _resName)
