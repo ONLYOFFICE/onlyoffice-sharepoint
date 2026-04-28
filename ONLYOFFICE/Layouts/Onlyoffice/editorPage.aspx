@@ -13,7 +13,8 @@
 
             config["events"] = {
                 "onRequestSaveAs": onRequestSaveAs,
-                "onRequestHistory": onRequestHistory
+                "onRequestHistory": onRequestHistory,
+                "onRequestHistoryData": onRequestHistoryData
             }
 
             if ("<%= UsingDemoMessage %>") {
@@ -46,6 +47,23 @@
                     })
                     .catch(e => {
                         console.error("SaveAs Error: ", e);
+                    });
+            }
+
+            function onRequestHistoryData(event) {
+                var params = new URLSearchParams({
+                    SPListItemId: "<%= SPListItemId %>",
+                    SPListURLDir: "<%= SPListURLDir %>",
+                    version: event.data
+                });
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=version&" + params)
+                    .then(response => response.json())
+                    .then(json => {
+                        docEditor.setHistoryData(json);
+                    })
+                    .catch(e => {
+                        console.error("HistoryData Error: ", e);
                     });
             }
 

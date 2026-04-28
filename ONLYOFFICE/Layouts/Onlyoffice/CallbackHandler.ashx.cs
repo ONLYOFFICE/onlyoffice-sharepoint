@@ -96,6 +96,7 @@ namespace Onlyoffice
             string SPListURLDir = (string)data["SPListURLDir"];
             string SPListItemId = (string)data["SPListItemId"];
             int userId = (int)data["userId"];
+            int? versionNumber = (int?)data["versionNumber"];
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
@@ -146,12 +147,14 @@ namespace Onlyoffice
                         var ContentType = MimeMapping.GetMimeMapping(file.Name);
                         if (file != null)
                         {
-                            byte[] bArray = file.OpenBinary();
+                            byte[] bArray = versionNumber.HasValue
+                                ? file.Versions[versionNumber.Value - 1].OpenBinary()
+                                : file.OpenBinary();
 
                             context.Response.Clear();
                             context.Response.Charset = Encoding.Unicode.EncodingName;
                             context.Response.AddHeader("Content-Disposition", string.Format("attachment; filename={0}", file.Name));
-                            context.Response.AddHeader("Content-Length", file.Length.ToString());
+                            context.Response.AddHeader("Content-Length", versionNumber.HasValue ? file.Versions[versionNumber.Value - 1].Length.ToString() : file.Length.ToString());
                             context.Response.BinaryWrite(bArray);
                             context.Response.ContentType = ContentType;
                             context.Response.Flush();
