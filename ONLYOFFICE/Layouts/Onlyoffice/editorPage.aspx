@@ -14,7 +14,8 @@
             config["events"] = {
                 "onRequestSaveAs": onRequestSaveAs,
                 "onRequestHistory": onRequestHistory,
-                "onRequestHistoryData": onRequestHistoryData
+                "onRequestHistoryData": onRequestHistoryData,
+                "onRequestHistoryClose": onRequestHistoryClose
             }
 
             if ("<%= UsingDemoMessage %>") {
@@ -81,6 +82,10 @@
                     .catch(e => {
                         console.error("History Error: ", e);
                     });
+            }
+
+            function onRequestHistoryClose() {
+                document.location.reload();
             }
 
         </script>
