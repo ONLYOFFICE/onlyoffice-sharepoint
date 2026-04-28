@@ -12,7 +12,10 @@
             var config = <%= ConfigurationJSON %>;
 
             config["events"] = {
-                "onRequestSaveAs": onRequestSaveAs
+                "onRequestSaveAs": onRequestSaveAs,
+                "onRequestHistory": onRequestHistory,
+                "onRequestHistoryData": onRequestHistoryData,
+                "onRequestHistoryClose": onRequestHistoryClose
             }
 
             if ("<%= UsingDemoMessage %>") {
@@ -46,6 +49,43 @@
                     .catch(e => {
                         console.error("SaveAs Error: ", e);
                     });
+            }
+
+            function onRequestHistoryData(event) {
+                var params = new URLSearchParams({
+                    SPListItemId: "<%= SPListItemId %>",
+                    SPListURLDir: "<%= SPListURLDir %>",
+                    version: event.data
+                });
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=version&" + params)
+                    .then(response => response.json())
+                    .then(json => {
+                        docEditor.setHistoryData(json);
+                    })
+                    .catch(e => {
+                        console.error("HistoryData Error: ", e);
+                    });
+            }
+
+            function onRequestHistory() {
+                var params = new URLSearchParams({
+                    SPListItemId: "<%= SPListItemId %>",
+                    SPListURLDir: "<%= SPListURLDir %>"
+                });
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=history&" + params)
+                    .then(response => response.json())
+                    .then(json => {
+                        docEditor.refreshHistory(json);
+                    })
+                    .catch(e => {
+                        console.error("History Error: ", e);
+                    });
+            }
+
+            function onRequestHistoryClose() {
+                document.location.reload();
             }
 
         </script>

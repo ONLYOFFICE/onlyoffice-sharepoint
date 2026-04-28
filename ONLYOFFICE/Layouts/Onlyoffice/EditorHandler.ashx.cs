@@ -25,6 +25,7 @@
 */
 
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Administration;
 using System;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -49,6 +50,12 @@ namespace Onlyoffice
             {
                 case "saveas":
                     SaveAs(SPUrl, context);
+                    break;
+                case "history":
+                    GetHistory(SPUrl, context);
+                    break;
+                case "version":
+                    GetVersion(SPUrl, context);
                     break;
 
                 default:
@@ -140,6 +147,171 @@ namespace Onlyoffice
 
             if(success)
                 context.Response.Write("{\"message\": \"Saveas is completed\"}");
+        }
+
+        static void GetHistory(string SPUrl, HttpContext context)
+        {
+            string SPListItemId = context.Request.Params["SPListItemId"];
+            string SPListURLDir = context.Request.Params["SPListURLDir"];
+
+            SPUserToken userToken = null;
+            string result = null;
+
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
+            {
+                using (SPSite site = new SPSite(SPUrl))
+                using (SPWeb web = site.OpenWeb())
+                {
+                    var userName = context.User.Identity.Name.Substring(context.User.Identity.Name.LastIndexOf("\\") + 1);
+                    for (var i = 0; i < web.AllUsers.Count; i++)
+                    {
+                        if (string.Compare(web.AllUsers[i].LoginName.Substring(web.AllUsers[i].LoginName.LastIndexOf("\\") + 1),
+                                            userName, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        {
+                            userToken = web.AllUsers[i].UserToken;
+                            break;
+                        }
+                    }
+
+                    SPSite s = new SPSite(SPUrl, userToken);
+                    SPWeb w = s.OpenWeb();
+
+                    var list = w.GetList(SPListURLDir);
+                    SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
+                    SPFile file = item.File;
+
+                    var historyList = new List<Dictionary<string, object>>();
+                    int versionNum = 1;
+
+                    foreach (SPFileVersion version in file.Versions)
+                    {
+                        historyList.Add(new Dictionary<string, object>
+                        {
+                            { "version", versionNum++ },
+                            { "key", FileUtility.GenerateRevisionId(file.UniqueId, version.Created) },
+                            { "created", version.Created.ToString("yyyy-MM-dd HH:mm:ss") },
+                            { "user", new Dictionary<string, object>
+                                {
+                                    { "id", version.CreatedBy.ID },
+                                    { "name", version.CreatedBy.Name }
+                                }
+                            }
+                        });
+                    }
+
+                    historyList.Add(new Dictionary<string, object>
+                    {
+                        { "version", versionNum },
+                        { "key", FileUtility.GenerateRevisionId(file.UniqueId, file.TimeLastModified) },
+                        { "created", file.TimeLastModified.ToString("yyyy-MM-dd HH:mm:ss") },
+                        { "user", new Dictionary<string, object>
+                            {
+                                { "id", file.ModifiedBy.ID },
+                                { "name", file.ModifiedBy.Name }
+                            }
+                        }
+                    });
+
+                    var response = new Dictionary<string, object>
+                    {
+                        { "currentVersion", versionNum },
+                        { "history", historyList }
+                    };
+
+                    result = new JavaScriptSerializer().Serialize(response);
+                }
+            });
+
+            context.Response.Write(result ?? "{\"error\": \"Failed to get history\"}");
+        }
+
+        static void GetVersion(string SPUrl, HttpContext context)
+        {
+            string SPListItemId = context.Request.Params["SPListItemId"];
+            string SPListURLDir = context.Request.Params["SPListURLDir"];
+            int version = Int32.Parse(context.Request.Params["version"]);
+            string SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/";
+
+            SPUserToken userToken = null;
+            string result = null;
+
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
+            {
+                using (SPSite site = new SPSite(SPUrl))
+                using (SPWeb web = site.OpenWeb())
+                {
+                    AppConfig appConfig = new AppConfig(web);
+                    string secret = appConfig.GetSharePointSecret();
+                    string JwtSecret = appConfig.UseDemo() ? DocsDemo.Secret : appConfig.GetJwtSecret();
+
+                    var userName = context.User.Identity.Name.Substring(context.User.Identity.Name.LastIndexOf("\\") + 1);
+                    int userId = 0;
+                    for (var i = 0; i < web.AllUsers.Count; i++)
+                    {
+                        if (string.Compare(web.AllUsers[i].LoginName.Substring(web.AllUsers[i].LoginName.LastIndexOf("\\") + 1),
+                                            userName, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        {
+                            userToken = web.AllUsers[i].UserToken;
+                            userId = web.AllUsers[i].ID;
+                            break;
+                        }
+                    }
+
+                    SPSite s = new SPSite(SPUrl, userToken);
+                    SPWeb w = s.OpenWeb();
+
+                    var list = w.GetList(SPListURLDir);
+                    SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
+                    SPFile file = item.File;
+
+                    string fileType = file.Name.Split('.')[file.Name.Split('.').Length - 1].ToLower();
+                    string folder = Path.GetDirectoryName(file.ServerRelativeUrl).Replace("\\", "/");
+                    int totalVersions = file.Versions.Count + 1;
+
+                    string url, key;
+                    int? versionNumber = null;
+                    if (version < totalVersions)
+                    {
+                        SPFileVersion ver = file.Versions[version - 1];
+                        versionNumber = version;
+                        key = FileUtility.GenerateRevisionId(file.UniqueId, ver.Created);
+                    }
+                    else
+                    {
+                        key = FileUtility.GenerateRevisionId(file.UniqueId, file.TimeLastModified);
+                    }
+
+                    string urlHash = Encryption.GetUrlHash("download", secret, SPListItemId, folder, SPListURLDir, userId, versionNumber);
+                    url = string.Format("{0}_layouts/{1}Onlyoffice/CallbackHandler.ashx?data={2}", SPUrl, SPVersion, urlHash);
+
+                    var response = new Dictionary<string, object>
+                    {
+                        { "version", version },
+                        { "url", url },
+                        { "fileType", fileType },
+                        { "key", key }
+                    };
+
+                    if (version > 1)
+                    {
+                        SPFileVersion prevVer = file.Versions[version - 2];
+                        string prevUrlHash = Encryption.GetUrlHash("download", secret, SPListItemId, folder, SPListURLDir, userId, version - 1);
+                        response["previous"] = new Dictionary<string, object>
+                        {
+                            { "url", string.Format("{0}_layouts/{1}Onlyoffice/CallbackHandler.ashx?data={2}", SPUrl, SPVersion, prevUrlHash) },
+                            { "fileType", fileType },
+                            { "key", FileUtility.GenerateRevisionId(file.UniqueId, prevVer.Created) }
+                        };
+                    }
+
+                    if (!string.IsNullOrEmpty(JwtSecret))
+                        response["token"] = Encryption.GetSignature(JwtSecret, response);
+
+                    result = new JavaScriptSerializer().Serialize(response);
+                }
+            });
+
+            context.Response.Write(result ?? "{\"error\": \"Failed to get version\"}");
         }
 
         public bool IsReusable
