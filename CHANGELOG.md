@@ -2,6 +2,7 @@
 
 ## 3.2.0
 ## Added
+- file version history support
 - plugin description and useful links in admin settings
 - support Docs demo connection
 - link to docs cloud
