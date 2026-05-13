@@ -7,12 +7,21 @@
     <asp:panel runat="server" id="panelMain" style="height: 100%; margin: 0;">
         <div id="placeholder" style="height: 100%"></div>
 
-        <script type="text/javascript" src= "<%= DocumentSeverHost %>web-apps/apps/api/documents/api.js"></script>
+        <script type="text/javascript" src= "<%= ApiUrl %>"></script>
         <script type="text/javascript">
             var config = <%= ConfigurationJSON %>;
 
             config["events"] = {
-                "onRequestSaveAs": onRequestSaveAs
+                "onRequestSaveAs": onRequestSaveAs,
+                "onRequestHistory": onRequestHistory,
+                "onRequestHistoryData": onRequestHistoryData,
+                "onRequestHistoryClose": onRequestHistoryClose
+            }
+
+            if ("<%= UsingDemoMessage %>") {
+                config.events.onAppReady = () => {
+                    window.docEditor.showMessage("<%= UsingDemoMessage %>");
+                }
             }
 
             window.docEditor = new DocsAPI.DocEditor("placeholder", config);
@@ -40,6 +49,43 @@
                     .catch(e => {
                         console.error("SaveAs Error: ", e);
                     });
+            }
+
+            function onRequestHistoryData(event) {
+                var params = new URLSearchParams({
+                    SPListItemId: "<%= SPListItemId %>",
+                    SPListURLDir: "<%= SPListURLDir %>",
+                    version: event.data
+                });
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=version&" + params)
+                    .then(response => response.json())
+                    .then(json => {
+                        docEditor.setHistoryData(json);
+                    })
+                    .catch(e => {
+                        console.error("HistoryData Error: ", e);
+                    });
+            }
+
+            function onRequestHistory() {
+                var params = new URLSearchParams({
+                    SPListItemId: "<%= SPListItemId %>",
+                    SPListURLDir: "<%= SPListURLDir %>"
+                });
+
+                fetch("<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/EditorHandler.ashx?action=history&" + params)
+                    .then(response => response.json())
+                    .then(json => {
+                        docEditor.refreshHistory(json);
+                    })
+                    .catch(e => {
+                        console.error("History Error: ", e);
+                    });
+            }
+
+            function onRequestHistoryClose() {
+                document.location.reload();
             }
 
         </script>

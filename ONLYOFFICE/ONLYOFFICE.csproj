@@ -104,6 +104,8 @@
     <Content Include="Images\ONLYOFFICE-16.png" />
     <Content Include="Images\ONLYOFFICE-32.png" />
     <EmbeddedResource Include="Layouts\Onlyoffice\formats\onlyoffice-docs-formats.json" />
+    <Content Include="Layouts\Onlyoffice\images\DocsCloudBanner.svg" />
+    <Content Include="Layouts\Onlyoffice\images\i.svg" />
     <Content Include="Layouts\Onlyoffice\Settings.aspx" />
     <Content Include="MenuAction\Elements.xml">
       <SubType>Designer</SubType>

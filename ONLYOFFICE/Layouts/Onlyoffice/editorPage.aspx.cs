@@ -42,8 +42,6 @@ namespace Onlyoffice.Layouts
         private string urlHashDownload = string.Empty,
                        urlHashTrack = string.Empty,
                        CurrentUserLogin = string.Empty,
-                       SPListItemId = string.Empty,
-                       SPListURLDir = string.Empty,
                        SPSourceAction = string.Empty,
                        Secret = string.Empty,
                        JwtSecret = string.Empty,
@@ -56,10 +54,14 @@ namespace Onlyoffice.Layouts
         private SPUser currentUser;
         private AppConfig AppConfig;
 
-        protected string DocumentSeverHost = "@http://localhost",
+        protected string DocumentServerHost = "@http://localhost",
+                         ApiUrl = string.Empty,
                          Folder = string.Empty,
                          SPVersion = SPFarm.Local.BuildVersion.Major == 14 ? "" : "15/",
                          ConfigurationJSON = string.Empty,
+                         UsingDemoMessage = string.Empty,
+                         SPListItemId = string.Empty,
+                         SPListURLDir = string.Empty,
                          SPUrl = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
 
@@ -82,9 +84,18 @@ namespace Onlyoffice.Layouts
                     {
                         AppConfig = new AppConfig(web);
 
-                        DocumentSeverHost = AppConfig.GetDocumentServerHost();
                         Secret = AppConfig.GetSharePointSecret();
-                        JwtSecret = AppConfig.GetJwtSecret();
+
+                        if (AppConfig.UseDemo())
+                        {
+                            DocumentServerHost = DocsDemo.Host;
+                            JwtSecret = DocsDemo.Secret;
+                            UsingDemoMessage = LoadResource("UsingDemoMessage");
+                        } else
+                        {
+                            DocumentServerHost = AppConfig.GetDocumentServerHost();
+                            JwtSecret = AppConfig.GetJwtSecret();
+                        }
 
                         // get current user ID and Name
 //==================================================================================
@@ -128,7 +139,8 @@ namespace Onlyoffice.Layouts
 
                             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
-                            Configuration.Document.Key = GenerateRevisionId(file.ETag);
+                            Configuration.Document.Key = FileUtility.GenerateRevisionId(file.UniqueId, file.TimeLastModified);
+                            ApiUrl = DocumentServerHost + "web-apps/apps/api/documents/api.js?shardkey=" + Configuration.Document.Key;
 
                             Folder = Path.GetDirectoryName(file.ServerRelativeUrl);
                             Folder = Folder.Replace("\\", "/");
@@ -187,20 +199,6 @@ namespace Onlyoffice.Layouts
                 Configuration.Token = Encryption.GetSignature(JwtSecret, Configuration);
 
             ConfigurationJSON = Configuration.Serialize(Configuration);
-        }
-
-        /// <summary>
-        /// Translation key to a supported form.
-        /// </summary>
-        /// <param name="expectedKey">Expected key</param>
-        /// <returns>Supported key</returns>
-        public static string GenerateRevisionId(string expectedKey)
-        {
-            expectedKey = expectedKey ?? "";
-            const int maxLength = 20;
-            if (expectedKey.Length > maxLength) expectedKey = Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(expectedKey)));
-            var key = Regex.Replace(expectedKey, "[^0-9a-zA-Z_]", "_");
-            return key.Substring(key.Length - Math.Min(key.Length, maxLength));
         }
 
         private string LoadResource(string _resName)

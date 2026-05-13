@@ -117,8 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DemoCheckboxConnected" xml:space="preserve">
+    <value>You are connected to the demo server. It will be available until [date]. To disable it, clear the checkbox.</value>
+  </data>
+  <data name="DemoCheckboxDescription" xml:space="preserve">
+    <value>This is a public test server. Please do not use it to store private or sensitive data. The server will be available for 30 days.</value>
+  </data>
+  <data name="DemoCheckboxExpired" xml:space="preserve">
+    <value>The 30-day test period has ended. You can no longer connect to the demo server.</value>
+  </data>
+  <data name="DemoCheckboxTitle" xml:space="preserve">
+    <value>Connect to the ONLYOFFICE Docs demo server</value>
+  </data>
+  <data name="DocsTooltip" xml:space="preserve">
+    <value>Please enter the address of your ONLYOFFICE Docs server here.</value>
+  </data>
   <data name="DocumentServer" xml:space="preserve">
-    <value>Document server</value>
+    <value>ONLYOFFICE Docs address</value>
   </data>
   <data name="EditIn" xml:space="preserve">
     <value>Open in ONLYOFFICE</value>
@@ -127,13 +142,22 @@
     <value>File not found</value>
   </data>
   <data name="GoToBack" xml:space="preserve">
-    <value>Go to back</value>
+    <value>Go back</value>
   </data>
   <data name="JwtHeader" xml:space="preserve">
-    <value>Jwt header</value>
+    <value>JWT header</value>
+  </data>
+  <data name="JwtHeaderTooltip" xml:space="preserve">
+    <value>Leave blank to use the default header. Default value is Authorization.</value>
   </data>
   <data name="JwtSecret" xml:space="preserve">
-    <value>Secret key (leave blank to disable)</value>
+    <value>ONLYOFFICE Docs secret key</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Learn more</value>
+  </data>
+  <data name="NoJwtWarning" xml:space="preserve">
+    <value>To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page. To learn more, {0}click here{1}.</value>
   </data>
   <data name="RibbonTooltipText" xml:space="preserve">
     <value>Open this document for editing in ONLYOFFICE</value>
@@ -141,10 +165,28 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SecretKeyPlaceholder" xml:space="preserve">
+    <value>Secret key</value>
+  </data>
+  <data name="SecretTooltip" xml:space="preserve">
+    <value>Use the auto-generated JWT secret key or set your own here and the same one in the ONLYOFFICE Docs config file.</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>ONLYOFFICE settings</value>
   </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Edit and co-author documents, spreadsheets, and presentations directly within SharePoint using ONLYOFFICE Docs.</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
+    <value>Welcome to ONLYOFFICE Docs!</value>
+  </data>
   <data name="SuccessfulSave" xml:space="preserve">
-    <value>Successful save</value>
+    <value>Saved successfully</value>
+  </data>
+  <data name="SuggestFeature" xml:space="preserve">
+    <value>Suggest a feature</value>
+  </data>
+  <data name="UsingDemoMessage" xml:space="preserve">
+    <value>You are using the public ONLYOFFICE Docs demo server. Please do not store private or sensitive data.</value>
   </data>
 </root>

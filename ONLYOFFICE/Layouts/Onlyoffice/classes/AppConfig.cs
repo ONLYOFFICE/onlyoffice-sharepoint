@@ -24,8 +24,9 @@
  *
 */
 
-using System;
 using Microsoft.SharePoint;
+using System;
+using System.Globalization;
 
 namespace Onlyoffice
 {
@@ -41,9 +42,37 @@ namespace Onlyoffice
 
         private const string _jwtHeader = "JwtHeader";
 
+        private const string _demoStartDate = "DocsDemoStartDate";
+
+        private const string _demoEnabled = "DocsDemoEnabled";
+
         public AppConfig(SPWeb Web) 
         {
             _web = Web;
+        }
+
+        public bool UseDemo()
+        {
+            return GetDemoEnabled() && DemoAvailable();
+        }
+
+        public bool DemoAvailable()
+        {
+            try
+            {
+                var startDate = GetDemoStartDate();
+
+                if (startDate == null)
+                    return true;
+
+                var endDate = startDate.Value.AddDays(DocsDemo.Trial);
+
+                return endDate > DateTime.Now;
+            } catch (Exception ex) 
+            {
+                Log.LogError("DocsDemo check error: " + ex.Message);
+                return false;
+            }
         }
 
         public string GetSharePointSecret()
@@ -134,5 +163,60 @@ namespace Onlyoffice
 
             return value;
         }
+
+        public void SetDemoStartDate(DateTime value)
+        {
+            var dateString = value.ToString("O");
+
+            if (_web.Properties[_demoStartDate] == null)
+                _web.Properties.Add(_demoStartDate, dateString);
+            else
+                _web.Properties[_demoStartDate] = dateString;
+
+            _web.Properties.Update();
+        }
+
+        public Nullable<DateTime> GetDemoStartDate()
+        {
+            var value = _web.Properties[_demoStartDate];
+
+            if (value == null)
+                return null;
+
+            return DateTime.Parse(value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind); ;
+        }
+
+        public void SetDemoEnabled(bool value)
+        {
+            if (value && GetDemoStartDate() == null)
+                SetDemoStartDate(DateTime.Now);
+
+            var enabled = DemoAvailable() ? value.ToString() : "False";
+
+            if (_web.Properties[_demoEnabled] == null)
+                _web.Properties.Add(_demoEnabled, enabled);
+            else
+                _web.Properties[_demoEnabled] = enabled;
+
+            _web.Properties.Update();
+        }
+
+        public bool GetDemoEnabled()
+        {
+            var value = _web.Properties[_demoEnabled];
+
+            if (value == null)
+                return false;
+
+            return value.ToLower() == "true";
+        }
+    }
+
+    public class DocsDemo
+    {
+        public static string Host = "https://onlinedocs.docs.onlyoffice.com/";
+        public static string Header = "AuthorizationJWT";
+        public static string Secret = "sn2puSUF7muF5Jas";
+        public static int Trial = 30;
     }
 }

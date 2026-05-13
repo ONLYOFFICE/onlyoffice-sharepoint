@@ -1,5 +1,14 @@
 # Change Log
 
+## 3.2.0
+## Added
+- file version history support
+- plugin description and useful links in admin settings
+- support Docs demo connection
+- link to docs cloud
+- shardkey param to url for requests to Docs
+- show warning popup when jwt secret is empty
+
 ## 3.1.0
 ## Changed
 - supported format list
@@ -22,7 +31,8 @@
 ## 1.2
 ## Changed
 - support for special character in name
-- support editors v5.4
+- support editors v5.4
+
 ## 1.1
 ## Changed
 - opening document from subsite
